@@ -37,6 +37,19 @@
     python3 setup.py
     ```
 
+- Create .envrc file in the backend folder and add these lines:
+
+  ```bash
+  # Activate the virtual environment
+  if [ -d "venv" ]; then
+      if [ -f "venv/bin/activate" ]; then
+          source venv/bin/activate
+      elif [ -f "venv/Scripts/activate" ]; then
+          source venv/Scripts/activate
+      fi
+  fi
+  ```
+
 - Install `direnv`
 
   - Ubuntu:
