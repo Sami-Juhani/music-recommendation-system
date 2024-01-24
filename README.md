@@ -15,7 +15,9 @@
     venv\Scripts\activate
     pip install -r requirements.txt
     ```
-
+    
+  - Ubuntu:
+  
     ```bash
     python3 -m venv venv
     source venv/bin/activate
