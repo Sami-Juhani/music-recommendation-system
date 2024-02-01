@@ -18,8 +18,7 @@ SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')
 
 
 class SpotifyLogin(View):
-    def get(self):
-
+    def get(self, request):
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
             return HttpResponse('SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided', status=401)
     
