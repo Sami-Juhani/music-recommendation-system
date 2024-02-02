@@ -138,3 +138,26 @@ class SpotifyRecentlyPlayed(View):
         data = response.json()
 
         return JsonResponse(data, status=200)
+    
+
+class SpotifyGetTrack(View):
+    def get(self, request, track_id):
+        access_token: str = request.headers.get('Authorization').split(' ')[1]
+
+        if not access_token:
+            return HttpResponse('No access token provided', status=401)
+
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+
+
+        response = requests.get(
+            f'https://api.spotify.com/v1/tracks/{track_id}', headers=headers)
+
+        if response.status_code != 200:
+            return HttpResponse('Failed to retrieve track', status=401)
+
+        data = response.json()
+        print(data)
+        return JsonResponse(data, status=200)
