@@ -19,9 +19,7 @@ frontendfrontend/coverage
 /build
 
 # misc
-backend/music_recommender/__pycache__
-backend/spotify_auth/__pycache__
-backend/spotify/__pycache__/
+**/__pycache__
 frontend/.DS_Store
 frontend/.env.local
 frontend/.env.development.local

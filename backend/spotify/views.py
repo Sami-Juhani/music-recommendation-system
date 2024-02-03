@@ -1,7 +1,3 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
-from django.views import View
-from music_recommender.settings import BASE_URL
 import json
 import urllib.parse
 import secrets
@@ -9,6 +5,13 @@ import requests
 import base64
 import os
 import dotenv
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.urls import reverse
+from django.views import View
+from django.contrib.auth.models import User
+from music_recommender.settings import BASE_URL
+from spotify.utils.spotify_utils import update_or_create_user_tokens
+
 
 dotenv.load_dotenv()
 
@@ -21,7 +24,6 @@ class SpotifyLogin(View):
     def get(self, request):
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
             return HttpResponse('SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided', status=401)
-    
         state: str = secrets.token_urlsafe(16)
         scope: str = 'user-read-private user-read-email playlist-modify-private playlist-modify-public user-read-currently-playing user-read-playback-position user-read-playback-state playlist-read-private user-read-recently-played user-top-read user-library-read user-modify-playback-state'
         params: dict = urllib.parse.urlencode({
@@ -36,83 +38,54 @@ class SpotifyLogin(View):
         return HttpResponseRedirect(auth_url)
 
 
-class SpotifyCallback(View):
-    def get(self, request):
-        code: str = request.GET.get('code')
-        state: str = request.GET.get('state')
-        error: str = request.GET.get('error')
+def spotify_callback(request, Format=None):
+    user_id = request.session.get('user_id')
+    code: str = request.GET.get('code')
+    state: str = request.GET.get('state')
+    error: str = request.GET.get('error')
 
-        if error:
-            return HttpResponse(f'Error occurred: {error}', status=401)
+    user = User.objects.get(id=user_id)
 
-        if not state:
-            return HttpResponse('State mismatch', status=401)
+    if not user_id or not user:
+        return HttpResponse('User not found', status=401)
 
-        client_id = SPOTIFY_CLIENT_ID
-        client_secret = SPOTIFY_CLIENT_SECRET
-        redirect_uri = request.build_absolute_uri(reverse('callback'))
+    if error:
+        return HttpResponse(f'Error occurred: {error}', status=401)
 
-        response = requests.post('https://accounts.spotify.com/api/token', data={
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': redirect_uri
-        }, headers={
-            'Authorization': f'Basic {base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()}'
-        })
-
-        if response.status_code == 401:
-            # //TODO: Refresh token
-            pass
-
-        if response.status_code != 200:
-            return HttpResponse('Failed to retrieve token', status=401)
-
-        data: dict = response.json()
-        access_token: str = data['access_token']
-        refresh_token: str = data['refresh_token']
-
-        # Save the access token in session or database
-
-        return JsonResponse({'access_token': access_token, 'refresh_token': refresh_token}, status=200)
-
-
-class RefreshSpotifyToken(View):
-    def post(self, request):
-        refresh_token: str = json.loads(request.body).get('refresh_token')
-
-        if not refresh_token:
-            return HttpResponse('No refresh token provided', status=401)
+    if not state:
+        return HttpResponse('State mismatch', status=401)
     
-        client_id: str = SPOTIFY_CLIENT_ID
-        client_secret: str = SPOTIFY_CLIENT_SECRET
 
-        if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
-            return HttpResponse('SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided', status=401)
+    client_id = SPOTIFY_CLIENT_ID
+    client_secret = SPOTIFY_CLIENT_SECRET
+    redirect_uri = request.build_absolute_uri(reverse('callback'))
 
-        # Prepare the request
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Basic {base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()}'
-        }
-        data = {
-            'grant_type': 'refresh_token',
-            'refresh_token': refresh_token,
-            'client_id': client_id,
-        }
+    response = requests.post('https://accounts.spotify.com/api/token', data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': redirect_uri
+    }, headers={
+        'Authorization': f'Basic {base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()}'
+    })
 
-        # Send the request
-        response = requests.post(
-            'https://accounts.spotify.com/api/token', headers=headers, data=data)
+    if response.status_code == 401:
+        # //TODO: Refresh token
+        pass
 
-        # Handle the response
-        if response.status_code != 200:
-            return HttpResponse('Failed to retrieve token', status=401)
+    if response.status_code != 200:
+        return HttpResponse('Failed to retrieve token', status=401)
 
-        data = response.json()
+    data: dict = response.json()
+    access_token: str = data['access_token']
+    refresh_token: str = data['refresh_token']
+    expires_in = data['expires_in']
+    token_type = data['token_type']
 
-        access_token = data['access_token']
+    # Save the access token in database
+    update_or_create_user_tokens(
+        user, access_token, token_type, expires_in, refresh_token)
 
-        return JsonResponse({'access_token': access_token}, status=200)
+    return JsonResponse({'access_token': access_token, 'refresh_token': refresh_token}, status=200)
 
 
 class SpotifyRecentlyPlayed(View):
@@ -139,25 +112,3 @@ class SpotifyRecentlyPlayed(View):
 
         return JsonResponse(data, status=200)
     
-
-class SpotifyGetTrack(View):
-    def get(self, request, track_id):
-        access_token: str = request.headers.get('Authorization').split(' ')[1]
-
-        if not access_token:
-            return HttpResponse('No access token provided', status=401)
-
-        headers = {
-            'Authorization': f'Bearer {access_token}'
-        }
-
-
-        response = requests.get(
-            f'https://api.spotify.com/v1/tracks/{track_id}', headers=headers)
-
-        if response.status_code != 200:
-            return HttpResponse('Failed to retrieve track', status=401)
-
-        data = response.json()
-        print(data)
-        return JsonResponse(data, status=200)
