@@ -118,6 +118,10 @@
 ### Backend
 
 ### Frontend
+- Install react-router-dom
+  ```bash
+  npm install react-router-dom
+  ```
 
 ## Dokumentaatio
 
