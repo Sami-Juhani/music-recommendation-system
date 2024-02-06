@@ -82,3 +82,34 @@ class UpdateUser(APIView):
         user.save()
         
         return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
+    
+
+class LogoutUser(APIView):
+    """
+    Log out the user by clearing the session
+    """
+    @swagger_auto_schema(responses={200: "Logged out"})
+    def post(self, request):
+        request.session.flush()
+        return Response({"message": "Logged out"}, status=status.HTTP_200_OK)
+
+
+class DeleteUser(APIView):
+    """
+    Delete the user by clearing the session
+    """
+    @swagger_auto_schema(responses={200: "User deleted"})
+    def delete(self, request):
+        user_id: int = request.session.get('user_id')
+
+        if not user_id:
+            return Response({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+    
+        try:
+            user: User = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        user.delete()
+        
+        return Response({"message": "User deleted"}, status=status.HTTP_200_OK)

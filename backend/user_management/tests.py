@@ -73,3 +73,38 @@ class UpdateUserTest(TestCase):
         self.assertEqual(self.test_user.first_name, 'newfirstname')
         self.assertEqual(self.test_user.last_name, 'newlastname')
         self.assertTrue(self.test_user.check_password('newpassword'))
+
+
+class LogoutUserTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.test_user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_logout_user(self):
+        session = self.client.session
+        session['user_id'] = self.test_user.id
+        session.save()
+
+        response = self.client.post(f'{BASE_URL}/api/user/logout')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotIn('user_id', self.client.session)
+
+
+class DeleteUserTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.test_user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_delete_user(self):
+        session = self.client.session
+        session['user_id'] = self.test_user.id
+        session.save()
+
+        response = self.client.delete(f'{BASE_URL}/api/user/delete')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(id=self.test_user.id)
