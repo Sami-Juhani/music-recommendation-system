@@ -1,7 +1,5 @@
 name: Django CI
 
-working-directory: backend
-
 on:
   push:
     branches: [ "main" ]
