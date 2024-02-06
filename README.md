@@ -73,6 +73,17 @@
   ```bash
   source ~/.bashrc
   direnv allow
+  ```  
+
+- Get the spotify client id and client secret from the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
+
+  ## In .env file add the following lines:
+  ```bash
+  DJANGO_ENV = development
+  SPOTIFY_CLIENT_ID = your_client_id
+  SPOTIFY_CLIENT_SECRET = your_client_secret
+  DB_HOST = host_to_your_database
+  DB_PASSWORD = your_database_password
   ```
 
 #### Useful django commands
@@ -115,10 +126,21 @@
 
 ## Käyttöohjeet
 
-### Backend
+## API Documentation
 
-### Frontend
+- run the server with the command:
+
+  ```bash
+  python manage.py runserver
+  ```
+
+- Navigate to http://127.0.0.1:8000/api/swagger or http://127.0.0.1:8000/api/redoc
+
 
 ## Dokumentaatio
 
 ## Ohjelmoijat
+- Mamadou Balde
+- Sami Paananen
+- Vladimir Piniazhin
+- Ivan Semenov
