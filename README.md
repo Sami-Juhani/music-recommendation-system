@@ -13,7 +13,7 @@
     ```cmd
     python -m venv venv
     venv\Scripts\activate
-    pip install -r requirements.txt or python -m pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
     
   - Ubuntu:
@@ -21,13 +21,7 @@
     ```bash
     python3 -m venv venv
     source venv/bin/activate
-    pip3 install -r requirements.txt or python3 -m pip3 install -r requirements.txt
-    ```
-
-  - if mysqlclient installation fails, run the following command:
-    ```bash
-    sudo apt-get update 
-    sudo apt-get install python3-dev default-libmysqlclient-dev
+    pip3 install -r requirements.txt
     ```
 
   OR (a script is provided which does the same thing)
@@ -54,7 +48,6 @@
           source venv/Scripts/activate
       fi
   fi
-  unset PS1;
   ```
 
 - Install `direnv`
@@ -72,33 +65,14 @@
   ```bash
   nano ~/.bashrc
   ```
-  Add the following lines to the file:
+  Add the following line to the end of the file:
   ```bash
-  show_virtual_env() {
-  if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
-    echo "($(basename $VIRTUAL_ENV)) "
-  fi
-  }
-  export -f show_virtual_env
-  PS1='$(show_virtual_env)'$PS1
-
   eval "$(direnv hook bash)"
   ```
   Save and exit the file. Then run the following commands:
   ```bash
   source ~/.bashrc
   direnv allow
-  ```  
-
-- Get the spotify client id and client secret from the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
-
-  ## In .env file add the following lines:
-  ```bash
-  DJANGO_ENV = development
-  SPOTIFY_CLIENT_ID = your_client_id
-  SPOTIFY_CLIENT_SECRET = your_client_secret
-  DB_HOST = host_to_your_database
-  DB_PASSWORD = your_database_password
   ```
 
 #### Useful django commands
@@ -141,21 +115,10 @@
 
 ## Käyttöohjeet
 
-## API Documentation
+### Backend
 
-- run the server with the command:
-
-  ```bash
-  python manage.py runserver
-  ```
-
-- Navigate to http://127.0.0.1:8000/api/swagger or http://127.0.0.1:8000/api/redoc
-
+### Frontend
 
 ## Dokumentaatio
 
 ## Ohjelmoijat
-- Mamadou Balde
-- Sami Paananen
-- Vladimir Piniazhin
-- Ivan Semenov
