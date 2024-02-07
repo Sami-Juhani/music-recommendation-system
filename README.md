@@ -54,6 +54,7 @@
           source venv/Scripts/activate
       fi
   fi
+  unset PS1;
   ```
 
 - Install `direnv`
@@ -71,8 +72,16 @@
   ```bash
   nano ~/.bashrc
   ```
-  Add the following line to the end of the file:
+  Add the following lines to the file:
   ```bash
+  show_virtual_env() {
+  if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
+    echo "($(basename $VIRTUAL_ENV)) "
+  fi
+  }
+  export -f show_virtual_env
+  PS1='$(show_virtual_env)'$PS1
+
   eval "$(direnv hook bash)"
   ```
   Save and exit the file. Then run the following commands:
