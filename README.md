@@ -13,7 +13,7 @@
     ```cmd
     python -m venv venv
     venv\Scripts\activate
-    pip install -r requirements.txt
+    pip install -r requirements.txt or python -m pip install -r requirements.txt
     ```
     
   - Ubuntu:
@@ -21,7 +21,13 @@
     ```bash
     python3 -m venv venv
     source venv/bin/activate
-    pip3 install -r requirements.txt
+    pip3 install -r requirements.txt or python3 -m pip3 install -r requirements.txt
+    ```
+
+  - if mysqlclient installation fails, run the following command:
+    ```bash
+    sudo apt-get update 
+    sudo apt-get install python3-dev default-libmysqlclient-dev
     ```
 
   OR (a script is provided which does the same thing)
