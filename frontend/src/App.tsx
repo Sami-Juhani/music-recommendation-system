@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import useRegistration from './hooks/useRegistration';
+import useLogin from './hooks/useLogin';
 import RegistrationForm from './pages/RegistrationForm';
 import LoginForm from './pages/LoginForm';
 
 const App: React.FC = () => {
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const { formData: regFormData, handleChange: handleRegChange, handleSubmit: handleRegSubmit } = useRegistration();
+  const { formData: loginFormData, handleChange: handleLoginChange, handleSubmit: handleLoginSubmit } = useLogin();
 
   const handleProfileButtonClick = () => {
     setShowLoginForm(!showLoginForm);
@@ -27,8 +31,8 @@ const App: React.FC = () => {
           </button>
         </div>
         <Routes>
-          <Route path="/registration" element={<RegistrationForm />} />
-          <Route path="/login" element={<LoginForm onLoginSuccess={handleLoginSuccess} />} />
+          <Route path="/registration" element={<RegistrationForm formData={regFormData} handleChange={handleRegChange} handleSubmit={handleRegSubmit} />} />
+          <Route path="/login" element={<LoginForm formData={loginFormData} handleChange={handleLoginChange} handleSubmit={handleLoginSubmit} onLoginSuccess={handleLoginSuccess} />} />
         </Routes>
         {showLoginForm && (
           <div className="login-container">

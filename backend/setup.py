@@ -11,8 +11,8 @@ def setup_virtual_environment():
     subprocess.run([sys.executable, "-m", "venv", "venv"])
 
         # Activate the virtual environment and install the requirements in the same shell
-    activate_script = "venv\\Scripts\\activate" if is_windows else ". venv/bin/activate"
-    pip_command = "pip" if is_windows else "pip3"
+    activate_script = "venv\\Scripts\\activate" if is_mac else ". venv/bin/activate"
+    pip_command = "pip" if is_mac else "pip3"
     command = f"{activate_script} && {pip_command} install -r requirements.txt"
     subprocess.run(command, shell=True, text=True)
 
