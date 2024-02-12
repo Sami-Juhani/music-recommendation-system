@@ -1,8 +1,3 @@
-import os
-import dotenv
-
-dotenv.load_dotenv()
-
 """
 Django settings for music_recommender project.
 
@@ -15,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+import dotenv
 from pathlib import Path
+
+dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,11 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&18)!1z9yn=5)3+7p_4qic&7h0%#2r1248euabiclf(aof!%kk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.environ.get('DJANGO_ENV') == 'development' else False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 # Application definition
 
@@ -46,16 +44,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'spotify.apps.SpotifyConfig',
     'user_management.apps.UserManagementConfig',
+    'recommendations.apps.RecommendationsConfig',
     'drf_yasg',
-    "corsheaders",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware', // Commented out to allow testing with Postman
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
