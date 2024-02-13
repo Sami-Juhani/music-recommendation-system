@@ -14,7 +14,11 @@ function App() {
     }
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <div className="relative flex">
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
 export default App;

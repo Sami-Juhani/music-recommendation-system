@@ -23,6 +23,13 @@ export default function Nav() {
                         </Link>
                     </span>
                 </li>
+                <li className="nav-button">
+                    <span className="discover">
+                        <Link to={PathConstants.DISCOVER} className="discover-text">
+                            Discover
+                        </Link>
+                    </span>
+                </li>
             </ul>
         </nav>
     );

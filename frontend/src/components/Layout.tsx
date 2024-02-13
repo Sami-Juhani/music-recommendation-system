@@ -9,13 +9,14 @@ import React from "react"
 
 export default function Layout() {
     return (
-        <>
+
+        <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#121286]">
             <Nav />
             <main>
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<Loader title={"Loading..."}/>}>
                     <Outlet />
                 </Suspense>
             </main>
-        </>
+        </div>
     )
 }
