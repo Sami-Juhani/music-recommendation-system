@@ -29,8 +29,12 @@ SECRET_KEY = 'django-insecure-&18)!1z9yn=5)3+7p_4qic&7h0%#2r1248euabiclf(aof!%kk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com',
+]
 
 # Application definition
 
@@ -140,4 +144,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 APPEND_SLASH = False
 
-BASE_URL = 'http://127.0.0.1:8000' if os.environ.get('DJANGO_ENV') == 'development' else 'http://myproductionurl.com'
+BASE_URL = 'http://127.0.0.1:8000' if os.environ.get('DJANGO_ENV') == 'development' else 'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com'
