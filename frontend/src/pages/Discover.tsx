@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Error from "../components/Error";
 import Loader from "../components/Loader";
 import SongCard from "../components/SongCard";
-import { genres } from "../assets/constants";
+import { genres, song, list } from "../assets/constants";
+import { musicExamples } from "../assets/musicExapmles";
 import { useMusicGetAllContext } from "../hooks/useMusicGetAllContext";
+import { RootState } from "../redux/features/rootReducer";
 
 const Discover = () => {
-    const genreTtiel = 'Pop';
+
+    //const disp = useDispatch();
+    //const { activeSong, isPlaying } = useSelector((state: RootState)=>state.player);
+    const activeSong = "";
+    const isPlaying = false;
+    const [genre, setGenre] = useState("Pop");
     const { music, dispatch } = useMusicGetAllContext();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -19,13 +27,13 @@ const Discover = () => {
                 const data = await response.json();
                 if (!response.ok) {
                     console.log(data.error);
-                    dispatch({ type: "SET_MUSIC", payload: [] });
+                    dispatch({ type: "SET_MUSIC", payload: [...musicExamples] });
                 } else {
                     dispatch({ type: "SET_MUSIC", payload: data });
                 }
             } catch (error) {
                 console.log(error);
-                dispatch({ type: "SET_MUSIC", payload: [1,2,3,4,5,6,7,8,9,10] });
+                dispatch({ type: "SET_MUSIC", payload: [...list] });
                 setError(true);
             }
             setIsLoading(false);
@@ -35,7 +43,7 @@ const Discover = () => {
 
     if (isLoading) {
         return (
-            <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#121286]">
+            <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#c51bce]">
                 <div className="px-6 h-[calc(100vh-72px)] overflow-y-scroll hide-scrollbar flex xl:flex-row flex-col-reverse">
                     <div className="flex-1 h-fit pb-40">
                         <Loader title="Loading" />;
@@ -57,24 +65,27 @@ const Discover = () => {
     };*/
 
     return (
-        <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#121286]">
+        <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#c51bce]">
             <div className="px-6 h-[calc(100vh-72px)] overflow-y-scroll hide-scrollbar flex xl:flex-row flex-col-reverse">
                 <div className="flex-1 h-fit pb-40">
                     <div className="flex flex-col">
                         <div className="w-full flex flex-col justify-center items-center mt-4 mb-10">
                             <h2 className="font-bold text-3xl text-white text-center mb-4">Discover</h2>
                             <select className="max-w-xs bg-black text-gray-300 p-3 text-sm rounded-lg ouline-none sm:mt-5 mt-5"
-                                onChange={() => { }}
-                                value=""
+                                onChange={(newGenre) => { setGenre(newGenre.target.value)}}
+                                value={genre}
                             >
                                 {genres.map((genre) => <option key={genre.value} value={genre.value}>{genre.title}</option>)}
                             </select>
                         </div>
                         <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-                            {music?.map((song: any, i: number) => (
+                            {music?.map((i: number) => (
                                 <SongCard
                                     key={i}
                                     song={song}
+                                    isPlaying={isPlaying}
+                                    activeSong={activeSong}
+                                    music={music}
                                     i={i} />
                             ))}
                         </div>

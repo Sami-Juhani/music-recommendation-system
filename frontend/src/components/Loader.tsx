@@ -1,10 +1,10 @@
 import React from "react";
-import  loader  from "../assets/loader.svg";
+import TenorGifEmbed from "../assets/TenorGifEmbed";
 
 const Loader = ({ title }: { title: any}) => {
     return (
         <div className="w-full flex justify-center items-center flex-col">
-            <img src={loader} alt="loader" className="w-32 h-32 object-contain" />
+            <TenorGifEmbed postId="24483754" />
             <h1 className="font-bold text-2xl text-white mt-2">{title || "Loading..."}</h1>
         </div>);
 };
