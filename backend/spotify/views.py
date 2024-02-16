@@ -34,8 +34,8 @@ class SpotifyAuth(APIView):
         SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')
 
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
-            return Response({"message" : 'SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+            return Response({"message": 'SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided'}, status=status.HTTP_401_UNAUTHORIZED)
+
         state: str = secrets.token_urlsafe(16)
         scope: str = 'user-read-private user-read-email playlist-modify-private playlist-modify-public user-read-currently-playing user-read-playback-position user-read-playback-state playlist-read-private user-read-recently-played user-top-read user-library-read user-modify-playback-state'
         params: dict = urllib.parse.urlencode({
@@ -68,21 +68,21 @@ def spotify_callback(request) -> Response:
     error: str = request.GET.get('error')
 
     if not user_id:
-        return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+        return JsonResponse({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
     if error:
         return HttpResponse(error, status=status.HTTP_400_BAD_REQUEST)
 
     if not state:
-        return JsonResponse('State not found', status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"message:": "State not found"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     SPOTIFY_CLIENT_ID: str = os.environ.get('SPOTIFY_CLIENT_ID')
-    SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')   
+    SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')
     redirect_uri = request.build_absolute_uri(reverse('callback'))
 
     try:
@@ -94,8 +94,8 @@ def spotify_callback(request) -> Response:
             'Authorization': f'Basic {base64.b64encode(f"{SPOTIFY_CLIENT_ID}:{SPOTIFY_CLIENT_SECRET}".encode()).decode()}'
         })
     except requests.exceptions.RequestException as e:
-        return JsonResponse({"message" : 'Failed to retrieve access token'}, status=status.HTTP_401_UNAUTHORIZED)
-    
+        return JsonResponse({"message": 'Failed to retrieve access token'}, status=status.HTTP_401_UNAUTHORIZED)
+
     data: dict = response.json()
     access_token: str = data['access_token']
     refresh_token: str = data['refresh_token']
@@ -121,15 +121,15 @@ class IsAuthenticated(APIView):
         user_id: int = request.session.get('user_id')
 
         if not user_id:
-            return JsonResponse({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return JsonResponse({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         if not user:
-            return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         is_auth: bool = is_authenticated(user)
 
@@ -150,10 +150,10 @@ class SpotifyAccessToken(APIView):
         access_token: str = get_access_token(user_id)
 
         if 'message' in access_token or not access_token:
-            return JsonResponse({"message" : 'No access token found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": 'No access token found'}, status=status.HTTP_404_NOT_FOUND)
 
-        return JsonResponse({"access_token" : access_token}, status=status.HTTP_200_OK)
-        
+        return JsonResponse({"access_token": access_token}, status=status.HTTP_200_OK)
+
 
 class SpotifyRecentlyPlayed(APIView):
     """
@@ -173,7 +173,7 @@ class SpotifyRecentlyPlayed(APIView):
             return Response(recently_played, status=status.HTTP_404_NOT_FOUND)
 
         return Response(recently_played, status=status.HTTP_200_OK)
-    
+
 
 class SpotifyPlaylists(APIView):
     """
@@ -216,7 +216,7 @@ class SpotifyOnePlaylist(APIView):
             return Response(playlist, status=status.HTTP_404_NOT_FOUND)
 
         return Response(playlist, status=status.HTTP_200_OK)
-    
+
 
 class SpotifyPlaylistsWithTracks(APIView):
     """
@@ -227,7 +227,7 @@ class SpotifyPlaylistsWithTracks(APIView):
     """
     @swagger_auto_schema(operation_description="Get playlists with their tracks for the user", responses={200: PlaylistSerializer(many=True)})
     def get(self, request):
-        playlists_with_tracks = [];
+        playlists_with_tracks = []
         user_id: int = request.session.get('user_id')
         endpoint: str = 'me/playlists'
 
@@ -239,7 +239,8 @@ class SpotifyPlaylistsWithTracks(APIView):
 
         # Get the tracks for each playlist
         for playlist in playlists['items']:
-            playlists_with_tracks.append(execute_spotify_api_request(user_id, f"playlists/{playlist['id']}"))
+            playlists_with_tracks.append(execute_spotify_api_request(
+                user_id, f"playlists/{playlist['id']}"))
 
         if 'message' in playlists_with_tracks or not playlists_with_tracks:
             return Response(playlists_with_tracks, status=status.HTTP_404_NOT_FOUND)
