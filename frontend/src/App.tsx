@@ -1,9 +1,22 @@
 import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import routes from "./routes";
+import Layout from "./components/Layout";
+import Page404 from "./pages/Page404";
+import React from "react";
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      element: <Layout />,
+      errorElement: <Page404 />,
+      children: routes
+    }
+  ]);
+
   return (
-    <div className="App">
-      <h1>Music recommendation system</h1>
+    <div className="relative flex">
+      <RouterProvider router={router} />
     </div>
   );
 }
