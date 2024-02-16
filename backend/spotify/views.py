@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from music_recommender.settings import BASE_URL
@@ -68,18 +68,18 @@ def spotify_callback(request) -> Response:
     error: str = request.GET.get('error')
 
     if not user_id:
-        return HttpResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     
     if error:
         return HttpResponse(error, status=status.HTTP_400_BAD_REQUEST)
 
     if not state:
-        return HttpResponse('State not found', status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse('State not found', status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return HttpResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
     SPOTIFY_CLIENT_ID: str = os.environ.get('SPOTIFY_CLIENT_ID')
     SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')   
@@ -94,7 +94,7 @@ def spotify_callback(request) -> Response:
             'Authorization': f'Basic {base64.b64encode(f"{SPOTIFY_CLIENT_ID}:{SPOTIFY_CLIENT_SECRET}".encode()).decode()}'
         })
     except requests.exceptions.RequestException as e:
-        return HttpResponse({"message" : 'Failed to retrieve access token'}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"message" : 'Failed to retrieve access token'}, status=status.HTTP_401_UNAUTHORIZED)
     
     data: dict = response.json()
     access_token: str = data['access_token']
@@ -121,19 +121,19 @@ class IsAuthenticated(APIView):
         user_id: int = request.session.get('user_id')
 
         if not user_id:
-            return Response({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         if not user:
-            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         is_auth: bool = is_authenticated(user)
 
-        return Response({'status': is_auth}, status=status.HTTP_200_OK)
+        return JsonResponse({'status': is_auth}, status=status.HTTP_200_OK)
 
 
 ### For development purposes only ###
@@ -150,9 +150,9 @@ class SpotifyAccessToken(APIView):
         access_token: str = get_access_token(user_id)
 
         if 'message' in access_token or not access_token:
-            return Response({"message" : 'No access token found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message" : 'No access token found'}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"access_token" : access_token}, status=status.HTTP_200_OK)
+        return JsonResponse({"access_token" : access_token}, status=status.HTTP_200_OK)
         
 
 class SpotifyRecentlyPlayed(APIView):
@@ -219,6 +219,12 @@ class SpotifyOnePlaylist(APIView):
     
 
 class SpotifyPlaylistsWithTracks(APIView):
+    """
+    Get playlists with their tracks for the user
+
+    Returns:
+    Response: The response object with the playlists and their tracks
+    """
     @swagger_auto_schema(operation_description="Get playlists with their tracks for the user", responses={200: PlaylistSerializer(many=True)})
     def get(self, request):
         playlists_with_tracks = [];
