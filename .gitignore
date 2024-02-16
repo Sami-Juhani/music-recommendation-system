@@ -19,7 +19,6 @@ frontendfrontend/coverage
 /build
 
 # misc
-**/__pycache__
 frontend/.DS_Store
 frontend/.env.local
 frontend/.env.development.local
