@@ -23,7 +23,7 @@ const Discover = () => {
         const getMusic = async () => {
             setIsLoading(true); // Start loading
             try {
-                const response = await fetch("http://localhost:4000/api/allmusic/");
+                const response = await fetch("http://localhost:4000/api/suositukset/");
                 const data = await response.json();
                 if (!response.ok) {
                     console.log(data.error);
