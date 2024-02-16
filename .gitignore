@@ -19,6 +19,8 @@ frontendfrontend/coverage
 /build
 
 # misc
+**/__pycache__
+backend/recommendations/data
 frontend/.DS_Store
 frontend/.env.local
 frontend/.env.development.local
@@ -28,5 +30,3 @@ frontend/.env.production.local
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
-
-backend
