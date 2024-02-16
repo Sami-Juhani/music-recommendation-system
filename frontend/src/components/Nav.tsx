@@ -4,33 +4,29 @@ import React from "react";
 
 export default function Nav() {
     return (
-        <nav className="navbar">
-            <Link to={PathConstants.HOME}>
-                Home
-            </Link>
-            <ul className="nav-buttons">
-                <li className="nav-button">
-                    <span className="signup">
-                        <Link to={PathConstants.REGISTER} className="signup-text">
+        <nav className="bg-nav-dark p-4"> {/* Adjust background color as needed */}
+            <div className="flex items-center justify-between">
+                <Link to={PathConstants.HOME} className="text-white py-2 px-4 rounded-lg bg-blue-500 mr-2">
+                    Home
+                </Link>
+                <ul className="flex">
+                    <li>
+                        <Link to={PathConstants.REGISTER} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
                             Signup
                         </Link>
-                    </span>
-                </li>
-                <li className="nav-button">
-                    <span className="login">
-                        <Link to={PathConstants.LOGIN} className="login-text">
+                    </li>
+                    <li>
+                        <Link to={PathConstants.LOGIN} className="text-white py-2 px-4 rounded-lg bg-red-500 mr-2">
                             Login
                         </Link>
-                    </span>
-                </li>
-                <li className="nav-button">
-                    <span className="discover">
-                        <Link to={PathConstants.DISCOVER} className="discover-text">
+                    </li>
+                    <li>
+                        <Link to={PathConstants.DISCOVER} className="text-white py-2 px-4 rounded-lg bg-indigo-500">
                             Discover
                         </Link>
-                    </span>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     );
 }

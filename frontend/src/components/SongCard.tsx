@@ -1,13 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-//import PlayPause from "/.PlayPause";
-//import {playPause, setActiveSongs} from "../redux/features/playerSlice";
+import PlayPause from "./PlayPause";
+import { playPause, setActiveSong } from "../redux/features/playerSlice";
+import testAlbum from "../assets/album.webp";
 
-const SongCard = ({song, i}: {song: any, i: any}) => {
+const SongCard = ({ song, i, isPlaying, activeSong, music }: { song: any, i: any, isPlaying: any, activeSong: any, music: any }) => {
+    const handlePauseClick = () => { };
+    const handlePlayClick = () => { };
+
     return (
         <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
-            <h1>SongCard</h1>
+            <div className="relative w-full h-56 group">
+                <div className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${activeSong?.title === song.title ? "flex bg-black bg-opacity-70" : "hidden"}`}>
+                    <PlayPause
+                        song={song}
+                        handlePause={handlePauseClick}
+                        handlePlay={handlePlayClick}
+                        isPlaying={isPlaying}
+                        activeSong={activeSong} />
+                </div>
+                <img src={song.image ? song.image : testAlbum} alt="song_img" className="w-full h-full rounded-lg" />
+            </div>
+            <div className="mt-4 flex flex-col">
+                <p className="font-semibold text-lg text-white truncate">
+                    <Link to={`/songs/${song?.key}`}>
+                        {song.title}
+                    </Link>
+                </p>
+                <p className='text-sm truncate text-gray-300 mt-1'>
+                    <Link to={`/artists/${song?.artist}`}>
+                        {song.artist}
+                    </Link>
+                </p>
+            </div>
         </div>
     );
 }
