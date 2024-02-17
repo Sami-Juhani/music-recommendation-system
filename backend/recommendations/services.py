@@ -5,18 +5,19 @@ from recommendations.utils.feature_engineering import create_feature_set
 from recommendations.utils.playlist_processing import create_necessary_outputs, generate_playlist_feature, generate_playlist_recos
 
 
-def generate_recommendations(user_playlist: dict, user_id: int):
+def generate_recommendations(user_playlist: dict, user_id: int, recently_played: bool = False):
     """
     Generate song recommendations based on a user's playlist
 
     Parameters:
         user_playlist (dict): The user's playlist
         user_id (int): The user's id
+        recently_played (bool): A boolean value that represents if the playlist is the user's recently played playlist
 
     Returns:
         top_40_recommendations (pandas dataframe): The top 40 song recommendations
     """
-    spotify_df = pd.read_csv('./recommendations/data/tracks.csv', skiprows=range(1, 170000), nrows=50000) if os.environ.get(
+    spotify_df = pd.read_csv('./recommendations/data/tracks.csv', skiprows=range(1, 50000), nrows=50000) if os.environ.get(
         'DJANGO_ENV') == 'development' else pd.read_csv('./recommendations/data/tracks.csv', nrows=250000)
 
     data_w_genre = pd.read_csv('./recommendations/data/artists.csv')
@@ -51,17 +52,17 @@ def generate_recommendations(user_playlist: dict, user_id: int):
 
     # Create the necessary outputs
     filtered_playlist_df = create_necessary_outputs(
-        user_playlist, prepared_data)
+        user_playlist, prepared_data, recently_played)
     if 'message' in filtered_playlist_df:
         return filtered_playlist_df
 
     # Generate the playlist feature set and non-playlist feature set
     feature_set_playlist_vector, feature_set_nonplaylist = generate_playlist_feature(
-        feature_set, filtered_playlist_df, 1.09)
+        feature_set, filtered_playlist_df, 1.09, recently_played)
 
     # Generate the top 40 song recommendations
     top_40_recommendations = generate_playlist_recos(
-        prepared_data, feature_set_playlist_vector, feature_set_nonplaylist, user_id)
+        prepared_data, feature_set_playlist_vector, feature_set_nonplaylist, user_id, recently_played)
 
     if top_40_recommendations.empty:
         return {'message': 'No recommendations found'}

@@ -9,5 +9,6 @@ urlpatterns = [
     path('recently-played/', SpotifyRecentlyPlayed.as_view(), name='recently-played'),
     path('playlists/', SpotifyPlaylists.as_view(), name='playlists'),
     path('playlist/<str:playlist_id>/', SpotifyOnePlaylist.as_view(), name='playlist'),
+    path('recently-player/', SpotifyRecentlyPlayed.as_view(), name='recently-played'),
     path('playlists-and-tracks/', SpotifyPlaylistsWithTracks.as_view(), name='playlists-and-tracks'),
 ]
