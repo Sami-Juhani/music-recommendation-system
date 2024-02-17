@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
+from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
 
 
@@ -41,8 +42,11 @@ class RegisterUser(APIView):
         
         if not first_name or not last_name:
             return Response({"message": "First name and last name are required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        user: User = User.objects.create_user(username=email, password=password, first_name=first_name, last_name=last_name)
+        
+        try:
+            user: User = User.objects.create_user(username=email, password=password, first_name=first_name, last_name=last_name)
+        except IntegrityError:
+            return Response({"message": f"User already exists with email: {email}"}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user:
             return Response({"message": "User not created"}, status=status.HTTP_400_BAD_REQUEST)

@@ -4,6 +4,8 @@ import sys
 def setup_virtual_environment():
     # Determine the platform
     is_windows = sys.platform.startswith('win')
+    is_linux = sys.platform.startswith('linux')
+    is_mac = sys.platform.startswith('darwin')
 
     # Create a virtual environment in the backend folder
     subprocess.run([sys.executable, "-m", "venv", "venv"])

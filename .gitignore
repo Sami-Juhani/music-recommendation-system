@@ -21,6 +21,8 @@ frontendfrontend/coverage
 # misc
 **/.DS_Store
 **/__pycache__
+backend/recommendations/data
+backend/.mypy_cache
 frontend/.DS_Store
 frontend/.env.local
 frontend/.env.development.local
