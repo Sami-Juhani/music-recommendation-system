@@ -246,3 +246,24 @@ class SpotifyPlaylistsWithTracks(APIView):
             return Response(playlists_with_tracks, status=status.HTTP_404_NOT_FOUND)
 
         return Response(playlists_with_tracks, status=status.HTTP_200_OK)
+    
+class SpotifyRecentlyPlayed(APIView):
+    """
+    Get user's recently played songs
+
+    Returns:
+    Response: The response object with the recently played songs
+    """
+    @swagger_auto_schema(operation_description=" Get user's recently played songs", responses={200: TrackSerializer(many=True)})
+    def get(self, request):
+        user_id: int = request.session.get('user_id')
+        endpoint: str = "me/player/recently-played?limit=50"
+
+        recently_played: dict = execute_spotify_api_request(user_id, endpoint)
+
+        if 'message' in recently_played or not recently_played:
+            return Response(recently_played, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(recently_played, status=status.HTTP_200_OK)
+
+    
