@@ -12,7 +12,7 @@ def setup_virtual_environment():
 
         # Activate the virtual environment and install the requirements in the same shell
     activate_script = "venv\\Scripts\\activate" if is_windows else ". venv/bin/activate"
-    pip_command = "pip" if is_windows else "pip3"
+    pip_command = "pip3" if is_windows else "pip"
     command = f"{activate_script} && {pip_command} install -r requirements.txt"
     subprocess.run(command, shell=True, text=True)
 

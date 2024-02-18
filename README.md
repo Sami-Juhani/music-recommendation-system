@@ -106,6 +106,9 @@
   ```
 
 ### Frontend  
+- Install react-router-dom
+  ```bash
+  npm install react-router-dom
 
 - Run the commands in your frontend directory:  
 
