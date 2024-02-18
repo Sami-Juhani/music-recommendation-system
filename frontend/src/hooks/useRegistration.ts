@@ -4,16 +4,16 @@ const BASE_URL = 'http://127.0.0.1:8000';
 
 interface RegistrationFormState {
   email: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   password: string;
 }
 
 const useRegistration = () => {
   const [formData, setFormData] = useState<RegistrationFormState>({
     email: '',
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     password: '',
   });
 

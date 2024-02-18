@@ -9,14 +9,13 @@ interface LoginFormProps {
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onLoginSuccess: () => void; // Add this line
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ formData, handleChange, handleSubmit, onLoginSuccess }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ formData, handleChange, handleSubmit }) => {
   return (
     <div className="login-form-container">
       <h2>Login</h2>
-      <form className="login-form" onSubmit={(e) => { handleSubmit(e); onLoginSuccess(); }}>
+      <form className="login-form" onSubmit={handleSubmit}>
         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
         <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
         <button type="submit">Login</button>
