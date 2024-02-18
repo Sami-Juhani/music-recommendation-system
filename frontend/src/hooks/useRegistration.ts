@@ -1,5 +1,8 @@
 ﻿// useRegistration.ts
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PathConstants from "../routes/PathConstants";
+
 const BASE_URL = 'http://127.0.0.1:8000';
 
 interface RegistrationFormState {
@@ -10,6 +13,8 @@ interface RegistrationFormState {
 }
 
 const useRegistration = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<RegistrationFormState>({
     email: '',
     first_name: '',
@@ -32,9 +37,17 @@ const useRegistration = () => {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
-      // Handle response data
-      console.log(data);
+      
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        navigate(PathConstants.LOGIN);
+      } else {
+        // Handle registration error
+        console.error('Registration failed:', data.message);
+      }
+      
     } catch (error) {
       // Handle error
       console.error('Error:', error);
