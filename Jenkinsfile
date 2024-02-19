@@ -24,7 +24,11 @@ pipeline {
         stage('Run tests') {
             steps {
                 // Run Django tests
-                sh '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend/python3 manage.py test'
+
+                sh '''
+                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                python3 manage.py test
+                '''
             }
         }
     }
