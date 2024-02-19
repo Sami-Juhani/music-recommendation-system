@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        SPOTIFY_CLIENT_ID = credentials('SPOTIFY_CLIENT_ID')
+        SPOTIFY_CLIENT_SECRET = credentials('SPOTIFY_CLIENT_SECRET')
+        DB_HOST = credentials('DB_HOST')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+        DJANGO_ENV = credentials('DJANGO_ENV')
+    }
+
     stages {
         stage('Checkout') {
             steps {
