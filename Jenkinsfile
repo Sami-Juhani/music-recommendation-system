@@ -12,7 +12,7 @@ pipeline {
         stage('Setup environment') {
             steps {
                 // Setup a Python virtual envirnment and install dependencies
-                sh '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend'
+                sh 'cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend'
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
                 sh 'pip3 install -r requirements.txt'
