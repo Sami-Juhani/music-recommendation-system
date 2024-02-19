@@ -12,7 +12,8 @@ pipeline {
         stage('Setup environment') {
             steps {
                 // Setup a Python virtual envirnment and install dependencies
-                sh 'cd music-recommendation-system/backend'
+                sh 'cd music-recommendation-system'
+                sh 'cd backend'
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
                 sh 'pip3 install -r requirements.txt'
