@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'spotify.apps.SpotifyConfig',
     'user_management.apps.UserManagementConfig',
     'recommendations.apps.RecommendationsConfig',
+    'song_ratings.apps.SongRatingsConfig',
     'drf_yasg',
     'corsheaders',
 ]
