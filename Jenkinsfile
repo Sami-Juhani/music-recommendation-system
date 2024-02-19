@@ -11,13 +11,15 @@ pipeline {
 
         stage('Setup environment') {
             steps {
-                // Setup a Python virtual envirnment and install dependencies
-                sh 'cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend'
-                sh 'python3 -m venv venv'
-                sh '. venv/bin/activate'
-                sh 'pip3 install -r requirements.txt'
-            }
-        }
+                // Setup a Python virtual environment and install dependencies
+                sh '''
+                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                python3 -m venv venv
+                . venv/bin/activate
+                pip3 install -r requirements.txt
+                '''
+             }
+        }           
 
         stage('Run tests') {
             steps {
