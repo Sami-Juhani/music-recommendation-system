@@ -38,7 +38,7 @@ pipeline {
                     sh '''
                     cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
                     . venv/bin/activate
-                    coverage run manage.py test
+                    yes | coverage run manage.py test
                     '''
                 }
             }
@@ -51,6 +51,7 @@ pipeline {
             script {
                 sh '''
                 cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                . venv/bin/activate
                 coverage html
                 '''
             }
