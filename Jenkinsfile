@@ -27,6 +27,7 @@ pipeline {
 
                 sh '''
                 cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                . venv/bin/activate
                 python3 manage.py test
                 '''
             }
