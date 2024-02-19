@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the repository
-                git 'git@github.com:Sami-Juhani/music-recommendation-system.git'
+                git branch: 'main', git credentialsId: 'samipaan', url: 'git@github.com:Sami-Juhani/music-recommendation-system.git'
             }
         }
 
