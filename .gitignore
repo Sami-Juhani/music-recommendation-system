@@ -13,7 +13,9 @@ frontend/.pnp.js
 backend/venv
 
 # testing
-frontendfrontend/coverage
+frontend/coverage
+backend/.coverage
+backend/htmlcov
 
 # production
 /build

@@ -20,32 +20,50 @@ pipeline {
         stage('Setup environment') {
             steps {
                 // Setup a Python virtual environment and install dependencies
-                sh '''
-                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
-                python3 -m venv venv
-                . venv/bin/activate
-                pip3 install -r requirements.txt
-                '''
+                script {
+                    sh '''
+                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip3 install -r requirements.txt
+                    '''
+                }
              }
         }           
 
         stage('Run tests') {
             steps {
-                // Run Django tests
-
-                sh '''
-                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
-                . venv/bin/activate
-                python3 manage.py test
-                '''
+                // Run Django tests with coverage
+                script {
+                    sh '''
+                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    . venv/bin/activate
+                    coverage run manage.py test
+                    '''
+                }
             }
         }
     }
 
     post {
         always {
-            // Always run this block after the pipeline, even if the pipeline fails
-            junit '**/test-results.xml'  // Publish the test results
+            // Generate HTML coverage report
+            script {
+                sh '''
+                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                coverage html
+                '''
+            }
+
+            // Publish HTML coverage report
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend/htmlcov',
+                reportFiles: 'index.html',
+                reportName: 'Coverage Report'
+            ])
         }
     }
 }
