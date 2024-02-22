@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import PathConstants from "../routes/PathConstants";
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -17,6 +17,8 @@ const useLogin = (onLoginSuccess: () => void) => {
     password: '',
   });
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -33,16 +35,29 @@ const useLogin = (onLoginSuccess: () => void) => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-  
-      if (response.ok ) { // Check if access_token exists in data (&& data.access_token)
-        console.log('Received access token:', data.access_token);
-        localStorage.setItem('accessToken', data.access_token);
+
+      if (response.ok) {
+        // Login successful
         onLoginSuccess();
         console.log('Login successful:', data);
 
-        // Redirect to home page
-        navigate(PathConstants.HOME);
+        // Check if the user is authenticated after successful login
+        const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`);
+        const isAuthenticatedData = await isAuthenticatedResponse.json();
 
+        console.log('Is authenticated response:', isAuthenticatedResponse);
+        console.log('Is authenticated:', isAuthenticatedData);
+
+        if (isAuthenticatedResponse.ok) {
+          setIsAuthenticated(isAuthenticatedData.status); 
+          if (isAuthenticatedData.status) {
+            // User is authenticated, redirect to home page
+            navigate(PathConstants.HOME);
+          } else {
+            // User is not authenticated, redirect to Spotify authentication
+            redirect(`${BASE_URL}/api/spotify/auth/`);
+          }
+        }
       } else {
         // Handle login error or missing access token
         console.error('Login failed:', data.message || 'Access token missing');
@@ -51,9 +66,9 @@ const useLogin = (onLoginSuccess: () => void) => {
       // Handle network error
       console.error('Error:', error);
     }
-  };  
+  };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, isAuthenticated };
 };
 
 export default useLogin;
