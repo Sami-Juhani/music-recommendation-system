@@ -14,11 +14,17 @@ export default function Nav() {
                     Home
                 </Link>
                 <ul className="flex">
-                    <li>
+                <li>
+                    {user ? (
+                        <Link to={PathConstants.PROFILE_UPDATE} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
+                            Profile Update
+                        </Link>
+                    ) : (
                         <Link to={PathConstants.REGISTER} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
                             Signup
                         </Link>
-                    </li>
+                    )}
+                </li>
                     <li>
                         {user ? (
                             <Link to={PathConstants.LOGOUT} className="text-white py-2 px-4 rounded-lg bg-red-500 mr-2">
