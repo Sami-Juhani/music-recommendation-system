@@ -1,7 +1,6 @@
 import React from "react";
 import PathConstants from "./PathConstants";
 
-
 const Home = React.lazy(() => import("../pages/Home"));
 const LoginForm = React.lazy(() => import("../pages/LoginForm"));
 const RegistrationForm = React.lazy(() => import("../pages/RegistrationForm"));
