@@ -36,6 +36,8 @@ ALLOWED_HOSTS = [
     'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com',
 ]
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1",]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,24 +51,29 @@ INSTALLED_APPS = [
     'spotify.apps.SpotifyConfig',
     'user_management.apps.UserManagementConfig',
     'recommendations.apps.RecommendationsConfig',
+    'song_ratings.apps.SongRatingsConfig',
     'drf_yasg',
     'corsheaders',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    "http://127.0.0.1:3000",
+    'http://127.0.0.1:8000',
 ]
+
+
 CORS_ALLOW_CREDENTIALS = True
 
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Ensure CorsMiddleware is before other middleware
-    #'django.middleware.csrf.CsrfViewMiddleware', // Commented out to allow testing with Postman
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware', // Commented out to allow testing with Postman
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

@@ -4,12 +4,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import '../styles/RegistrationForm.css';
+import useRegistration from "../hooks/useRegistration";
 
-interface RegistrationFormProps {
-  useRegistration: () => { formData: any; handleChange: any; handleSubmit: any };
-}
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({ useRegistration }) => {
+const RegistrationForm = () => {
   const { formData, handleChange, handleSubmit } = useRegistration();
 
   return (

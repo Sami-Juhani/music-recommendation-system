@@ -39,7 +39,7 @@ const useLogin = () => {
 
       if (response.ok) {
         // Login successful
-        //console.log('Login successful:', data);
+        console.log('Login successful:', data);
 
         // Check if the user is authenticated after successful login
         const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`, {
@@ -47,8 +47,8 @@ const useLogin = () => {
         });
         const isAuthenticatedData = await isAuthenticatedResponse.json();
 
-        //console.log('Is authenticated response:', isAuthenticatedResponse);
-        //console.log('Is authenticated:', isAuthenticatedData);
+        console.log('Is authenticated response:', isAuthenticatedResponse);
+        console.log('Is authenticated:', isAuthenticatedData);
 
         if (isAuthenticatedResponse.ok) {
           setIsAuthenticated(isAuthenticatedData.status);
@@ -57,7 +57,7 @@ const useLogin = () => {
             navigate(PathConstants.HOME);
           } else {
             // User is not authenticated, redirect to Spotify authentication
-            window.location.href = `${BASE_URL}/api/spotify/auth/`; // Redirect using window.location.href
+            window.location.href = `${BASE_URL}/api/spotify/auth/`;
           }
         }
       } else {

@@ -16,7 +16,7 @@ class UserLoginTest(TestCase):
             f'{BASE_URL}/api/user/login', {'email': 'testuser', 'password': 'testpassword'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {"user": {
-                         "id": self.user.id, "first_name": self.user.first_name, "last_name": self.user.last_name}})
+                         "id": self.user.id, "firstName": self.user.first_name, "lastName": self.user.last_name}})
 
     def test_login_failure(self):
         response = self.client.post(

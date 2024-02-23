@@ -4,13 +4,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import '../styles/LoginForm.css';
+import useLogin from "../hooks/useLogin";
 
-interface LoginFormProps {
-  useLogin: (onLoginSuccess: () => void) => { formData: any; handleChange: any; handleSubmit: any };
-}
 
-const LoginForm: React.FC<LoginFormProps> = ({ useLogin }) => {
-  const { formData, handleChange, handleSubmit } = useLogin(() => {});
+
+const LoginForm = () => {
+  const { formData, handleChange, handleSubmit } = useLogin();
 
   return (
     <div className="login-form-container">
