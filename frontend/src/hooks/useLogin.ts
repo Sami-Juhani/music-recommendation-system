@@ -33,17 +33,16 @@ const useLogin = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include', // Include browser cookies
+        credentials: 'include', 
       });
       const data = await response.json();
 
       if (response.ok) {
-        // Login successful
+        
         console.log('Login successful:', data);
 
-        // Check if the user is authenticated after successful login
         const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`, {
-          credentials: 'include', // Include browser cookies
+          credentials: 'include', 
         });
         const isAuthenticatedData = await isAuthenticatedResponse.json();
 
@@ -53,19 +52,19 @@ const useLogin = () => {
         if (isAuthenticatedResponse.ok) {
           setIsAuthenticated(isAuthenticatedData.status);
           if (isAuthenticatedData.status) {
-            // User is authenticated, redirect to home page
+   
             navigate(PathConstants.HOME);
           } else {
-            // User is not authenticated, redirect to Spotify authentication
+            
             window.location.href = `${BASE_URL}/api/spotify/auth/`;
           }
         }
       } else {
-        // Handle login error or missing access token
+        
         console.error('Login failed:', data.message);
       }
     } catch (error) {
-      // Handle network error
+      
       console.error('Error:', error);
     }
   };
