@@ -1,23 +1,26 @@
-﻿import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+﻿import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext, userProps } from "../components/Layout"
 import PathConstants from "../routes/PathConstants";
 
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = "http://127.0.0.1:8000";
+const IS_AUTHENTICATED_URL = "http://127.0.0.1:8000/api/spotify/is-authenticated/"
+const AUTH_URL = "http://127.0.0.1:8000/api/spotify/auth/"
 
 interface LoginFormState {
   email: string;
   password: string;
 }
 
-const useLogin = () => {
-  const navigate = useNavigate();
-
+export const useLogin = () => {
   const [formData, setFormData] = useState<LoginFormState>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  const { setUser } : userProps = useContext<userProps>(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,36 +31,40 @@ const useLogin = () => {
     e.preventDefault();
     try {
       const response = await fetch(`${BASE_URL}/api/user/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        credentials: 'include', 
-      });
+        credentials: 'include'
+      }); 
+      
+      if (response.status !== 200) return 
+      
       const data = await response.json();
 
+      setUser(data.user)
+      
       if (response.ok) {
-        
-        console.log('Login successful:', data);
-
-        const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`, {
-          credentials: 'include', 
-        });
-        const isAuthenticatedData = await isAuthenticatedResponse.json();
-
-        console.log('Is authenticated response:', isAuthenticatedResponse);
-        console.log('Is authenticated:', isAuthenticatedData);
-
-        if (isAuthenticatedResponse.ok) {
-          setIsAuthenticated(isAuthenticatedData.status);
-          if (isAuthenticatedData.status) {
-   
-            navigate(PathConstants.HOME);
+        // Check if access_token exists in data (&& data.access_token)
+        try {
+          const response = await fetch(
+            IS_AUTHENTICATED_URL, {
+              credentials: 'include'
+            });
+          if (response.status === 200) {
+            const isAuthenticated = await response.json();
+            console.log(isAuthenticated.status)
+            if (!isAuthenticated.status)
+              window.location.href = AUTH_URL;
           } else {
-            
-            window.location.href = `${BASE_URL}/api/spotify/auth/`;
+            const error = await response.json();
+            console.log(error)
           }
+        } catch (e: any) {
+          console.log(e.message);
+        } finally {
+          navigate(PathConstants.HOME);
         }
       } else {
         
@@ -69,7 +76,7 @@ const useLogin = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit, isAuthenticated };
+  return { formData, handleChange, handleSubmit };
 };
 
 export default useLogin;
