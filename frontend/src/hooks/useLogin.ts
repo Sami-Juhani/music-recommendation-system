@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PathConstants from "../routes/PathConstants";
 
 const BASE_URL = 'http://127.0.0.1:8000';
@@ -9,7 +9,7 @@ interface LoginFormState {
   password: string;
 }
 
-const useLogin = (onLoginSuccess: () => void) => {
+const useLogin = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<LoginFormState>({
@@ -33,34 +33,36 @@ const useLogin = (onLoginSuccess: () => void) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', // Include browser cookies
       });
       const data = await response.json();
 
       if (response.ok) {
         // Login successful
-        onLoginSuccess();
-        console.log('Login successful:', data);
+        //console.log('Login successful:', data);
 
         // Check if the user is authenticated after successful login
-        const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`);
+        const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`, {
+          credentials: 'include', // Include browser cookies
+        });
         const isAuthenticatedData = await isAuthenticatedResponse.json();
 
-        console.log('Is authenticated response:', isAuthenticatedResponse);
-        console.log('Is authenticated:', isAuthenticatedData);
+        //console.log('Is authenticated response:', isAuthenticatedResponse);
+        //console.log('Is authenticated:', isAuthenticatedData);
 
         if (isAuthenticatedResponse.ok) {
-          setIsAuthenticated(isAuthenticatedData.status); 
+          setIsAuthenticated(isAuthenticatedData.status);
           if (isAuthenticatedData.status) {
             // User is authenticated, redirect to home page
             navigate(PathConstants.HOME);
           } else {
             // User is not authenticated, redirect to Spotify authentication
-            redirect(`${BASE_URL}/api/spotify/auth/`);
+            window.location.href = `${BASE_URL}/api/spotify/auth/`; // Redirect using window.location.href
           }
         }
       } else {
         // Handle login error or missing access token
-        console.error('Login failed:', data.message || 'Access token missing');
+        console.error('Login failed:', data.message);
       }
     } catch (error) {
       // Handle network error
