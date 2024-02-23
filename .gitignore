@@ -23,7 +23,6 @@ backend/htmlcov
 # misc
 **/.DS_Store
 **/__pycache__
-**/migrations
 backend/recommendations/data
 backend/.mypy_cache
 frontend/.DS_Store
