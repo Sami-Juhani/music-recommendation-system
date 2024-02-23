@@ -1,0 +1,18 @@
+﻿/* Home.css */
+.horizontal-scroll-feed {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+  }
+  
+  .horizontal-scroll-feed::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .horizontal-scroll-feed::-webkit-scrollbar-thumb {
+    background-color: rgba(155, 155, 155, 0.7);
+    border-radius: 4px;
+  }

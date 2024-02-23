@@ -1,6 +1,7 @@
 // HorizontalScrollFeed.tsx
 import React from 'react';
 import Card from '../components/Card';
+import '../styles/Home.css';
 
 const HorizontalScrollFeed: React.FC = () => {
   // Example data for 10 cards
