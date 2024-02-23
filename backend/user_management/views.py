@@ -25,7 +25,7 @@ class UserLogin(APIView):
         
         request.session['user_id'] = user.id
 
-        return Response({"user": {"id": user.id, "first_name": user.first_name, "last_name": user.last_name}})
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}})
     
 
 class RegisterUser(APIView):

@@ -6,8 +6,8 @@ class UserLoginRequestSerializer(serializers.Serializer):
 
 class UserLoginResponseSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
+    firstName = serializers.CharField()
+    lastName = serializers.CharField()
 
 class RegisterUserRequestSerializer(serializers.Serializer):
     email = serializers.CharField()
