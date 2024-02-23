@@ -1,23 +1,26 @@
-﻿import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+﻿import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext, userProps } from "../components/Layout"
 import PathConstants from "../routes/PathConstants";
 
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = "http://127.0.0.1:8000";
+const IS_AUTHENTICATED_URL = "http://127.0.0.1:8000/api/spotify/is-authenticated/"
+const AUTH_URL = "http://127.0.0.1:8000/api/spotify/auth/"
 
 interface LoginFormState {
   email: string;
   password: string;
 }
 
-const useLogin = () => {
-  const navigate = useNavigate();
-
+export const useLogin = () => {
   const [formData, setFormData] = useState<LoginFormState>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  const { setUser } : userProps = useContext<userProps>(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,49 +31,52 @@ const useLogin = () => {
     e.preventDefault();
     try {
       const response = await fetch(`${BASE_URL}/api/user/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        credentials: 'include', // Include browser cookies
-      });
+        credentials: 'include'
+      }); 
+      
+      if (response.status !== 200) return 
+      
       const data = await response.json();
 
+      setUser(data.user)
+      
       if (response.ok) {
-        // Login successful
-        console.log('Login successful:', data);
-
-        // Check if the user is authenticated after successful login
-        const isAuthenticatedResponse = await fetch(`${BASE_URL}/api/spotify/is-authenticated/`, {
-          credentials: 'include', // Include browser cookies
-        });
-        const isAuthenticatedData = await isAuthenticatedResponse.json();
-
-        console.log('Is authenticated response:', isAuthenticatedResponse);
-        console.log('Is authenticated:', isAuthenticatedData);
-
-        if (isAuthenticatedResponse.ok) {
-          setIsAuthenticated(isAuthenticatedData.status);
-          if (isAuthenticatedData.status) {
-            // User is authenticated, redirect to home page
-            navigate(PathConstants.HOME);
+        // Check if access_token exists in data (&& data.access_token)
+        try {
+          const response = await fetch(
+            IS_AUTHENTICATED_URL, {
+              credentials: 'include'
+            });
+          if (response.status === 200) {
+            const isAuthenticated = await response.json();
+            console.log(isAuthenticated.status)
+            if (!isAuthenticated.status)
+              window.location.href = AUTH_URL;
           } else {
-            // User is not authenticated, redirect to Spotify authentication
-            window.location.href = `${BASE_URL}/api/spotify/auth/`;
+            const error = await response.json();
+            console.log(error)
           }
+        } catch (e: any) {
+          console.log(e.message);
+        } finally {
+          navigate(PathConstants.HOME);
         }
       } else {
         // Handle login error or missing access token
-        console.error('Login failed:', data.message);
+        console.error("Login failed:", data.message || "Access token missing");
       }
     } catch (error) {
       // Handle network error
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
-  return { formData, handleChange, handleSubmit, isAuthenticated };
+  return { formData, handleChange, handleSubmit };
 };
 
 export default useLogin;
