@@ -15,6 +15,7 @@ export default function Nav() {
           headers: {
             'Content-Type': 'application/json',
           },
+            credentials: 'include',
         })
           .then(() => {
             setUser(undefined);
