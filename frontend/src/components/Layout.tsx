@@ -8,7 +8,7 @@ import React from "react"
 
 export type userProps = {
     user?: object,
-    setUser: React.Dispatch<React.SetStateAction<object>>
+    setUser: React.Dispatch<React.SetStateAction<object | undefined>>
 }
 
 export const UserContext = createContext<userProps>({

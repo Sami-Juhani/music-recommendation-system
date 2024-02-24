@@ -67,12 +67,12 @@ export const useLogin = () => {
           navigate(PathConstants.HOME);
         }
       } else {
-        // Handle login error or missing access token
-        console.error("Login failed:", data.message || "Access token missing");
+        
+        console.error('Login failed:', data.message);
       }
     } catch (error) {
-      // Handle network error
-      console.error("Error:", error);
+      
+      console.error('Error:', error);
     }
   };
 

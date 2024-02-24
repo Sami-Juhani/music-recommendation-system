@@ -44,12 +44,12 @@ const useRegistration = () => {
         console.log('Registration successful:', data);
         navigate(PathConstants.LOGIN);
       } else {
-        // Handle registration error
+        
         console.error('Registration failed:', data.message);
       }
       
     } catch (error) {
-      // Handle error
+      
       console.error('Error:', error);
     }
   };
