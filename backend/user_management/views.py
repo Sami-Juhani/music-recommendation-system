@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
+from django.http import HttpResponse   
 
 
 class UserLogin(APIView):
@@ -20,7 +21,6 @@ class UserLogin(APIView):
         user: User = authenticate(username=email, password=password)
 
         if not user:
-            # A backend authenticated the credentials
             return Response({"message": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
         
         request.session['user_id'] = user.id
@@ -52,7 +52,21 @@ class RegisterUser(APIView):
             return Response({"message": "User not created"}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
-    
+
+
+class GetUser(APIView):
+    def get(self, request):
+        user_id: int = request.session.get('user_id')
+
+        if not user_id:
+            return Response({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(id = user_id)
+        except User.DoesNotExist:
+            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
 
 class UpdateUser(APIView):
     @swagger_auto_schema(request_body=RegisterUserRequestSerializer, responses={201: RegisterUserResponseSerializer})
@@ -95,8 +109,8 @@ class LogoutUser(APIView):
     @swagger_auto_schema(responses={200: "Logged out"})
     def post(self, request):
         request.session.flush()
-        return Response({"message": "Logged out"}, status=status.HTTP_200_OK)
 
+        return Response({"message": "Logged out"}, status=status.HTTP_200_OK)
 
 class DeleteUser(APIView):
     """
