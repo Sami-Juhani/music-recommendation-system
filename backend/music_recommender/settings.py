@@ -56,6 +56,9 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+SESSION_COOKIE_SAMESITE = 'None' if os.environ.get('DJANGO_ENV') == 'development' else 'Lax'
+SESSION_COOKIE_SECURE = True
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
@@ -63,7 +66,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
 
 MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
