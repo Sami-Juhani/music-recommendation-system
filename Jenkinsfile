@@ -21,12 +21,21 @@ pipeline {
             steps {
                 // Setup a Python virtual environment and install dependencies
                 script {
-                    sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip3 install -r requirements.txt
-                    '''
+                    if (isUnix()) {
+                        sh '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip3 install -r requirements.txt
+                        '''
+                    } else {
+                        bat '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip3 install -r requirements.txt
+                        '''
+                    }
                 }
              }
         }           
@@ -35,11 +44,19 @@ pipeline {
             steps {
                 // Run Django tests with coverage
                 script {
-                    sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
-                    . venv/bin/activate
-                    yes | coverage run manage.py test
-                    '''
+                    if (isUnix()) {
+                        sh '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        . venv/bin/activate
+                        yes | coverage run manage.py test
+                        '''
+                    } else {
+                        bat '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        . venv/bin/activate
+                        yes | coverage run manage.py test
+                        '''
+                    }
                 }
             }
         }
@@ -49,11 +66,19 @@ pipeline {
         always {
             // Generate HTML coverage report
             script {
-                sh '''
-                cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
-                . venv/bin/activate
-                coverage html
-                '''
+                if (isUnix()) {
+                    sh '''
+                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    . venv/bin/activate
+                    coverage html
+                    '''
+                } else {
+                    bat '''
+                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    . venv/bin/activate
+                    coverage html
+                    '''
+                }
             }
 
             // Publish HTML coverage report

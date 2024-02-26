@@ -7,4 +7,5 @@ urlpatterns = [
     path('update', UpdateUser.as_view(), name='update'),
     path('logout', LogoutUser.as_view(), name='logout'),
     path('delete', DeleteUser.as_view(), name='delete'),
+    path('get', GetUser.as_view(), name='get'),
 ]

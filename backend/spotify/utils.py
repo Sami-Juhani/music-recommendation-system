@@ -7,7 +7,7 @@ from django.utils import timezone # type: ignore
 from datetime import timedelta
 from django.contrib.auth.models import User # type: ignore
 from spotify.models import SpotifyToken
-from django.http import HttpResponse # type: ignore
+from django.http import HttpResponse, JsonResponse # type: ignore
 from requests import post, put, get
 
 dotenv.load_dotenv()
@@ -29,16 +29,15 @@ def update_or_create_user_tokens(user : User, access_token, token_type, expires_
     refresh_token (str): The refresh token to update
 
     Returns:
-    None
+    The spotify token objecct
     """
     try:
         spotify_token = SpotifyToken.objects.get(user=user)
     except SpotifyToken.DoesNotExist:
         spotify_token = None
     
-    expires_in = timezone.now() + timedelta(seconds=expires_in)
-
     if spotify_token:
+        expires_in = timezone.now() + timedelta(seconds=expires_in)
         spotify_token.access_token = access_token
         spotify_token.refresh_token = refresh_token
         spotify_token.expires_in = expires_in
@@ -81,9 +80,12 @@ def refresh_spotify_token(user: User, refresh_token: str) -> str:
         response = requests.post(
             'https://accounts.spotify.com/api/token', headers=headers, data=data)
     except requests.exceptions.RequestException as e:
-        HttpResponse('Failed to refresh token', status=401)
-    
+        return HttpResponse('Failed to refresh token', status=401)
+
     data = response.json()
+    
+    if 'error' in data or not data:
+        return JsonResponse({'message' : 'Failed to refresh token'}, status=401)
 
     access_token = data.get('access_token')
     token_type = data.get('token_type')

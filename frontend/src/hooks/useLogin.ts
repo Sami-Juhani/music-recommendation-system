@@ -54,7 +54,6 @@ export const useLogin = () => {
             });
           if (response.status === 200) {
             const isAuthenticated = await response.json();
-            console.log(isAuthenticated.status)
             if (!isAuthenticated.status)
               window.location.href = AUTH_URL;
           } else {
