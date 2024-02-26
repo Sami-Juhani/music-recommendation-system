@@ -1,26 +1,53 @@
 ﻿.profile_update_form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    margin: 0 auto;
-  }
-  
-  .profile_update_form input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .profile_update_form button {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .profile_update_form button:hover {
-    background-color: #45a049;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.profile_update_form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.update_profile {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.update_profile:hover {
+  background-color: #45a049;
+}
+
+.cancel {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #909690;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.cancel:hover {
+  background-color: #747b74;
+}
+
+.delete {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ba3b3b;
+  color: white;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background-color: #c61310;
+}
