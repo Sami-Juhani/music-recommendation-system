@@ -46,7 +46,6 @@ export const useLogin = () => {
       setUser(data.user)
       
       if (response.ok) {
-        // Check if access_token exists in data (&& data.access_token)
         try {
           const response = await fetch(
             IS_AUTHENTICATED_URL, {
