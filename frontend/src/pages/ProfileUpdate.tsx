@@ -1,7 +1,8 @@
 ﻿// ProfileUpdate.tsx
 import React, { useContext, useState } from 'react';
-import { UserContext, userProps } from "../components/Layout";
+import { UserContext } from '../context/UserContextProvider';
 import { useNavigate } from 'react-router-dom';
+import { UserContextType } from '../types/UserContextType';
 import PathConstants from "../routes/PathConstants";
 import '../styles/ProfileUpdate.css';
 
@@ -16,7 +17,7 @@ interface ProfileUpdateFormState {
 
 const ProfileUpdate = () => {
   const navigate = useNavigate();
-  const { user, setUser } : userProps = useContext(UserContext);
+  const { user, setUser } : UserContextType = useContext(UserContext);
 
   const [formData, setFormData] = useState<ProfileUpdateFormState>({
     email:'',
