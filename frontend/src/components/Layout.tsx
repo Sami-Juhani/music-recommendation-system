@@ -25,7 +25,7 @@ export default function Layout() {
 
     return (
         <UserContext.Provider value={{user, setUser}}>
-        <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#c51bce]">
+        <div className="flex-1 flex flex-col bg-gradient-to-br from-black">
             <main>
                 <Suspense fallback={<Loader title={"Loading..."}/>}>
                     <Outlet />
