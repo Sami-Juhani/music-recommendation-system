@@ -74,10 +74,6 @@ const Home: React.FC = () => {
                 <FontAwesomeIcon icon={faUser} />
                 <p>Karjalainen</p>
             </div>
-            <div className="sticky-nav-optons">
-                <button className="badge nav-item hide">Log in</button>
-                <button className="badge nav-item dark-badge">Sign up</button>
-            </div>
         </div>
         
       <PlayListContainer
