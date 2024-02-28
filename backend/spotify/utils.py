@@ -35,9 +35,10 @@ def update_or_create_user_tokens(user : User, access_token, token_type, expires_
         spotify_token = SpotifyToken.objects.get(user=user)
     except SpotifyToken.DoesNotExist:
         spotify_token = None
+
+    expires_in = timezone.now() + timedelta(seconds=expires_in)
     
     if spotify_token:
-        expires_in = timezone.now() + timedelta(seconds=expires_in)
         spotify_token.access_token = access_token
         spotify_token.refresh_token = refresh_token
         spotify_token.expires_in = expires_in

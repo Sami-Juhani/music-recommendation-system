@@ -1,6 +1,7 @@
 ﻿import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext, userProps } from "../components/Layout"
+import { UserContext } from "../context/UserContextProvider";
+import { UserContextType } from "../types/UserContextType";
 import PathConstants from "../routes/PathConstants";
 
 const BASE_URL = "http://127.0.0.1:8000";
@@ -20,7 +21,7 @@ export const useLogin = () => {
 
   const navigate = useNavigate();
 
-  const { setUser } : userProps = useContext<userProps>(UserContext);
+  const { setUser } : UserContextType = useContext<UserContextType>(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
