@@ -15,6 +15,7 @@ export default function Nav() {
           headers: {
             'Content-Type': 'application/json',
           },
+            credentials: 'include',
         })
           .then(() => {
             setUser(undefined);
@@ -34,7 +35,7 @@ export default function Nav() {
                 <li>
                     {user ? (
                         <Link to={PathConstants.PROFILE_UPDATE} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
-                            Profile Update
+                            Edit Profile
                         </Link>
                     ) : (
                         <Link to={PathConstants.REGISTER} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
