@@ -90,6 +90,7 @@
 
 - To create a new migration after model changes:
 
+  
   ```bash
   python manage.py makemigrations
   ``` 
