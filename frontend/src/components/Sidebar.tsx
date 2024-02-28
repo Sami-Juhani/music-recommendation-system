@@ -1,12 +1,53 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faUser} from '@fortawesome/free-solid-svg-icons';
+import testAlbum from "../assets/album.webp";
 
+
+interface Playlist {
+  collaborative: boolean;
+  description: string;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  id: string;
+  images: Array<{
+    height: null | number;
+    url: string;
+    width: null | number;
+  }>;
+  name: string;
+  owner: {
+    display_name: string;
+    external_urls: {
+      spotify: string;
+    };
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+  };
+  primary_color: null | string;
+  public: boolean;
+  snapshot_id: string;
+  tracks: {
+    href: string;
+    total: number;
+  };
+  type: string;
+  uri: string;
+}
+
+interface PlaylistsResponse {
+  href: string;
+  items: Playlist[];
+}
 
 interface SidebarProps {
-    playLists: any[];
-    selectedPlaylistIndex: number | null;
-    handlePlaylistClick: (index: number) => void;
+  playLists: PlaylistsResponse; // Updated to use the new structure
+  selectedPlaylistIndex: number | null;
+  handlePlaylistClick: (index: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, handlePlaylistClick }) => {
@@ -29,14 +70,14 @@ const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, han
             <div className="lib-box">
             <div className="box">
                 {playLists ? (
-                playLists.map((playlist: any, index: number) => (
+                playLists.items.map((playlist: any, index: number) => (
                     <div
-                        key={index}
-                        className={`preview-playlist ${selectedPlaylistIndex === index ? 'preview-playlist-pushed' : ''}`}
-                        data-index={index}
-                        onClick={() => handlePlaylistClick(index)}
+                        key={playlist.id}
+                        className={`preview-playlist ${selectedPlaylistIndex === playlist.id ? 'preview-playlist-pushed' : ''}`}
+                        data-index={playlist.id}
+                        onClick={() => handlePlaylistClick(playlist.id)}
                     >
-                        <img src={playlist.img} alt="playlist" />
+                        <img src={playlist.images && playlist.images.length > 0 ? playlist.images[0].url : testAlbum} alt="playlist" />
                         <div className="preview-text">
                             <h1>{playlist.name}</h1>
                             <p>{playlist.description}</p>
