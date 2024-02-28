@@ -18,6 +18,7 @@ export const UserContext = createContext<userProps>({
 });
 
 export default function Layout() {
+
   const [user, setUser] = useState<object | undefined>(undefined);
 
   useEffect(() => {
