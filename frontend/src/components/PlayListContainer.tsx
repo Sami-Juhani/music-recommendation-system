@@ -25,7 +25,7 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({ playLists, select
     </div>
     <div className="g-button">
       <button 
-        className="badge nav-item generate"
+        className="badge nav-item generate bg-brand"
         onClick={() => generateRecommendation()}
       >Generate recommendation</button>
     </div>
