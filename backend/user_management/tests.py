@@ -68,7 +68,7 @@ class UpdateUserTest(TestCase):
 
         self.test_user.refresh_from_db()
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(self.test_user.username, 'newemail@test.com')
         self.assertEqual(self.test_user.first_name, 'newfirstname')
         self.assertEqual(self.test_user.last_name, 'newlastname')

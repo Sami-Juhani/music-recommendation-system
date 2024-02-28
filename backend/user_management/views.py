@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
+from django.http import HttpResponse
 
 
 class UserLogin(APIView):
@@ -15,18 +16,17 @@ class UserLogin(APIView):
         password: str = request.data.get('password')
 
         if not email or not password:
-             return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
 
         user: User = authenticate(username=email, password=password)
 
         if not user:
-            # A backend authenticated the credentials
             return Response({"message": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         request.session['user_id'] = user.id
 
-        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}})
-    
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
+
 
 class RegisterUser(APIView):
     @swagger_auto_schema(request_body=RegisterUserRequestSerializer, responses={201: RegisterUserResponseSerializer})
@@ -36,23 +36,38 @@ class RegisterUser(APIView):
         first_name: str = request.data.get('first_name')
         last_name: str = request.data.get('last_name')
 
-
         if not email or not password:
             return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         if not first_name or not last_name:
             return Response({"message": "First name and last name are required"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         try:
-            user: User = User.objects.create_user(username=email, password=password, first_name=first_name, last_name=last_name)
+            user: User = User.objects.create_user(
+                username=email, password=password, first_name=first_name, last_name=last_name)
         except IntegrityError:
             return Response({"message": f"User already exists with email: {email}"}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user:
             return Response({"message": "User not created"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
-    
+
+
+class GetUser(APIView):
+    def get(self, request):
+        user_id: int = request.session.get('user_id')
+
+        if not user_id:
+            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
+
 
 class UpdateUser(APIView):
     @swagger_auto_schema(request_body=RegisterUserRequestSerializer, responses={201: RegisterUserResponseSerializer})
@@ -64,19 +79,19 @@ class UpdateUser(APIView):
 
         if not email or not password:
             return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         if not first_name or not last_name:
             return Response({"message": "First name and last name are required"}, status=status.HTTP_400_BAD_REQUEST)
 
         user_id: int = request.session.get('user_id')
 
         if not user_id:
-            return Response({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
-    
+            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         user.username = email
         user.set_password(password)
@@ -84,9 +99,9 @@ class UpdateUser(APIView):
         user.last_name = last_name
 
         user.save()
-        
-        return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
-    
+
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
+
 
 class LogoutUser(APIView):
     """
@@ -95,6 +110,7 @@ class LogoutUser(APIView):
     @swagger_auto_schema(responses={200: "Logged out"})
     def post(self, request):
         request.session.flush()
+
         return Response({"message": "Logged out"}, status=status.HTTP_200_OK)
 
 
@@ -107,13 +123,13 @@ class DeleteUser(APIView):
         user_id: int = request.session.get('user_id')
 
         if not user_id:
-            return Response({"message" : 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
-    
+            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message" : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         user.delete()
-        
+
         return Response({"message": "User deleted"}, status=status.HTTP_200_OK)
