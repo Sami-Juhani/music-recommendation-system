@@ -6,8 +6,10 @@ import { playLists, generatedSuggestions } from '../assets/dataset';
 import Sidebar from '../components/Sidebar';
 import RecommendationsContainer from '../components/RecommendationContainer';
 import PlayListContainer from '../components/PlayListContainer';
+import { useLogout } from '../hooks/useLogout';
 
 const Home: React.FC = () => {
+  const { logout } = useLogout();
 
   const [generated, setGenerated] = useState<{ 
     name: string; 
@@ -75,8 +77,10 @@ const Home: React.FC = () => {
                 <p>Karjalainen</p>
             </div>
             <div className="sticky-nav-optons">
-                <button className="badge nav-item hide">Log in</button>
-                <button className="badge nav-item dark-badge">Sign up</button>
+                <button
+                  onClick={logout} 
+                  className="badge nav-item hide">Log out</button>
+                {/* <button className="badge nav-item dark-badge">Sign up</button> */}
             </div>
         </div>
         
