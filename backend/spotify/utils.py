@@ -143,6 +143,9 @@ def get_access_token(user_id: int) -> Union[str, Dict[str, str]]:
 
     if spotify_token.expires_in <= timezone.now():
         spotify_token = refresh_spotify_token(user, spotify_token.refresh_token)
+    
+    if 'message' in spotify_token:
+        return spotify_token
 
     return spotify_token.access_token
 
