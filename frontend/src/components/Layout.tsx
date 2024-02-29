@@ -52,8 +52,7 @@ export default function Layout() {
 
   return (
     <UserContext.Provider value={{ user, setUser: setUser }}>
-      <div className="flex-1 flex flex-col bg-gradient-to-br from-black to-[#c51bce]">
-        <Nav />
+      <div className="flex-1 flex flex-col">
         <main>
           <Suspense fallback={<Loader title={"Loading..."} />}>
             <Outlet />
