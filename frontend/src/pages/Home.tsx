@@ -8,10 +8,11 @@ import RecommendationsContainer from '../components/RecommendationContainer';
 import PlayListContainer from '../components/PlayListContainer';
 import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
+import { useGeneratedContext } from "../hooks/useGeneratedContext";
 
 const Home: React.FC = () => {
 
-  const [generated, setGenerated] = useState<{
+  const [generated1, setGenerated] = useState<{
     name: string;
     image: string;
     id: number;
@@ -26,6 +27,8 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { playlists, dispatchPlaylists } = usePlaylistsGetAllContext();
   const { playlist, dispatchSingle } = usePlaylistGetContext();
+  const { generated, dispatchGenerated } = useGeneratedContext();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const getPlaylists = async () => {
@@ -85,13 +88,14 @@ const Home: React.FC = () => {
   }, [dispatchSingle, selectedPlaylistIndex]);
 
   const handlePlaylistClick = (index: number) => {
+    
     console.log('clicked', index);
     if (selectedPlaylistIndex !== null) {
       document
         ?.querySelector(`.preview-playlist[data-index="${selectedPlaylistIndex}"]`)
         ?.classList.remove('pushed');
     }
-
+    setIsVisible(false);
     setSelectedPlaylistIndex(index);
     setGenerated([]);
     document
@@ -111,8 +115,29 @@ const Home: React.FC = () => {
 
 
 
-  const generateRecommendation = () => {
-    setGenerated(generatedSuggestions);
+  const generateRecommendation = async () => {
+    try {
+      const id = selectedPlaylistIndex; // Replace with the actual id you want to use
+
+      const response = await fetch(`http://127.0.0.1:8000/api/recommendations/generate/${id}`, {
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        // If the response is not ok, log the error before calling response.json()
+        console.log("Error with the response");
+        dispatchGenerated({ type: "SET_GENERATED", payload: [] });
+      } else {
+        const data = await response.json(); // Only parse JSON if response is ok
+        console.log(data);
+        dispatchGenerated({ type: "SET_GENERATED", payload: data });
+        setIsVisible(true);
+      }
+    } catch (error) {
+      console.log(error);
+      dispatchGenerated({ type: "SET_GENERATED", payload: [] });
+      //setError(true);
+    }
     document
       ?.querySelector(`.list`)
       ?.classList.add('hidden');
@@ -143,15 +168,22 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/*<PlayListContainer
-          playLists={playLists}
-          selectedPlaylistIndex={selectedPlaylistIndex}
-          generateRecommendation={generateRecommendation} />
+        {playlist ? (
+            <>
+              <PlayListContainer
+                playlist={playlist}
+                selectedPlaylistIndex={selectedPlaylistIndex}
+                generateRecommendation={generateRecommendation} />
+            </>) : null}
+        {generated ? (
+        <>
+          <RecommendationsContainer
+            playlist={playlist}
+            selectedPlaylistIndex={selectedPlaylistIndex}
+            generated={generated}
+            isVisible={isVisible} />
+        </>) : null}
 
-        <RecommendationsContainer
-          playLists={playLists}
-          selectedPlaylistIndex={selectedPlaylistIndex}
-  generated={generated} />*/}
       </div>
     </div>
 
