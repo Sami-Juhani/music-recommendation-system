@@ -27,7 +27,10 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
         }
 
         const data = await response.json();
+        
         setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
       } catch (error: any) {
         if (error.name === "AbortError") {
           return;

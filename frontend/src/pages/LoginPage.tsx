@@ -13,7 +13,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
-      <header className="py-12 md:py-8 px-8 md:px-12 md:mb-8 bg-black">
+      <header className="md:px-8 md:px-12 md:mb-8 bg-black">
         {/* <nav>
         <Link to={PathConstants.HOME}>Home</Link>
         </nav> */}
