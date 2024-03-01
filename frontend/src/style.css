@@ -13,11 +13,11 @@ body {
 }
 
 .sidebar {
-    /* background-color: #121212; */
     width: 340px;
     border-radius: 1rem;
     /*1rem = 16px*/
     margin-right: 0.5rem;
+    overflow: hidden;
 }
 
 .main-content {

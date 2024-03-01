@@ -9,8 +9,10 @@ import PlayListContainer from '../components/PlayListContainer';
 import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { useGeneratedContext } from "../hooks/useGeneratedContext";
+import { useLogout } from "../hooks/useLogout";
 
 const Home: React.FC = () => {
+  const { logout } = useLogout();
 
   const [generated1, setGenerated] = useState<{
     name: string;
@@ -163,8 +165,11 @@ const Home: React.FC = () => {
             <p>Username</p>
           </div>
           <div className="sticky-nav-optons">
-            <button className="badge nav-item hide">Log in</button>
-            <button className="badge nav-item dark-badge">Sign up</button>
+          <button
+                  onClick={logout} 
+                  className="badge nav-item hide">Log out</button>
+                {/* <button className="badge nav-item dark-badge">Sign up</button> */}
+            
           </div>
         </div>
 
