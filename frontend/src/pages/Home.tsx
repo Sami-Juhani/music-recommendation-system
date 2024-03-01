@@ -35,7 +35,7 @@ const Home: React.FC = () => {
       //setIsLoading(true); // Start loading
       try {
         const response = await fetch("http://127.0.0.1:8000/api/spotify/playlists/", {
-          credentials: 'include'
+          credentials: 'include',
         });
         if (!response.ok) {
           // If the response is not ok, log the error before calling response.json()

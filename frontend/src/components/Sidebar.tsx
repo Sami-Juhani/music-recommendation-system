@@ -68,8 +68,8 @@ const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, han
                 </div>
             </div>
             <div className="lib-box">
-            <div className="box">
-                {playLists ? (
+            <div className="box overflow-y-auto h-96">
+                {playLists && playLists.hasOwnProperty('items') ? (
                 playLists.items.map((playlist: any, index: number) => (
                     <div
                         key={playlist.id}
