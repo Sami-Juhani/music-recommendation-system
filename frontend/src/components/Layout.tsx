@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { Suspense } from "react";
 import Loader from "./Loader";
 
-const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "http://127.0.0.1:8000";
 
 export default function Layout() {
   return (
