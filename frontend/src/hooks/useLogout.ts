@@ -30,7 +30,7 @@ export const useLogout = () => {
           console.error('Error:', error);
         })
         .finally(() => {
-            navigate(PathConstants.LOGIN);
+            navigate(PathConstants.HOME);
     });
 
 };
