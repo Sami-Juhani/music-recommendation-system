@@ -8,7 +8,7 @@ import { useContext} from "react";
 import PathConstants from "./routes/PathConstants";
 import RegistrationPage from "./pages/RegistrationPage";
 import ProfileUpdate from "./pages/ProfileUpdate";
-import { mainPageRoute } from "./pages/MainPage;
+import { mainPageRoute } from "./pages/MainPage";
 
 
 function App() {
