@@ -1,24 +1,28 @@
 import React from "react";
 import "./style.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import routes from "./routes";
+import { createBrowserRouter, RouterProvider  } from "react-router-dom";
 import Layout from "./components/Layout";
 import Page404 from "./pages/Page404";
-import { UserContext } from "./context/UserContextProvider";
-import { useContext } from "react";
-import LoginPage from "./pages/LoginPage";
+import PathConstants from "./routes/PathConstants";
+import {RegistrationRoute} from "./pages/RegistrationPage";
+import ProfileUpdate from "./pages/ProfileUpdate";
+import { mainPageRoute } from "./pages/MainPage";
+
 
 function App() {
 
-  const { user, setUser } = useContext(UserContext);
-
   const router = createBrowserRouter([
     {
-      element: user ? <Layout /> : <LoginPage />,
-      errorElement: <Page404 />,
-      children: routes
+      element: <Layout />,
+      children: [
+        { index: true, ...mainPageRoute },
+        { path: "*", element: <Page404 /> },
+        { ...RegistrationRoute },
+        { path: PathConstants.PROFILE_UPDATE, element: <ProfileUpdate /> },
+      ],
     }
   ]);
+ 
 
   return (
     <div className="relative flex">
