@@ -1,15 +1,26 @@
 import React from "react";
+import { Navigate, useNavigation, useLoaderData  } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
+import Loader from "../components/Loader";
 
 
+const BASE_URL="http://127.0.0.1:8000"
 
-
-export default function Registration() {
+function Registration() {
   const { formData, handleChange, handleSubmit } = useRegistration();
+  const { state } = useNavigation();
+  const loaderData = useLoaderData() as { user: object | null } | null;
+  const user = loaderData ? loaderData.user : null;
+  const isLoading = state === "loading";
+
+  if (isLoading) return <Loader title={"Loading"} />
+
+  if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
+
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
@@ -80,4 +91,30 @@ export default function Registration() {
       </main>
     </div>
   );
+}
+async function loader({ request: { signal }} : { request: { signal: AbortSignal } }) {
+  try {
+      const response = await fetch(`${BASE_URL}/api/user/get`, {
+        signal,
+        credentials: "include",
+      });
+
+      if (response.status !== 200) {
+        return null;
+      }
+
+      const data = await response.json();
+      
+      return { user : data.user };
+  } catch (error: any) {
+      if (error.name === "AbortError") {
+        return;
+      }
+      return null;
+  }
+}
+export const RegistrationRoute = {
+  path: PathConstants.REGISTER,
+  element: <Registration />,
+  loader: loader,
 }
