@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
 import Loader from "../components/Loader";
-
-
-const BASE_URL="http://127.0.0.1:8000"
+import {loader} from "../utils/loader";
 
 function Registration() {
   const { formData, handleChange, handleSubmit } = useRegistration();
@@ -92,27 +90,7 @@ function Registration() {
     </div>
   );
 }
-async function loader({ request: { signal }} : { request: { signal: AbortSignal } }) {
-  try {
-      const response = await fetch(`${BASE_URL}/api/user/get`, {
-        signal,
-        credentials: "include",
-      });
 
-      if (response.status !== 200) {
-        return null;
-      }
-
-      const data = await response.json();
-      
-      return { user : data.user };
-  } catch (error: any) {
-      if (error.name === "AbortError") {
-        return;
-      }
-      return null;
-  }
-}
 export const RegistrationRoute = {
   path: PathConstants.REGISTER,
   element: <Registration />,
