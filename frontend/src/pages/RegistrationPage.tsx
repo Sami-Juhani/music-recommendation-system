@@ -1,15 +1,24 @@
 import React from "react";
+import { Navigate, useNavigation, useLoaderData  } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
+import Loader from "../components/Loader";
+import {loader} from "../utils/loader";
 
-
-
-
-export default function Registration() {
+function Registration() {
   const { formData, handleChange, handleSubmit } = useRegistration();
+  const { state } = useNavigation();
+  const loaderData = useLoaderData() as { user: object | null } | null;
+  const user = loaderData ? loaderData.user : null;
+  const isLoading = state === "loading";
+
+  if (isLoading) return <Loader title={"Loading"} />
+
+  if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
+
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
@@ -80,4 +89,10 @@ export default function Registration() {
       </main>
     </div>
   );
+}
+
+export const RegistrationRoute = {
+  path: PathConstants.REGISTER,
+  element: <Registration />,
+  loader: loader,
 }
