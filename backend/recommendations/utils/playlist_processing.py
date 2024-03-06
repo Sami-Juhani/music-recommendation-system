@@ -145,5 +145,9 @@ def generate_playlist_recos(df: pd.DataFrame, features: pd.Series, nonplaylist_f
     if non_playlist_df_top_40.shape[0] == 0:
         return ({'message': 'No songs in the playlist are available in the dataset'})
 
+    # Get rid of wrongs artists row and replace with correct one
+    non_playlist_df_top_40.drop("artists", axis=1, inplace=True)
+    non_playlist_df_top_40.rename(columns={"artists_upd" : "artists"}, inplace=True)
+
     # Return the DataFrame of top 40 song recommendations
     return non_playlist_df_top_40
