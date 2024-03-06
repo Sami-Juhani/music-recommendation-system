@@ -35,4 +35,4 @@ jobs:
         DJANGO_ENV: ${{ secrets.DJANGO_ENV }}
       working-directory: backend
       run: |
-        python manage.py test
+        python manage.py test --noinput
