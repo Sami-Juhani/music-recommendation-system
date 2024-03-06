@@ -22,8 +22,10 @@ backend/htmlcov
 /build
 
 # misc
+**cache**
 **/.DS_Store
 **/__pycache__
+backend/.ipynb_checkpoints/
 backend/recommendations/data
 backend/.mypy_cache
 frontend/.DS_Store
