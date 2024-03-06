@@ -60,6 +60,42 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build Docker image
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        docker build -t music-recommender .
+                        '''
+                    } else {
+                        bat '''
+                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        docker build -t music-recommender .
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                // Run Docker container
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        '''
+                    } else {
+                        bat '''
+                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        '''
+                    }
+                }
+            }
+        }
     }
 
     post {
