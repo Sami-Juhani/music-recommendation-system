@@ -1,4 +1,4 @@
- export interface Playlist {
+export interface Playlist {
     collaborative: boolean;
     description: string;
     external_urls: {

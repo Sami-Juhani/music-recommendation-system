@@ -533,6 +533,12 @@ padding: 2rem;
 .generate:active {
     transform: translateY(1px);
 }
+.generate:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    color: #ddd;
+    background-color: #232323;
+}
 .hidden {
     display: none;
 }
@@ -653,4 +659,11 @@ padding: 2rem;
 .info-playlist-skeleton {
     display: flex;
     flex-direction: column;
+}
+.playlist-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  
 }

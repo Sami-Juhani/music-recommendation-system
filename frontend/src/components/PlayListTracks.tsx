@@ -2,7 +2,7 @@ import React from 'react';
 import msToMinutesAndSeconds from '../utils/timeConvret';
 import PlayListHeader from './PlayListHeader';
 import testAlbum from '../assets/album.webp';
-import { Playlist } from './interfaces/interface';
+import { Playlist } from '../types/PlayListInterface';
 
 
 
