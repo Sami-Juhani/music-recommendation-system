@@ -85,11 +85,16 @@ const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, han
                     </div>
                 ))
                 ) : (
-                  <div>
-                    <p className="box-p1">Create your first playlist</p>
+                  <>
+                  <div className="playlist-preview-skeleton">
+                    {/* <p className="box-p1">Create your first playlist</p>
                     <p className="box-p2">It's easy we'll help you</p>
-                    <button className="badge">Create playlist</button>
+                    <button className="badge">Create playlist</button> */}
                   </div>
+                  <div className="playlist-preview-skeleton"></div>
+                  <div className="playlist-preview-skeleton"></div>
+                  <div className="playlist-preview-skeleton"></div>
+                  </>
                 )}
               </div>
             </div>

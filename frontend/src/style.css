@@ -522,8 +522,9 @@ align-items: center;
 background-color: #128e50;
 font-size: large;
 height: 3rem;
+width: 250px;
 cursor: pointer;
-margin-bottom: 2.5rem;
+margin: 2.5rem;
 padding: 2rem;
 }
 .generate:hover {
@@ -538,4 +539,77 @@ padding: 2rem;
 .g-button {
     display: flex;
     justify-content: center;
+}
+
+.track-skeleton {
+    --color:rgb(35, 35, 35);
+    animation: fade 1s linear infinite alternate;
+    height: 40px;
+    margin-bottom: 1rem;
+
+
+    background-repeat: no-repeat;
+
+    border-radius: 10px;
+
+    background-image: 
+        linear-gradient(var(--color) 40px, transparent 0%);
+
+    background-size: 
+        100% 40px;
+}
+
+.img-playlist-skeleton {
+    --color:rgb(37, 37, 37);
+    animation: fade 1s linear infinite alternate;
+    height: 300px;
+    width: 300px;
+    margin-bottom: 1rem;
+
+
+    background-repeat: no-repeat;
+
+    border-radius: 10px;
+
+    background-image: 
+        linear-gradient(var(--color) 300px, transparent 0%);
+
+    background-size: 
+        100% 300px;
+}
+
+.playlist-preview-skeleton {
+    --color:rgb(65, 65, 65);
+    animation: fade 1s linear infinite alternate;
+    height: 80px;
+    margin: 0 1rem 0 1rem;
+    
+    margin-bottom: 1rem;
+
+
+    background-repeat: no-repeat;
+
+    border-radius: 10px;
+
+    background-image: 
+        linear-gradient(var(--color) 80px, transparent 0%);
+
+    background-size: 
+        100% 80px;
+}
+
+@keyframes fade {
+    from {
+        opacity: .4;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    color: #ddd;
+    background-color: 232323;
 }

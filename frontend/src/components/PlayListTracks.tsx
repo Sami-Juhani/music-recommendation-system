@@ -131,12 +131,10 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
         <div className="list">
             <PlayListHeader />
             <div className="tracks">
-                {playlist.tracks && playlist.tracks.items.map(
+                {playlist.tracks ? (playlist.tracks.items.map(
                     (item: any, index: number) => {
                         return (
-                            <div
-                                className="row"
-                            >
+                            <div className="row">
                                 <div className="col">
                                     <span>{index + 1}</span>
                                 </div>
@@ -158,6 +156,13 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
                             </div>
                         );
                     }
+                )) : (
+                    <>
+                    <div className="row track-skeleton"></div>
+                    <div className="row track-skeleton"></div>
+                    <div className="row track-skeleton"></div>
+                    </>
+
                 )}
             </div>
         </div>
