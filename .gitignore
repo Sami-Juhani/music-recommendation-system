@@ -26,6 +26,7 @@ backend/htmlcov
 **/.DS_Store
 **/__pycache__
 backend/.ipynb_checkpoints/
+backend/setup_env_variables.sh
 backend/recommendations/data
 backend/.mypy_cache
 frontend/.DS_Store
