@@ -130,9 +130,9 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: '${WORKSPACE}/backend/htmlcov',
-                reportFiles: 'index.html',
-                reportName: 'Coverage Report'
+                reportDir: "${WORKSPACE}/backend/htmlcov",
+                reportFiles: "index.html",
+                reportName: "Coverage Report"
             ])
         }
     }
