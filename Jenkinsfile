@@ -67,12 +67,12 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
                         docker build -t music-recommender .
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
                         docker build -t music-recommender .
                         '''
                     }
