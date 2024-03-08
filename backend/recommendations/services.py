@@ -27,7 +27,7 @@ def generate_recommendations(user_playlist: dict, user_id: int, recently_played:
         'DJANGO_ENV') == 'development' else '/app/backend/recommendations/data/artists.csv'
 
     spotify_df = pd.read_csv(tracks_data_path, skiprows=range(1, 50000), nrows=50000) if os.environ.get(
-        'DJANGO_ENV') == 'development' else pd.read_csv(tracks_data_path, nrows=250000)
+        'DJANGO_ENV') == 'development' else pd.read_csv(tracks_data_path, skiprows=range(1, 100000),  nrows=150000)
 
     data_w_genre = pd.read_csv(artists_data_path)
 
