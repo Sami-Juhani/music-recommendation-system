@@ -68,12 +68,15 @@ pipeline {
                     if (isUnix()) {
                         sh '''
                         cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
+                        cp /var/lib/jenkins/envs/.musicrecommender /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend/recommendations/backend/.env
                         cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     } else {
                         bat '''
                         cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
+                        cp /var/lib/jenkins/envs/.musicrecommender /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend/recommendations/backend/.env
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     }

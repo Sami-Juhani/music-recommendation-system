@@ -17,14 +17,14 @@ def generate_recommendations(user_playlist: dict, user_id: int, recently_played:
     Returns:
         top_40_recommendations (pandas dataframe): The top 40 song recommendations
     """
-    tracts_data_path: str = './recommendations/data/tracks.csv' if os.environ.get(
+    tracks_data_path: str = './recommendations/data/tracks.csv' if os.environ.get(
         'DJANGO_ENV') == 'development' else '/app/backend/recommendations/data/tracks.csv'
     
     artists_data_path: str = './recommendations/data/artists.csv' if os.environ.get(
         'DJANGO_ENV') == 'development' else '/app/backend/recommendations/data/artists.csv'
 
-    spotify_df = pd.read_csv(tracts_data_path, skiprows=range(1, 50000), nrows=50000) if os.environ.get(
-        'DJANGO_ENV') == 'development' else pd.read_csv('./recommendations/data/tracks.csv', nrows=250000)
+    spotify_df = pd.read_csv(tracks_data_path, skiprows=range(1, 50000), nrows=50000) if os.environ.get(
+        'DJANGO_ENV') == 'development' else pd.read_csv(tracks_data_path, nrows=250000)
 
     data_w_genre = pd.read_csv(artists_data_path)
 
