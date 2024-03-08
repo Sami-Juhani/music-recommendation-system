@@ -23,14 +23,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
@@ -46,13 +46,13 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
@@ -67,14 +67,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
+                        cd ${WORKSPACE}
                         cp /var/lib/jenkins/envs/.musicrecommender backend/.env
                         cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
+                        cd ${WORKSPACE}
                         cp /var/lib/jenkins/envs/.musicrecommender backend/.env
                         cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
@@ -112,13 +112,13 @@ pipeline {
             script {
                 if (isUnix()) {
                     sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
                 } else {
                     bat '''
-                    cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
@@ -130,7 +130,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: '/var/lib/jenkins/workspace/MusicRecommenderPipeline/backend/htmlcov',
+                reportDir: '${WORKSPACE}/backend/htmlcov',
                 reportFiles: 'index.html',
                 reportName: 'Coverage Report'
             ])
