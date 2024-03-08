@@ -34,9 +34,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '[::1]',
     'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com',
+    'musicrecommender.samipaan.com'
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1",]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", 'musicrecommender.samipaan.com']
 
 # Application definition
 
@@ -63,6 +64,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
+    'musicrecommender.samipaan.com'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
