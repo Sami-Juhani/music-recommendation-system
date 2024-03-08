@@ -106,13 +106,13 @@ pipeline {
             script {
                 if (isUnix()) {
                     sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                     . venv/bin/activate
                     coverage html
                     '''
                 } else {
                     bat '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                     . venv/bin/activate
                     coverage html
                     '''
@@ -124,7 +124,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend/htmlcov',
+                reportDir: '/var/lib/jenkins/workspace/MusicRecommenderPipeline/backend/htmlcov',
                 reportFiles: 'index.html',
                 reportName: 'Coverage Report'
             ])
