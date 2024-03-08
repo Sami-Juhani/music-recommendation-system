@@ -48,15 +48,13 @@ pipeline {
                         sh '''
                         cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         . venv/bin/activate
-                        echo "DROP DATABASE IF EXISTS test_music_recommender;" | mysql -u root -p%DB_PASSWORD%
-                        coverage run manage.py test
+                        yes | coverage run manage.py test
                         '''
                     } else {
                         bat '''
                         cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         . venv/bin/activate
-                        echo "DROP DATABASE IF EXISTS test_music_recommender;" | mysql -u root -p$DB_PASSWORD
-                        coverage run manage.py test
+                        yes | coverage run manage.py test
                         '''
                     }
                 }
