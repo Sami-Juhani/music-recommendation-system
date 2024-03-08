@@ -1,8 +1,11 @@
 import os
 import pandas as pd
+import dotenv
 from recommendations.utils.data_preparation import prepare_data
 from recommendations.utils.feature_engineering import create_feature_set
 from recommendations.utils.playlist_processing import create_necessary_outputs, generate_playlist_feature, generate_playlist_recos
+
+dotenv.load_dotenv()
 
 
 def generate_recommendations(user_playlist: dict, user_id: int, recently_played: bool = False):
