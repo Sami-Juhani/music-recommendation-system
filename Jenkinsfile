@@ -23,14 +23,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
@@ -46,13 +46,13 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
@@ -67,12 +67,12 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         docker build -t music-recommender .
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd /var/lib/jenkins/workspace/MusicRecommenderPipeline/backend
                         docker build -t music-recommender .
                         '''
                     }
@@ -86,11 +86,13 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        docker stop music-recommender-container || true && docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --name music-recommender-container music-recommender
                         '''
                     } else {
                         bat '''
-                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        docker stop music-recommender-container || true && docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --name music-recommender-container music-recommender
                         '''
                     }
                 }
