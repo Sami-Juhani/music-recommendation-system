@@ -87,12 +87,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        (docker stop music-recommender-container || true) && (docker rm music-recommender-container || true)
+                        docker stop music-recommender-container || true 
+                        docker rm music-recommender-container || true
                         docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
                         '''
                     } else {
                         bat '''
-                        (docker stop music-recommender-container || true) && (docker rm music-recommender-container || true)
+                        docker stop music-recommender-container || true 
+                        docker rm music-recommender-container || true
                         docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
                         '''
                     }
