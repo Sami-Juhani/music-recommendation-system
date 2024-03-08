@@ -68,6 +68,7 @@ pipeline {
                     if (isUnix()) {
                         sh '''
                         cd /var/lib/jenkins/workspace/MusicRecommenderPipeline
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     } else {
