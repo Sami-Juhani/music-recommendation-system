@@ -11,8 +11,7 @@ import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Home: React.FC = () => {
-
-
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const { logout } = useLogout();
 
@@ -29,7 +28,7 @@ const Home: React.FC = () => {
     const getPlaylists = async () => {
       setAllPLIsLoading(true); // Start loading
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/spotify/playlists/", {
+        const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -59,7 +58,7 @@ const Home: React.FC = () => {
       try {
         const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-        const response = await fetch(`http://127.0.0.1:8000/api/spotify/playlist/${id}/`, {
+        const response = await fetch(BASE_URL + `/api/spotify/playlist/${id}/`, {
           credentials: 'include'
         });
 
@@ -121,7 +120,7 @@ const Home: React.FC = () => {
     try {
       const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-      const response = await fetch(`http://127.0.0.1:8000/api/recommendations/generate/${id}`, {
+      const response = await fetch(BASE_URL + `/api/recommendations/generate/${id}`, {
         credentials: 'include'
       });
 
