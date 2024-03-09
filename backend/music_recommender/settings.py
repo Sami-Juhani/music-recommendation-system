@@ -57,8 +57,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None' if os.environ.get('DJANGO_ENV') == 'development' else 'Lax'
+SESSION_COOKIE_SECURE = True if os.environ.get('DJANGO_ENV') == 'development' else False
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
