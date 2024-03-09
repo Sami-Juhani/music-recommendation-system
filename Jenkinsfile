@@ -65,12 +65,14 @@ pipeline {
         stage('Build React App and deploy into AWS S3 bucket') {
             steps {
                 script {
+                    nodejs(nodeJSInstallationName: 'NodeJS') {
                     sh '''
                     cd ${WORKSPACE}/frontend
                     npm install
                     npm run build
                     aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
                     '''
+                    }
                 }
             }
         }
