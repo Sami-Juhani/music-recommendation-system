@@ -66,12 +66,14 @@ pipeline {
             steps {
                 script {
                     nodejs(nodeJSInstallationName: 'NodeJS') {
-                    sh '''
-                    cd ${WORKSPACE}/frontend
-                    CI=false npm install
-                    CI=false npm run build
-                    aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
-                    '''
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh '''
+                        cd ${WORKSPACE}/frontend
+                        CI=false npm install
+                        CI=false npm run build
+                        aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
+                        '''
+                        }
                     }
                 }
             }
