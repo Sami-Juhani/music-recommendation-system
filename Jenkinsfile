@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     nodejs(nodeJSInstallationName: 'NodeJS') {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         sh '''
                         cd ${WORKSPACE}/frontend
                         CI=false npm install
