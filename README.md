@@ -163,7 +163,7 @@
   ```
 
 ## Dokumentaatio
-- Swagger dokumentaatio löytyy osoitteesta http://127.0.0.1:8000/api/swagger kun palvelin on käynnissä.
+- Backend API swagger dokumentaatio löytyy osoitteesta http://127.0.0.1:8000/api/swagger kun palvelin on käynnissä.
 
 - Muu dokumentaatio löytyy [documentation](./documentation) kansiosta.
 
