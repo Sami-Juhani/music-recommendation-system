@@ -165,6 +165,11 @@ def execute_spotify_api_request(user_id: int, endpoint: str, post_: bool=False, 
     """
     access_token: Union[str, Dict[str, str]] = get_access_token(user_id)
 
+    if 'message' in access_token or not access_token:
+        return {'message' : 'No access token found'}
+
+    headers = {'Content-Type': 'application/json',
+               'Authorization': "Bearer " + access_token}
 
     if post_:
         post(SPOTIFY_BASE_URL + endpoint, headers=headers)
