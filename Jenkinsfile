@@ -62,6 +62,18 @@ pipeline {
             }
         }
 
+        stage('Build React App and deploy into AWS S3 bucket') {
+            steps {
+                script {
+                    sh '''
+                    cd ${WORKSPACE}/frontend
+                    npm run build
+                    aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
+                    '''
+                
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 // Build Docker image
