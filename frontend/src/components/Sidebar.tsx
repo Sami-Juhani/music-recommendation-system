@@ -2,42 +2,9 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faUser} from '@fortawesome/free-solid-svg-icons';
 import testAlbum from "../assets/album.webp";
+import { Playlist } from '../types/PlayListInterface';
+import { SideBarSceleton } from './Skeleton/SideBarSceleton';
 
-
-interface Playlist {
-  collaborative: boolean;
-  description: string;
-  external_urls: {
-    spotify: string;
-  };
-  href: string;
-  id: string;
-  images: Array<{
-    height: null | number;
-    url: string;
-    width: null | number;
-  }>;
-  name: string;
-  owner: {
-    display_name: string;
-    external_urls: {
-      spotify: string;
-    };
-    href: string;
-    id: string;
-    type: string;
-    uri: string;
-  };
-  primary_color: null | string;
-  public: boolean;
-  snapshot_id: string;
-  tracks: {
-    href: string;
-    total: number;
-  };
-  type: string;
-  uri: string;
-}
 
 interface PlaylistsResponse {
   href: string;
@@ -45,12 +12,13 @@ interface PlaylistsResponse {
 }
 
 interface SidebarProps {
-  playLists: PlaylistsResponse; // Updated to use the new structure
+  playlists: PlaylistsResponse; // Updated to use the new structure
   selectedPlaylistIndex: number | null;
   handlePlaylistClick: (index: number) => void;
+  allPLisLoading: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, handlePlaylistClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ playlists, selectedPlaylistIndex, handlePlaylistClick, allPLisLoading }) => {
 
   return (
     <div className="sidebar">    
@@ -68,9 +36,12 @@ const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, han
                 </div>
             </div>
             <div className="lib-box">
-            <div className="box overflow-y-auto h-96">
-                {playLists && playLists.hasOwnProperty('items') ? (
-                playLists.items.map((playlist: any, index: number) => (
+            <div className="box overflow-y-auto h-97">
+              {allPLisLoading 
+              ? <SideBarSceleton />
+              : ((playlists && playlists.hasOwnProperty('items') )
+                ? (
+                playlists.items.map((playlist: any, index: number) => (
                     <div
                         key={playlist.id}
                         className={`preview-playlist ${selectedPlaylistIndex === playlist.id ? 'preview-playlist-pushed' : ''}`}
@@ -83,19 +54,10 @@ const Sidebar: React.FC<SidebarProps> = ({ playLists, selectedPlaylistIndex, han
                             <p>{playlist.description}</p>
                         </div>
                     </div>
-                ))
-                ) : (
-                  <>
-                  <div className="playlist-preview-skeleton">
-                    {/* <p className="box-p1">Create your first playlist</p>
-                    <p className="box-p2">It's easy we'll help you</p>
-                    <button className="badge">Create playlist</button> */}
-                  </div>
-                  <div className="playlist-preview-skeleton"></div>
-                  <div className="playlist-preview-skeleton"></div>
-                  <div className="playlist-preview-skeleton"></div>
-                  </>
-                )}
+                ))) 
+                : (
+                  <div>Something went wrong</div>
+                ))}
               </div>
             </div>
         </div>

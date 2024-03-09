@@ -9,15 +9,16 @@ import { Playlist } from '../types/PlayListInterface';
 interface TracksPlayListProps {
     playlist: Playlist;
     selectedPlaylistIndex: number | null;
+    onePLIsLoading: boolean;
 }
 
-const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlaylistIndex }) => {
+const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
 
     return (
         <div className="list">
             <PlayListHeader />
             <div className="tracks">
-                {playlist.tracks ? (playlist.tracks.items.map(
+                {playlist.tracks && !onePLIsLoading ? (playlist.tracks.items.map(
                     (item: any, index: number) => {
                         return (
                             <div className="row">

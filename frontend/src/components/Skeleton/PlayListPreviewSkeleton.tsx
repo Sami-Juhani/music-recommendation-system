@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PlayListPreviewSkeleton() {
+export default function PlayListPreviewSkeleton(): JSX.Element {
     return (
       
     <div className="playlist">
