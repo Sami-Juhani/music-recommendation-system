@@ -34,9 +34,12 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '[::1]',
     'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com',
+    'musicrecommender.samipaan.com',
+    'apimusicrecommender.samipaan.com',
+    '172.31.20.1'
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1",]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", 'http://musicrecommender.samipaan.com', 'http://apimusicrecommender.samipaan.com']
 
 # Application definition
 
@@ -56,13 +59,12 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-SESSION_COOKIE_SAMESITE = 'None' if os.environ.get('DJANGO_ENV') == 'development' else 'Lax'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True 
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -106,7 +108,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'music_recommender',
-        'USER': 'otp_admin',
+        'USER': os.environ.get('DB_ADMIN'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': '3306',
