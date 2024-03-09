@@ -108,7 +108,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'music_recommender',
-        'USER': 'otp_admin',
+        'USER': os.environ.get('DB_ADMIN'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': '3306',
