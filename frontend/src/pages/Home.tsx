@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { playLists, generatedSuggestions } from '../assets/dataset';
 import Sidebar from '../components/Sidebar';
 import RecommendationsContainer from '../components/RecommendationContainer';
 import PlayListContainer from '../components/PlayListContainer';
@@ -12,21 +11,15 @@ import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Home: React.FC = () => {
+
+
+
   const { logout } = useLogout();
 
-  const [generated1, setGenerated] = useState<{
-    name: string;
-    image: string;
-    id: number;
-    artists: string;
-    duration: number;
-    album: string;
-    context_uri: string;
-    track_number: number;
-  }[]>([]);
-
   const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [allPLisLoading, setAllPLIsLoading] = useState(false);
+  const [onePLIsLoading, setOnePLIsLoading] = useState(false);
+  const [generatedIsLoading, setGeneratedIsLoading] = useState(false);
   const { playlists, dispatchPlaylists } = usePlaylistsGetAllContext();
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
@@ -34,7 +27,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const getPlaylists = async () => {
-      //setIsLoading(true); // Start loading
+      setAllPLIsLoading(true); // Start loading
       try {
         const response = await fetch("http://127.0.0.1:8000/api/spotify/playlists/", {
           credentials: 'include',
@@ -42,7 +35,7 @@ const Home: React.FC = () => {
         if (!response.ok) {
           // If the response is not ok, log the error before calling response.json()
           console.log("Error with the response");
-          dispatchPlaylists({ type: "SET_PLAYLISTS", payload: [...playLists] });
+          dispatchPlaylists({ type: "SET_PLAYLISTS", payload: [...playlists] });
         } else {
           const data = await response.json(); // Only parse JSON if response is ok
           console.log(data);
@@ -51,18 +44,18 @@ const Home: React.FC = () => {
         }
       } catch (error) {
         console.log(error);
-        dispatchPlaylists({ type: "SET_PLAYLISTS", payload: [...playLists] });
+        dispatchPlaylists({ type: "SET_PLAYLISTS", payload: [playlists] });
         //setError(true);
       }
 
-      //setIsLoading(false);
+      setAllPLIsLoading(false);
     };
     getPlaylists();
   }, [dispatchPlaylists]);
 
   useEffect(() => {
     const getPlaylist = async () => {
-      setIsLoading(true); // Start loading
+      setOnePLIsLoading(true); // Start loading
       try {
         const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
@@ -84,7 +77,7 @@ const Home: React.FC = () => {
         dispatchSingle({ type: "SET_PLAYLIST", payload: [] });
         //setError(true);
       }
-      setIsLoading(false);
+      setOnePLIsLoading(false);
     };
     getPlaylist();
   }, [dispatchSingle, selectedPlaylistIndex]);
@@ -99,7 +92,7 @@ const Home: React.FC = () => {
     }
     setIsVisible(false);
     setSelectedPlaylistIndex(index);
-    setGenerated([]);
+    dispatchGenerated({ type: "SET_GENERATED", payload: [] });
     document
       ?.querySelector(`.list`)
       ?.classList.remove('hidden');
@@ -118,6 +111,13 @@ const Home: React.FC = () => {
 
 
   const generateRecommendation = async () => {
+    setGeneratedIsLoading(true); // Start loading
+    document
+    ?.querySelector(`.list`)
+    ?.classList.add('hidden');
+    document
+    ?.querySelector(`.cards-container`)
+    ?.classList.remove('hidden');
     try {
       const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
@@ -141,22 +141,18 @@ const Home: React.FC = () => {
       //setError(true);
     }
     document
-      ?.querySelector(`.list`)
-      ?.classList.add('hidden');
-    document
-      ?.querySelector(`.cards-container`)
-      ?.classList.remove('hidden');
-    document
-      ?.querySelector(`.generate`)
-      ?.classList.add('hidden');
+    ?.querySelector(`.generate`)
+    ?.classList.add('hidden');
+    setGeneratedIsLoading(false);
   }
 
   return (
     <div className="main">
       <Sidebar
-        playLists={playlists}
+        playlists={playlists}
         selectedPlaylistIndex={selectedPlaylistIndex}
-        handlePlaylistClick={handlePlaylistClick} />
+        handlePlaylistClick={handlePlaylistClick} 
+        allPLisLoading={allPLisLoading}/>
 
       <div className="main-content">
         <div className="sticky-nav">
@@ -174,20 +170,25 @@ const Home: React.FC = () => {
         </div>
 
         {playlist ? (
-            <>
+            <div>
               <PlayListContainer
                 playlist={playlist}
                 selectedPlaylistIndex={selectedPlaylistIndex}
-                generateRecommendation={generateRecommendation} />
-            </>) : null}
+                generateRecommendation={generateRecommendation}
+                onePLIsLoading = {onePLIsLoading}
+                generatedIsLoading = {generatedIsLoading}
+                 />
+            </div>) : null}
         {generated ? (
-        <>
+        <div>
           <RecommendationsContainer
             playlist={playlist}
             selectedPlaylistIndex={selectedPlaylistIndex}
             generated={generated}
-            isVisible={isVisible} />
-        </>) : null}
+            isVisible={isVisible}
+            onePLIsLoading = {onePLIsLoading}
+            generatedIsLoading = {generatedIsLoading}/>
+        </div>) : null}
 
       </div>
     </div>
