@@ -68,8 +68,8 @@ pipeline {
                     nodejs(nodeJSInstallationName: 'NodeJS') {
                     sh '''
                     cd ${WORKSPACE}/frontend
-                    npm install
-                    npm run build
+                    CI=false npm install
+                    CI=false npm run build
                     aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
                     '''
                     }
