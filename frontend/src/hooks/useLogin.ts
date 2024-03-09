@@ -4,9 +4,9 @@ import { UserContext } from "../context/UserContextProvider";
 import { UserContextType } from "../types/UserContextType";
 import PathConstants from "../routes/PathConstants";
 
-const BASE_URL = "http://127.0.0.1:8000";
-const IS_AUTHENTICATED_URL = "http://127.0.0.1:8000/api/spotify/is-authenticated/"
-const AUTH_URL = "http://127.0.0.1:8000/api/spotify/auth/"
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const IS_AUTHENTICATED_URL = BASE_URL + "/api/spotify/is-authenticated/"
+const AUTH_URL = BASE_URL + "/api/spotify/auth/"
 
 interface LoginFormState {
   email: string;

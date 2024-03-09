@@ -6,7 +6,7 @@ import { UserContextType } from '../types/UserContextType';
 import PathConstants from "../routes/PathConstants";
 import '../styles/ProfileUpdate.css';
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 interface ProfileUpdateFormState {
   email: string;

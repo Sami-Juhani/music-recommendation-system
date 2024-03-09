@@ -23,14 +23,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
@@ -46,15 +46,59 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build Docker image
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        cd ${WORKSPACE}
+                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
+                        docker build -t music-recommender .
+                        '''
+                    } else {
+                        bat '''
+                        cd ${WORKSPACE}
+                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
+                        docker build -t music-recommender .
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                // Run Docker container
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        docker stop -t 10 music-recommender-container || true 
+                        docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
+                        '''
+                    } else {
+                        bat '''
+                        docker stop -t 10 music-recommender-container || true 
+                        docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
                         '''
                     }
                 }
@@ -68,13 +112,13 @@ pipeline {
             script {
                 if (isUnix()) {
                     sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
                 } else {
                     bat '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
@@ -86,9 +130,9 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend/htmlcov',
-                reportFiles: 'index.html',
-                reportName: 'Coverage Report'
+                reportDir: "${WORKSPACE}/backend/htmlcov",
+                reportFiles: "index.html",
+                reportName: "Coverage Report"
             ])
         }
     }

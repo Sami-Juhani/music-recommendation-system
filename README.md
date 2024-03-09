@@ -1,12 +1,20 @@
-# Ohjelmistotuotantoprojekti 1 - ryhmä 8 - Music recommendation system
+# Ohjelmistotuotantoprojekti 1 - Music Recommendation System
 
-## Kehitysympäristö
+## Vaatimukset
 
-### Backend
+- [Python](https://www.python.org/downloads/)
+- SQL tietokanta (e.g. [MySQL](https://dev.mysql.com/downloads/installer/), [PostgreSQL](https://www.postgresql.org/download/), [SQLite](https://www.sqlite.org/download.html))
+- Luotu SQL tietokanta nimeltä *music_recommender*
+- Spotify tili [Spotify](https://www.spotify.com/)
+- Spotify API käyttäjätunnukset [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
 
-- Install [Python](https://www.python.org/downloads/)
+## Kehitysympäristö - Backend
 
-- Run the commands in your backend directory:
+### Asenna [Python](https://www.python.org/downloads/)
+
+### Asenna python paketit, tähän on kaksi tapaa:
+
+  1. Suorita nämä komennot backend kansiosta:
 
   - Windows:  
 
@@ -24,7 +32,7 @@
     pip3 install -r requirements.txt
     ```
 
-  OR (a script is provided which does the same thing)
+  2. Vaihtoehtoisesti:
 
   - Windows:  
 
@@ -37,7 +45,37 @@
     python3 setup.py
     ```
 
-- Create .envrc file in the backend folder and add these lines:
+#### Luo SQL tietokanta
+  - Ydistä tietokantaan ja luo *music_recommender*:
+
+    ```sql
+    CREATE DATABASE music_recommender;
+    ```
+
+#### Luo spotify api käyttäjätunnukset
+  - Mene [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and create a new app.
+  - Määrittele app name ja description.
+  - Lisää redirect URIs: http://127.0.0.1:8000/api/spotify/callback/
+  - APIs used: Web API.
+
+#### Luo ympäristömuuttujat
+
+- Luo .env tiedosto backend kansioon ja lisää seuraavat muuttujat:
+
+  ```bash
+  SPOTIFY_CLIENT_ID=your_spotify_client_id
+  SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+  DB_ADMIN=your_db_admin
+  DB_HOST=your_db_host
+  DB_PASSWORD=your_db_password
+  DJANGO_ENV=production
+  ```
+
+  Korvaa placeholderit omilla tiedoillasi.
+
+### Install `direnv` (VALINNAINEN)
+
+- Luo .envrc tiedosto backend kansioon ja lisää nimi rivit:
 
   ```bash
   # Activate the virtual environment
@@ -50,207 +88,87 @@
   fi
   ```
 
-- Install `direnv`
-
-  - Ubuntu:
+  Ubuntu:
     ```bash
     sudo apt install direnv
     ```
-  - MacOS:
+  MacOS:
     ```bash
     brew install direnv
     ```
 
-- Run the commands in your backend directory:
-  ```bash
-  nano ~/.bashrc
-  ```
-  Add the following line to the end of the file:
-  ```bash
-  eval "$(direnv hook bash)"
-  ```
-  Save and exit the file. Then run the following commands:
-  ```bash
-  source ~/.bashrc
-  direnv allow
-  ```
+  Aja nämä komennot backend kansiosta:
+    ```bash
+    nano ~/.bashrc
+    ```
+    Lisää seuraava rivi tiedoston loppuun:
+    ```bash
+    eval "$(direnv hook bash)"
+    ```
+    Tallenna ja sulje tiedosto. Ajaa seuraavat komennot:
+    ```bash
+    source ~/.bashrc
+    direnv allow
+    ```
 
-#### Useful django commands
-
-- Run the command to create a new Django project:
+### Kehitysympäristö - Frontend  
+- Luo .env.development tiedosto frontend kansioon ja lisää seuraavat muuttujat:
 
   ```bash
-  django-admin startproject music_recommendation_system
-  ```
-
-- Run the command to create a new Django app:
-  ```bash
-  python manage.py startapp user_management
+  REACT_APP_BASE_URL=http://127.0.0.1:8000
   ```
 
-- To create a new migration after model changes:
-
-  
-  ```bash
-  python manage.py makemigrations
-  ``` 
-
-- To apply migrations:
-  ```bash
-  python manage.py migrate
-  ```
-
-- To run server:
-
-  ```bash
-  python manage.py runserver
-  ```
-
-### Frontend  
-- Install react-router-dom
-  ```bash
-  npm install react-router-dom
-
-- Run the commands in your frontend directory:  
-
+- Aja nämä komennot frontend kansiosta:  
   ```bash
   npm install
   ```
 
-## Käyttöohjeet
+### Käyttöohjeet - Backend
 
-### Backend
+- Suorita kaikki tarvittavat migraatiot:
+  ```bash
+  python manage.py makemigrations
+  ``` 
 
-### Frontend
+- Lisää muutokset tietokantaan:
+  ```bash
+  python manage.py migrate
+  ```
+
+- Käynnistä palvelin:
+  ```bash
+  python manage.py runserver
+  ```
+
+- Aja testit:
+  ```bash
+  python manage.py test
+  ```
+
+- Luo testi kattavuusraportti:
+  ```bash
+  coverage html
+  ```
+
+### Käyttöohjeet - Frontend
+
+- Käynnistä sovellus:
+  ```bash
+  npm start
+  ```
+
+- Luo tuotantoversio:
+  ```bash
+  npm run build
+  ```
 
 ## Dokumentaatio
+- Backend API swagger dokumentaatio löytyy osoitteesta http://127.0.0.1:8000/api/swagger kun palvelin on käynnissä.
+
+- Muu dokumentaatio löytyy [documentation](./documentation) kansiosta.
 
 ## Ohjelmoijat
 - Mamadou Balde
 - Sami Paananen
 - Vladimir Piniazhin
 - Ivan Semenov
-# Ohjelmistotuotantoprojekti 1 - ryhmä 8 - Music recommendation system
-
-## Kehitysympäristö
-
-### Backend
-
-- Install [Python](https://www.python.org/downloads/)
-
-- Run the commands in your backend directory:
-
-  - Windows:  
-
-    ```cmd
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-    
-  - Ubuntu:
-  
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    pip3 install -r requirements.txt
-    ```
-
-  OR (a script is provided which does the same thing)
-
-  - Windows:  
-
-    ```cmd
-    python setup.py
-    ```
-  
-  - Ubuntu:
-    ```bash
-    python3 setup.py
-    ```
-
-- Create .envrc file in the backend folder and add these lines:
-
-  ```bash
-  # Activate the virtual environment
-  if [ -d "venv" ]; then
-      if [ -f "venv/bin/activate" ]; then
-          source venv/bin/activate
-      elif [ -f "venv/Scripts/activate" ]; then
-          source venv/Scripts/activate
-      fi
-  fi
-  ```
-
-- Install `direnv`
-
-  - Ubuntu:
-    ```bash
-    sudo apt install direnv
-    ```
-  - MacOS:
-    ```bash
-    brew install direnv
-    ```
-
-- Run the commands in your backend directory:
-  ```bash
-  nano ~/.bashrc
-  ```
-  Add the following line to the end of the file:
-  ```bash
-  eval "$(direnv hook bash)"
-  ```
-  Save and exit the file. Then run the following commands:
-  ```bash
-  source ~/.bashrc
-  direnv allow
-  ```
-
-#### Useful django commands
-
-- Run the command to create a new Django project:
-
-  ```bash
-  django-admin startproject music_recommendation_system
-  ```
-
-- Run the command to create a new Django app:
-  ```bash
-  python manage.py startapp user_management
-  ```
-
-- To create a new migration after model changes:
-
-  ```bash
-  python manage.py makemigrations
-  ``` 
-
-- To apply migrations:
-  ```bash
-  python manage.py migrate
-  ```
-
-- To run server:
-
-  ```bash
-  python manage.py runserver
-  ```
-
-### Frontend  
-
-- Run the commands in your frontend directory:  
-
-  ```bash
-  npm install
-  ```
-
-## Käyttöohjeet
-
-### Backend
-
-### Frontend
-
-## Dokumentaatio
-
-## Ohjelmoijat
