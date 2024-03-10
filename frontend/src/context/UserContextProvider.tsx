@@ -3,6 +3,8 @@ import { UserContextType } from "../types/UserContextType";
 
 const BASE_URL=process.env.REACT_APP_BASE_URL;
 
+
+
 export const UserContext = createContext<UserContextType>({
   user: undefined,
   setUser: () => {},

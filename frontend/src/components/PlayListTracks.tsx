@@ -47,11 +47,11 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
                                         <img src={item.track.album.images ? item.track.album.images[0].url : testAlbum} alt="track" />
                                     </div>
                                     <div className="info">
-                                        <span className="name">{item.track.name}</span>
+                                        <span className="name">{item.track.name.length > 20 ? (item.track.name.slice(0, 20)+" ...") : item.track.name}</span>
                                         <span>{item.track.artists ? item.track.artists[0].name : "Artists unknown"}</span>
                                     </div>
                                 </div>
-                                <div className="col">
+                                <div className="col album-info">
                                     <span>{item.track.album.name}</span>
                                 </div>
                                 <div className="col">
