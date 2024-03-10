@@ -4,6 +4,7 @@ pipeline {
     environment {
         SPOTIFY_CLIENT_ID = credentials('SPOTIFY_CLIENT_ID')
         SPOTIFY_CLIENT_SECRET = credentials('SPOTIFY_CLIENT_SECRET')
+        DB_ADMIN = credentials('DB_ADMIN')
         DB_HOST = credentials('DB_HOST')
         DB_PASSWORD = credentials('DB_PASSWORD')
         DJANGO_ENV = credentials('DJANGO_ENV')
@@ -23,14 +24,14 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         python3 -m venv venv
                         . venv/bin/activate
                         pip3 install -r requirements.txt
@@ -46,16 +47,33 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}/backend
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
+                    }
+                }
+            }
+        }
+
+        stage('Build React App and deploy into AWS S3 bucket') {
+            steps {
+                script {
+                    nodejs(nodeJSInstallationName: 'NodeJS') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh '''
+                        cd ${WORKSPACE}/frontend
+                        CI=false npm install
+                        CI=false npm run build
+                        aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
+                        '''
+                        }
                     }
                 }
             }
@@ -67,12 +85,16 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}
+                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     } else {
                         bat '''
-                        cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                        cd ${WORKSPACE}
+                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
+                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
                         docker build -t music-recommender .
                         '''
                     }
@@ -86,11 +108,15 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        docker stop -t 10 music-recommender-container || true 
+                        docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
                         '''
                     } else {
                         bat '''
-                        docker run -d -p 8000:8000 --name music-recommender-container music-recommender
+                        docker stop -t 10 music-recommender-container || true 
+                        docker rm music-recommender-container || true
+                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
                         '''
                     }
                 }
@@ -104,13 +130,13 @@ pipeline {
             script {
                 if (isUnix()) {
                     sh '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
                 } else {
                     bat '''
-                    cd /var/lib/jenkins/workspace/MusicRecommendationSystem/backend
+                    cd ${WORKSPACE}/backend
                     . venv/bin/activate
                     coverage html
                     '''
@@ -122,9 +148,9 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: '/var/lib/jenkins/workspace/MusicRecommendationSystem/backend/htmlcov',
-                reportFiles: 'index.html',
-                reportName: 'Coverage Report'
+                reportDir: "${WORKSPACE}/backend/htmlcov",
+                reportFiles: "index.html",
+                reportName: "Coverage Report"
             ])
         }
     }

@@ -1,142 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import msToMinutesAndSeconds from '../utils/timeConvret';
 import PlayListHeader from './PlayListHeader';
 import testAlbum from '../assets/album.webp';
-
-interface Playlist {
-    collaborative: boolean;
-    description: string;
-    external_urls: {
-        spotify: string;
-    };
-    followers: {
-        href: null;
-        total: number;
-    };
-    href: string;
-    id: string;
-    images: Array<{
-        height: null;
-        url: string;
-        width: null;
-    }>;
-    name: string;
-    owner: {
-        display_name: string;
-        external_urls: {
-            spotify: string;
-        };
-        href: string;
-        id: string;
-        type: string;
-        uri: string;
-    };
-    primary_color: string;
-    public: boolean;
-    snapshot_id: string;
-    tracks: {
-        href: string;
-        items: Array<{
-            added_at: string;
-            added_by: {
-                external_urls: {
-                    spotify: string;
-                };
-                href: string;
-                id: string;
-                type: string;
-                uri: string;
-            };
-            is_local: boolean;
-            primary_color: null;
-            track: {
-                album: {
-                    available_markets: string[];
-                    type: string;
-                    album_type: string;
-                    href: string;
-                    id: string;
-                    images: Array<{
-                        url: string;
-                        width: number;
-                        height: number;
-                    }>;
-                    name: string;
-                    release_date: string;
-                    release_date_precision: string;
-                    uri: string;
-                    artists: Array<{
-                        external_urls: {
-                            spotify: string;
-                        };
-                        href: string;
-                        id: string;
-                        name: string;
-                        type: string;
-                        uri: string;
-                    }>;
-                    external_urls: {
-                        spotify: string;
-                    };
-                    total_tracks: number;
-                };
-                artists: Array<{
-                    external_urls: {
-                        spotify: string;
-                    };
-                    href: string;
-                    id: string;
-                    name: string;
-                    type: string;
-                    uri: string;
-                }>;
-                disc_number: number;
-                track_number: number;
-                duration_ms: number;
-                explicit: boolean;
-                external_ids: {
-                    isrc: string;
-                };
-                external_urls: {
-                    spotify: string;
-                };
-                href: string;
-                id: string;
-                name: string;
-                popularity: number;
-                preview_url: string;
-                track: boolean;
-                episode: boolean;
-                available_markets: string[];
-                type: string;
-                uri: string;
-                is_local: boolean;
-            };
-            video_thumbnail: {
-                url: null;
-            };
-        }>;
-    };
-}
-
+import { Playlist } from '../types/PlayListInterface';
+import SongRating from './SongRating';
+import AddSongRating from './AddSongRating';
 
 interface TracksPlayListProps {
     playlist: Playlist;
     selectedPlaylistIndex: number | null;
+    onePLIsLoading: boolean;
 }
 
-const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlaylistIndex }) => {
+const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
+    const [selectedSong, setSelectedSong] = useState<any>(null);
+
+    const handleSongClick = (song: any, e: React.MouseEvent<HTMLDivElement>) => {
+        
+        const isRatingInput = (e.target as HTMLElement).classList.contains('rating-input');
+        const isSubmitButton = (e.target as HTMLElement).classList.contains('submit-button');
+
+        if (isRatingInput || isSubmitButton) {
+            return;
+        }
+
+        if (selectedSong && selectedSong.id === song.id) {
+            setSelectedSong(null);
+        } else {
+            setSelectedSong(song);
+        }
+    };
 
     return (
         <div className="list">
             <PlayListHeader />
             <div className="tracks">
-                {playlist.tracks && playlist.tracks.items.map(
-                    (item: any, index: number) => {
+                {playlist.tracks && !onePLIsLoading ? (
+                    playlist.tracks.items.map((item: any, index: number) => {
                         return (
-                            <div
-                                className="row"
-                            >
+                            <div className="row" key={index} onClick={(e) => handleSongClick(item.track, e)}>
                                 <div className="col">
                                     <span>{index + 1}</span>
                                 </div>
@@ -155,9 +57,27 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
                                 <div className="col">
                                     <span>{msToMinutesAndSeconds(item.track.duration_ms)}</span>
                                 </div>
+                                <div className="col">
+                                    {/* Display SongRating component */}
+                                    {selectedSong && selectedSong.id === item.track.id && (
+                                        <SongRating spotifyId={item.track.id} />
+                                    )}
+                                </div>
+                                <div className="col">
+                                    {/* AddSongRating component with condition to display only when a song is selected */}
+                                    {selectedSong && selectedSong.id === item.track.id && (
+                                        <AddSongRating spotifyId={selectedSong.id} />
+                                    )}
+                                </div>
                             </div>
                         );
-                    }
+                    })
+                ) : (
+                    <>
+                        <div className="row track-skeleton"></div>
+                        <div className="row track-skeleton"></div>
+                        <div className="row track-skeleton"></div>
+                    </>
                 )}
             </div>
         </div>

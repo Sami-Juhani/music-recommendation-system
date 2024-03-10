@@ -30,6 +30,7 @@ jobs:
       env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        DB_ADMIN: ${{ secrets.DB_ADMIN }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DJANGO_ENV: ${{ secrets.DJANGO_ENV }}

@@ -20,9 +20,9 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY backend/requirements.txt /app/
+COPY backend/requirements.txt /app/backend/
 RUN python -m venv backend/venv
-RUN /app/backend/venv/bin/pip install --upgrade pip && /app/backend/venv/bin/pip install -r requirements.txt
+RUN /app/backend/venv/bin/pip install --upgrade pip && /app/backend/venv/bin/pip install -r backend/requirements.txt
 
 # Copy the rest of your application code
 COPY . /app/
