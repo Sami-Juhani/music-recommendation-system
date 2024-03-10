@@ -103,7 +103,7 @@ const ProfileUpdate = () => {
       
       if (response.ok) {
         console.log('Profile delete successful:', data);
-        setUser(undefined);
+        setUser(data.user);
         navigate(PathConstants.HOME);
       } else {
         console.error('Profile delete failed:', data.message);
