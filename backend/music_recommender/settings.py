@@ -34,10 +34,12 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '[::1]',
     'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com',
-    'musicrecommender.samipaan.com'
+    'musicrecommender.samipaan.com',
+    'apimusicrecommender.samipaan.com',
+    '172.31.20.1'
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", 'http://musicrecommender.samipaan.com']
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", 'http://musicrecommender.samipaan.com', 'http://apimusicrecommender.samipaan.com']
 
 # Application definition
 
@@ -57,14 +59,13 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-SESSION_COOKIE_SAMESITE = 'None' if os.environ.get('DJANGO_ENV') == 'development' else 'Lax'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True 
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:8000',
-    'http://musicrecommender.samipaan.com'
+    'https://samipaan.com'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
