@@ -47,7 +47,6 @@ const ProfileUpdate = () => {
         body: JSON.stringify(formData),
         credentials: "include",
       });
-      console.log(formData);
 
       if (!response.ok) {
         console.error("HTTP error", response.status);
@@ -105,7 +104,7 @@ const ProfileUpdate = () => {
 
       if (response.ok) {
         console.log("Profile delete successful:", data);
-        setUser(undefined);
+        setUser(data.user);
         navigate(PathConstants.HOME);
       } else {
         console.error("Profile delete failed:", data.message);
@@ -116,45 +115,48 @@ const ProfileUpdate = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="profile_update_form">
-      <input
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Password"
-      />
-      <input
-        type="text"
-        name="first_name"
-        value={formData.first_name}
-        onChange={handleChange}
-        placeholder="First Name"
-      />
-      <input
-        type="text"
-        name="last_name"
-        value={formData.last_name}
-        onChange={handleChange}
-        placeholder="Last Name"
-      />
-      <button className="update_profile" type="submit">
-        Update Profile
-      </button>
-      <button className="cancel" onClick={() => navigate(PathConstants.HOME)}>
-        Cancel
-      </button>
-      <button type="submit" className="delete" onClick={deleteProfile}>
-        Delete Profile
-      </button>
-    </form>
+    <div className="form-container">
+      <h2 className="form-title">Update or Delete Profile</h2>
+      <form onSubmit={handleSubmit} className="profile_update_form">
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
+        <input
+          type="text"
+          name="first_name"
+          value={formData.first_name}
+          onChange={handleChange}
+          placeholder="First Name"
+        />
+        <input
+          type="text"
+          name="last_name"
+          value={formData.last_name}
+          onChange={handleChange}
+          placeholder="Last Name"
+        />
+        <button className="update_profile" type="submit">
+          Update Profile
+        </button>
+        <button className="cancel" onClick={() => navigate(PathConstants.HOME)}>
+          Cancel
+        </button>
+        <button type="submit" className="delete" onClick={deleteProfile}>
+          Delete Profile
+        </button>
+      </form>
+    </div>
   );
 };
 

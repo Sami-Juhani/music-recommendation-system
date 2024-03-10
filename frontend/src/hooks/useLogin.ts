@@ -28,6 +28,7 @@ export const useLogin = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const [error, setError] = useState<string>("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -40,18 +41,32 @@ export const useLogin = () => {
         credentials: "include",
       });
 
-      if (response.status !== 200) return;
+      if (response.status !== 200) {
+        console.log(`ERROR: ${await response.text()}`);
+        return;
+      }
 
       const data = await response.json();
+      if (response.status !== 200) {
+        // Set the error message based on response
+        setError(
+          data.message || "An unexpected error occurred. Please try again."
+        );
+        return;
+      }
 
       setUser(data.user);
 
       if (response.ok) {
-        // Check if access_token exists in data (&& data.access_token)
         try {
           const response = await fetch(IS_AUTHENTICATED_URL, {
             credentials: "include",
           });
+          if (response.status !== 200) {
+            console.log(`ERROR: ${await response.text()}`);
+            return;
+          }
+
           if (response.status === 200) {
             const isAuthenticated = await response.json();
             if (!isAuthenticated.status) window.location.href = AUTH_URL;
@@ -72,7 +87,7 @@ export const useLogin = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, error };
 };
 
 export default useLogin;

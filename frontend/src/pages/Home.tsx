@@ -12,6 +12,8 @@ import { useLogout } from "../hooks/useLogout";
 import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
+import { Link } from "react-router-dom";
+import PathConstants from "../routes/PathConstants";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -155,6 +157,14 @@ const Home: React.FC = () => {
             <p>{user?.firstName}</p>
           </div>
           <div className="sticky-nav-optons">
+            <button>
+              <Link
+                to={PathConstants.PROFILE_UPDATE}
+                className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2"
+              >
+                Edit User
+              </Link>
+            </button>
             <button onClick={logout} className="badge nav-item hide">
               Log out
             </button>
