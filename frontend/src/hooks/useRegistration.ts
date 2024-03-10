@@ -27,6 +27,7 @@ const useRegistration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const [error, setError] = useState<string>('');
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -44,7 +45,7 @@ const useRegistration = () => {
         console.log('Registration successful:', data);
         navigate(PathConstants.HOME);
       } else {
-        
+        setError(data.message || 'An unexpected error occurred. Please try again.');
         console.error('Registration failed:', data.message);
       }
       
@@ -54,7 +55,7 @@ const useRegistration = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, error };
 };
 
 export default useRegistration;
