@@ -62,6 +62,23 @@ pipeline {
             }
         }
 
+        stage('Build React App and deploy into AWS S3 bucket') {
+            steps {
+                script {
+                    nodejs(nodeJSInstallationName: 'NodeJS') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh '''
+                        cd ${WORKSPACE}/frontend
+                        CI=false npm install
+                        CI=false npm run build
+                        aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
+                        '''
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 // Build Docker image
