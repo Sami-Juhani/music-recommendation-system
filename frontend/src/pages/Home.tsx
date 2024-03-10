@@ -10,10 +10,12 @@ import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
 import { UserContext } from "../context/UserContextProvider";
+import { Link } from "react-router-dom";
+import PathConstants from "../routes/PathConstants";
+
 
 const Home: React.FC = () => {
-
-
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const { logout } = useLogout();
 
@@ -35,7 +37,8 @@ const Home: React.FC = () => {
     const getPlaylists = async () => {
       setAllPLIsLoading(true); // Start loading
       try {
-        const response = await fetch(`${BASE_URL}/api/spotify/playlists/`, {
+
+        const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -65,7 +68,9 @@ const Home: React.FC = () => {
       try {
         const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-        const response = await fetch(`${BASE_URL}/api/spotify/playlist/${id}/`, {
+
+        const response = await fetch(BASE_URL + `/api/spotify/playlist/${id}/`, {
+          
           credentials: 'include'
         });
 
@@ -127,7 +132,9 @@ const Home: React.FC = () => {
     try {
       const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-      const response = await fetch(`${BASE_URL}/api/recommendations/generate/${id}`, {
+
+      const response = await fetch(BASE_URL + `/api/recommendations/generate/${id}`, {
+        
         credentials: 'include'
       });
 
@@ -167,7 +174,12 @@ const Home: React.FC = () => {
             <p>{user && user.firstname}</p>
           </div>
           <div className="sticky-nav-optons">
-          <button
+            <button>
+              <Link to={PathConstants.PROFILE_UPDATE} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
+                Edit User
+              </Link>
+            </button>
+            <button
                   onClick={logout} 
                   className="badge nav-item hide">Log out</button>
                 {/* <button className="badge nav-item dark-badge">Sign up</button> */}
