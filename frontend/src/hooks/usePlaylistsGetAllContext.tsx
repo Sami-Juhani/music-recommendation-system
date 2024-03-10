@@ -8,6 +8,5 @@ export const usePlaylistsGetAllContext = () => {
         "usePlaylistsGetAllContext must be used within a PlaylistsGetAllContextProvider"
       );
     }
-    console.log(context);
     return context;
   }

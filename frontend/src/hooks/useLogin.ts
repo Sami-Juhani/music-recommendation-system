@@ -1,12 +1,12 @@
-﻿import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContextProvider";
-import { UserContextType } from "../types/UserContextType";
 import PathConstants from "../routes/PathConstants";
+import { UserContextType } from "../types/UserContextType";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const IS_AUTHENTICATED_URL = BASE_URL + "/api/spotify/is-authenticated/"
-const AUTH_URL = BASE_URL + "/api/spotify/auth/"
+const IS_AUTHENTICATED_URL = BASE_URL + "/api/spotify/is-authenticated/";
+const AUTH_URL = BASE_URL + "/api/spotify/auth/";
 
 interface LoginFormState {
   email: string;
@@ -21,7 +21,7 @@ export const useLogin = () => {
 
   const navigate = useNavigate();
 
-  const { setUser } : UserContextType = useContext<UserContextType>(UserContext);
+  const { setUser }: UserContextType = useContext<UserContextType>(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,29 +37,27 @@ export const useLogin = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        credentials: 'include'
-      }); 
-      
-      if (response.status !== 200) return 
-      
+        credentials: "include",
+      });
+
+      if (response.status !== 200) return;
+
       const data = await response.json();
 
-      setUser(data.user)
-      
+      setUser(data.user);
+
       if (response.ok) {
         // Check if access_token exists in data (&& data.access_token)
         try {
-          const response = await fetch(
-            IS_AUTHENTICATED_URL, {
-              credentials: 'include'
-            });
+          const response = await fetch(IS_AUTHENTICATED_URL, {
+            credentials: "include",
+          });
           if (response.status === 200) {
             const isAuthenticated = await response.json();
-            if (!isAuthenticated.status)
-              window.location.href = AUTH_URL;
+            if (!isAuthenticated.status) window.location.href = AUTH_URL;
           } else {
             const error = await response.json();
-            console.log(error)
+            console.log(error);
           }
         } catch (e: any) {
           console.log(e.message);
@@ -67,12 +65,10 @@ export const useLogin = () => {
           navigate(PathConstants.HOME);
         }
       } else {
-        
-        console.error('Login failed:', data.message);
+        console.error("Login failed:", data.message);
       }
     } catch (error) {
-      
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
