@@ -783,7 +783,7 @@ padding: 2rem;
 .playlist-preview {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
     padding: 1rem;
     .image {
         img {
