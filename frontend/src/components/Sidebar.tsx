@@ -50,13 +50,13 @@ const Sidebar: React.FC<SidebarProps> = ({ playlists, selectedPlaylistIndex, han
                     >
                         <img src={playlist.images && playlist.images.length > 0 ? playlist.images[0].url : testAlbum} alt="playlist" />
                         <div className="preview-text">
-                            <h1>{playlist.name}</h1>
-                            <p>{playlist.description}</p>
+                            <h1>{playlist.name && playlist.name.slice(0, 20)}</h1>
+                            <p>{playlist.type}</p>
                         </div>
                     </div>
                 ))) 
                 : (
-                  <div>Something went wrong</div>
+                  <div className="sidebar-error">----------- ERROR! ------------<br/> Something went wrong</div>
                 ))}
               </div>
             </div>

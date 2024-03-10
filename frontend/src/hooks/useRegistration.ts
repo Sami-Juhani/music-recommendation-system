@@ -42,7 +42,7 @@ const useRegistration = () => {
       
       if (response.ok) {
         console.log('Registration successful:', data);
-        navigate(PathConstants.LOGIN);
+        navigate(PathConstants.HOME);
       } else {
         
         console.error('Registration failed:', data.message);

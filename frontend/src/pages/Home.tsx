@@ -1,5 +1,5 @@
 // HorizontalScrollFeed.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../components/Sidebar';
@@ -9,12 +9,16 @@ import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
+import { UserContext } from "../context/UserContextProvider";
 
 const Home: React.FC = () => {
 
 
 
   const { logout } = useLogout();
+
+  const { user }  = useContext(UserContext);
+  console.log(user);
 
   const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<number | null>(null);
   const [allPLisLoading, setAllPLIsLoading] = useState(false);
@@ -25,11 +29,13 @@ const Home: React.FC = () => {
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
 
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   useEffect(() => {
     const getPlaylists = async () => {
       setAllPLIsLoading(true); // Start loading
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/spotify/playlists/", {
+        const response = await fetch(`${BASE_URL}/api/spotify/playlists/`, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -59,7 +65,7 @@ const Home: React.FC = () => {
       try {
         const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-        const response = await fetch(`http://127.0.0.1:8000/api/spotify/playlist/${id}/`, {
+        const response = await fetch(`${BASE_URL}/api/spotify/playlist/${id}/`, {
           credentials: 'include'
         });
 
@@ -121,7 +127,7 @@ const Home: React.FC = () => {
     try {
       const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
-      const response = await fetch(`http://127.0.0.1:8000/api/recommendations/generate/${id}`, {
+      const response = await fetch(`${BASE_URL}/api/recommendations/generate/${id}`, {
         credentials: 'include'
       });
 
@@ -158,7 +164,7 @@ const Home: React.FC = () => {
         <div className="sticky-nav">
           <div className="sticky-nav-icons">
             <FontAwesomeIcon icon={faUser} />
-            <p>Username</p>
+            <p>{user && user.firstname}</p>
           </div>
           <div className="sticky-nav-optons">
           <button
