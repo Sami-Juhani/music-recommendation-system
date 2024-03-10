@@ -4,6 +4,7 @@ pipeline {
     environment {
         SPOTIFY_CLIENT_ID = credentials('SPOTIFY_CLIENT_ID')
         SPOTIFY_CLIENT_SECRET = credentials('SPOTIFY_CLIENT_SECRET')
+        DB_ADMIN = credentials('DB_ADMIN')
         DB_HOST = credentials('DB_HOST')
         DB_PASSWORD = credentials('DB_PASSWORD')
         DJANGO_ENV = credentials('DJANGO_ENV')
@@ -56,6 +57,23 @@ pipeline {
                         . venv/bin/activate
                         yes | coverage run manage.py test
                         '''
+                    }
+                }
+            }
+        }
+
+        stage('Build React App and deploy into AWS S3 bucket') {
+            steps {
+                script {
+                    nodejs(nodeJSInstallationName: 'NodeJS') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh '''
+                        cd ${WORKSPACE}/frontend
+                        CI=false npm install
+                        CI=false npm run build
+                        aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
+                        '''
+                        }
                     }
                 }
             }

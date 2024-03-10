@@ -19,7 +19,7 @@ backend/.coverage
 backend/htmlcov
 
 # production
-/build
+frontend/build/
 
 # misc
 **cache**
