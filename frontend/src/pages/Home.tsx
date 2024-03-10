@@ -11,6 +11,7 @@ import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
+import { UserContext } from "../context/UserContextProvider";
 
 const Home: React.FC = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -28,8 +29,6 @@ const Home: React.FC = () => {
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
-
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     const getPlaylists = async () => {
