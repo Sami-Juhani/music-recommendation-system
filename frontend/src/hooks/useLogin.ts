@@ -28,6 +28,8 @@ export const useLogin = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+  const [error, setError] = useState<string>('');
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -40,9 +42,12 @@ export const useLogin = () => {
         credentials: 'include'
       }); 
       
-      if (response.status !== 200) return 
-      
       const data = await response.json();
+      if (response.status !== 200) {
+        // Set the error message based on response
+        setError(data.message || 'An unexpected error occurred. Please try again.');
+        return;
+      } 
 
       setUser(data.user)
       
@@ -75,7 +80,7 @@ export const useLogin = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, error };
 };
 
 export default useLogin;

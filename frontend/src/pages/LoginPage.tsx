@@ -9,7 +9,7 @@ import { useLogin } from '../hooks/useLogin'
 
 
 export default function Login() {
-  const { formData, handleChange, handleSubmit } = useLogin();
+  const { formData, handleChange, handleSubmit, error } = useLogin();
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
@@ -47,6 +47,8 @@ export default function Login() {
             formData={formData.password}
             handleChange={handleChange}
           />
+          
+          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
 
           <PrimaryButton type="submit" className="mt-5">
             Log In

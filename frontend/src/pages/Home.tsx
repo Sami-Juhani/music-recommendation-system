@@ -9,9 +9,10 @@ import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
+import { UserContext } from "../context/UserContextProvider";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
-import { UserContext } from "../context/UserContextProvider";
+
 
 const Home: React.FC = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -34,6 +35,7 @@ const Home: React.FC = () => {
     const getPlaylists = async () => {
       setAllPLIsLoading(true); // Start loading
       try {
+
         const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
           credentials: 'include',
         });
@@ -64,7 +66,9 @@ const Home: React.FC = () => {
       try {
         const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
+
         const response = await fetch(BASE_URL + `/api/spotify/playlist/${id}/`, {
+          
           credentials: 'include'
         });
 
@@ -126,7 +130,9 @@ const Home: React.FC = () => {
     try {
       const id = selectedPlaylistIndex; // Replace with the actual id you want to use
 
+
       const response = await fetch(BASE_URL + `/api/recommendations/generate/${id}`, {
+        
         credentials: 'include'
       });
 
