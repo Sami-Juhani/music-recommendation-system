@@ -9,6 +9,8 @@ import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { useGeneratedContext } from "../hooks/useGeneratedContext";
 import { useLogout } from "../hooks/useLogout";
+import { Link } from "react-router-dom";
+import PathConstants from "../routes/PathConstants";
 
 const Home: React.FC = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -160,7 +162,12 @@ const Home: React.FC = () => {
             <p>Username</p>
           </div>
           <div className="sticky-nav-optons">
-          <button
+            <button>
+              <Link to={PathConstants.PROFILE_UPDATE} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
+                Edit User
+              </Link>
+            </button>
+            <button
                   onClick={logout} 
                   className="badge nav-item hide">Log out</button>
                 {/* <button className="badge nav-item dark-badge">Sign up</button> */}

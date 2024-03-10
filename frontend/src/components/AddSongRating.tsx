@@ -16,7 +16,7 @@ const AddSongRating = ({ spotifyId }: { spotifyId: string }) => {
         }
 
         setRating(newRating);
-        };
+    };
 
     const handleSubmitRating = async () => {
         try {
