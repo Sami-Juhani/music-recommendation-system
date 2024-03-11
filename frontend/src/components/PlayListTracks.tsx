@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import msToMinutesAndSeconds from '../utils/timeConvret';
 import PlayListHeader from './PlayListHeader';
 import testAlbum from '../assets/album.webp';
@@ -14,9 +14,15 @@ interface TracksPlayListProps {
 
 const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
     const [selectedSong, setSelectedSong] = useState<any>(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.addEventListener('ended', handleAudioEnded);
+        }
+    }, []);
 
     const handleSongClick = (song: any, e: React.MouseEvent<HTMLDivElement>) => {
-        
         const isRatingInput = (e.target as HTMLElement).classList.contains('rating-input');
         const isSubmitButton = (e.target as HTMLElement).classList.contains('submit-button');
 
@@ -29,6 +35,34 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
         } else {
             setSelectedSong(song);
         }
+    };
+
+    const handleAudioToggle = (song: any, e: React.MouseEvent<HTMLButtonElement>) => {
+        // Prevent the event from propagating to the parent elements
+        e.stopPropagation();
+
+        if (selectedSong && selectedSong.id === song.id) {
+            // Toggle the playing state for the current song
+            setSelectedSong({ ...selectedSong, isPlaying: !selectedSong.isPlaying });
+            if (audioRef.current) {
+                if (selectedSong.isPlaying) {
+                    audioRef.current.pause();
+                } else {
+                    audioRef.current.play();
+                }
+            }
+        } else {
+            // Select the new song and set its playing state to true
+            setSelectedSong({ ...song, isPlaying: true });
+            if (audioRef.current) {
+                audioRef.current.src = song.preview_url;
+                audioRef.current.play();
+            }
+        }
+    };
+
+    const handleAudioEnded = () => {
+        setSelectedSong({ ...selectedSong, isPlaying: false });
     };
 
     return (
@@ -58,6 +92,12 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
                                     <span>{msToMinutesAndSeconds(item.track.duration_ms)}</span>
                                 </div>
                                 <div className="col">
+                                    {/* Display play/pause button */}
+                                    {selectedSong && selectedSong.id === item.track.id ? (
+                                        <button onClick={(e) => handleAudioToggle(item.track, e)}>{selectedSong.isPlaying ? "Pause" : "Play"}</button>
+                                    ) : null}
+                                </div>
+                                <div className="col">
                                     {/* Display SongRating component */}
                                     {selectedSong && selectedSong.id === item.track.id && (
                                         <SongRating spotifyId={item.track.id} />
@@ -80,6 +120,10 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({ playlist, selectedPlayl
                     </>
                 )}
             </div>
+            {/* Audio element for playback */}
+            {selectedSong && (
+                <audio ref={audioRef} src={selectedSong.preview_url} autoPlay={selectedSong.isPlaying} />
+            )}
         </div>
     );
 };
