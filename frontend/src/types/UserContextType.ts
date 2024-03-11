@@ -1,5 +1,7 @@
+import { UserType } from "./UserType";
+
 export type UserContextType = {
-    user?: object;
-    setUser: React.Dispatch<React.SetStateAction<object | undefined>>;
-    children: React.ReactNode;
-  };
+  user?: UserType | undefined;
+  setUser: React.Dispatch<React.SetStateAction<object | undefined>>;
+  children: React.ReactNode;
+};
