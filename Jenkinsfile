@@ -8,7 +8,7 @@ pipeline {
         DB_HOST = credentials('DB_HOST')
         DB_PASSWORD = credentials('DB_PASSWORD')
         DJANGO_ENV = credentials('DJANGO_ENV')
-        DOCKER_CREDENTIALS = credentials('samipaandocker')
+        DOCKER_CREDENTIALS_ID = 'samipaandocker'
         DOCKER_IMAGE_TAG = "latest"
         DOCKERHUB_REPO = "samijuhani/music-recommender"
     }
@@ -73,19 +73,28 @@ pipeline {
             }
         }
 
-        stage('Build React App and deploy into AWS S3 bucket') {
+        stage('Build React App') {
             steps {
                 script {
                     nodejs(nodeJSInstallationName: 'NodeJS') {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         sh '''
                         cd ${WORKSPACE}/frontend
                         echo "REACT_APP_BASE_URL=https://apimusicrecommender.samipaan.com" > .env.production
                         CI=false npm install
                         CI=false npm run build
-                        aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
                         '''
-                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy into AWS') {
+            steps {
+                script {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh '''
+                        aws s3 cp ${WORKSPACE}/frontend/build/ s3://samipaan.com/music-recommender --recursive
+                        '''
                     }
                 }
             }
@@ -102,7 +111,7 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                         docker.image("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
