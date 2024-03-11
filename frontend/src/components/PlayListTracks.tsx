@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import msToMinutesAndSeconds from "../utils/timeConvret";
 import PlayListHeader from "./PlayListHeader";
 import testAlbum from "../assets/album.webp";
@@ -16,6 +16,13 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
   onePLIsLoading,
 }) => {
   const [selectedSong, setSelectedSong] = useState<any>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.addEventListener("ended", handleAudioEnded);
+    }
+  }, []);
 
   const handleSongClick = (song: any, e: React.MouseEvent<HTMLDivElement>) => {
     const isRatingInput = (e.target as HTMLElement).classList.contains(
@@ -36,6 +43,37 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
     }
   };
 
+  const handleAudioToggle = (
+    song: any,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    // Prevent the event from propagating to the parent elements
+    e.stopPropagation();
+
+    if (selectedSong && selectedSong.id === song.id) {
+      // Toggle the playing state for the current song
+      setSelectedSong({ ...selectedSong, isPlaying: !selectedSong.isPlaying });
+      if (audioRef.current) {
+        if (selectedSong.isPlaying) {
+          audioRef.current.pause();
+        } else {
+          audioRef.current.play();
+        }
+      }
+    } else {
+      // Select the new song and set its playing state to true
+      setSelectedSong({ ...song, isPlaying: true });
+      if (audioRef.current) {
+        audioRef.current.src = song.preview_url;
+        audioRef.current.play();
+      }
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setSelectedSong({ ...selectedSong, isPlaying: false });
+  };
+
   return (
     <div className="list">
       <PlayListHeader />
@@ -45,7 +83,7 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
             return (
               <div
                 className="row"
-                key={item.track.id}
+                key={index}
                 onClick={(e) => handleSongClick(item.track, e)}
               >
                 <div className="col">
@@ -63,11 +101,7 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                     />
                   </div>
                   <div className="info">
-                    <span className="name">
-                      {item.track.name.length > 20
-                        ? item.track.name.slice(0, 20) + " ..."
-                        : item.track.name}
-                    </span>
+                    <span className="name">{item.track.name}</span>
                     <span>
                       {item.track.artists
                         ? item.track.artists[0].name
@@ -75,11 +109,19 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                     </span>
                   </div>
                 </div>
-                <div className="col album-info">
+                <div className="col">
                   <span>{item.track.album.name}</span>
                 </div>
                 <div className="col">
                   <span>{msToMinutesAndSeconds(item.track.duration_ms)}</span>
+                </div>
+                <div className="col">
+                  {/* Display play/pause button */}
+                  {selectedSong && selectedSong.id === item.track.id ? (
+                    <button onClick={(e) => handleAudioToggle(item.track, e)}>
+                      {selectedSong.isPlaying ? "Pause" : "Play"}
+                    </button>
+                  ) : null}
                 </div>
                 <div className="col">
                   {/* Display SongRating component */}
@@ -104,6 +146,14 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
           </>
         )}
       </div>
+      {/* Audio element for playback */}
+      {selectedSong && (
+        <audio
+          ref={audioRef}
+          src={selectedSong.preview_url}
+          autoPlay={selectedSong.isPlaying}
+        />
+      )}
     </div>
   );
 };
