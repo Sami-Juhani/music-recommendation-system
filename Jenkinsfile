@@ -44,23 +44,31 @@ pipeline {
              }
         }           
 
-        stage('Run tests') {
-            steps {
-                script {
-                    sh '''
-                    cd ${WORKSPACE}/backend
-                    . venv/bin/activate
-                    yes | coverage run manage.py test
-                    '''     
-                }
+    stage('Run tests') {
+        steps {
+            script {
+                sh '''
+                cd ${WORKSPACE}/backend
+                . venv/bin/activate
+                yes | coverage run manage.py test
+                '''     
             }
-            post {
-                success {
-                    sh '''
-                    cd ${WORKSPACE}/backend
-                    . venv/bin/activate
-                    coverage html
-                    '''
+        }
+        post {
+            success {
+                sh '''
+                cd ${WORKSPACE}/backend
+                . venv/bin/activate
+                coverage html
+                '''
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: "${WORKSPACE}/backend/htmlcov",
+                    reportFiles: "index.html",
+                    reportName: "Coverage Report"
+                    ])
                 }
             }
         }
@@ -109,21 +117,6 @@ pipeline {
                     docker rm music-recommender-container || true
                     docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}
                     '''
-                }
-            }
-        }
-
-        post {
-            always {
-                script {
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        reportDir: "${WORKSPACE}/backend/htmlcov",
-                        reportFiles: "index.html",
-                        reportName: "Coverage Report"
-                    ])
                 }
             }
         }
