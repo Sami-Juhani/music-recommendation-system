@@ -8,6 +8,5 @@ export const useMusicGetAllContext = () => {
         "useMusicGetAllContext must be used within a MusicGetAllContextProvider"
       );
     }
-    console.log(context);
     return context;
   }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, createContext } from "react";
 import { UserContextType } from "../types/UserContextType";
+import { UserType } from "../types/UserType";
 
-const BASE_URL=process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 
 
@@ -11,7 +12,11 @@ export const UserContext = createContext<UserContextType>({
   children: undefined,
 });
 
-export function UserContextProvider({ children }: { children: React.ReactNode }) {
+export function UserContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<object | undefined>(undefined);
 
   useEffect(() => {
@@ -29,10 +34,9 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
         }
 
         const data = await response.json();
-        
+
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
-
       } catch (error: any) {
         if (error.name === "AbortError") {
           return;
@@ -47,7 +51,7 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, children }}>
+    <UserContext.Provider value={{ user: user as UserType, setUser, children }}>
       {children}
     </UserContext.Provider>
   );

@@ -8,6 +8,5 @@ export const useGeneratedContext = () => {
         "useGeneratedContext must be used within a GeneratedContextProvider"
       );
     }
-    console.log(context);
     return context;
   }
