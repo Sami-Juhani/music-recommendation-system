@@ -104,16 +104,14 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    if (isUnix()) {
-                        sh '''
-                        docker stop -t 10 music-recommender-container || true 
-                        docker rm music-recommender-container || true
-                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}
-                        '''
+                    sh '''
+                    docker stop -t 10 music-recommender-container || true 
+                    docker rm music-recommender-container || true
+                    docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}
+                    '''
                 }
             }
         }
-    }
 
     post {
         always {
