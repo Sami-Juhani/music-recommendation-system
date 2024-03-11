@@ -31,6 +31,7 @@ const Home: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { user } = useContext(UserContext);
 
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -157,17 +158,16 @@ const Home: React.FC = () => {
             <p>{user?.firstName}</p>
           </div>
           <div className="sticky-nav-optons">
-            <button>
-              <Link
-                to={PathConstants.PROFILE_UPDATE}
-                className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2"
-              >
+            <button className="badge nav-item dark-badge">
+              <Link to={PathConstants.PROFILE_UPDATE} >
                 Edit User
               </Link>
             </button>
-            <button onClick={logout} className="badge nav-item hide">
-              Log out
-            </button>
+            <button
+                  onClick={logout} 
+                  className="badge nav-item hide">Log out</button>
+            <button>
+
           </div>
         </div>
         {playlist ? (
