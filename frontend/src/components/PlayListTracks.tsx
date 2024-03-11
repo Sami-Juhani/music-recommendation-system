@@ -19,10 +19,18 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.addEventListener("ended", handleAudioEnded);
-    }
-  }, []);
+    const handleEnd = () => {
+      setSelectedSong({ ...selectedSong, isPlaying: false });
+    };
+
+    if (audioRef.current == null) return;
+
+    const currentAudioRef = audioRef.current;
+
+    currentAudioRef.addEventListener("ended", handleEnd);
+
+    return () => currentAudioRef.removeEventListener("ended", handleEnd);
+  }, [selectedSong]);
 
   const handleSongClick = (song: any, e: React.MouseEvent<HTMLDivElement>) => {
     const isRatingInput = (e.target as HTMLElement).classList.contains(
@@ -50,28 +58,20 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
     // Prevent the event from propagating to the parent elements
     e.stopPropagation();
 
+    if (audioRef.current == null) return;
+
     if (selectedSong && selectedSong.id === song.id) {
       // Toggle the playing state for the current song
       setSelectedSong({ ...selectedSong, isPlaying: !selectedSong.isPlaying });
-      if (audioRef.current) {
-        if (selectedSong.isPlaying) {
-          audioRef.current.pause();
-        } else {
-          audioRef.current.play();
-        }
-      }
+
+      if (selectedSong.isPlaying) audioRef.current.pause();
+      else audioRef.current.play();
     } else {
       // Select the new song and set its playing state to true
       setSelectedSong({ ...song, isPlaying: true });
-      if (audioRef.current) {
-        audioRef.current.src = song.preview_url;
-        audioRef.current.play();
-      }
+      audioRef.current.src = song.preview_url;
+      audioRef.current.play();
     }
-  };
-
-  const handleAudioEnded = () => {
-    setSelectedSong({ ...selectedSong, isPlaying: false });
   };
 
   return (
