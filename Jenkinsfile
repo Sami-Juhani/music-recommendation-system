@@ -69,7 +69,7 @@ pipeline {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         sh '''
                         cd ${WORKSPACE}/frontend
-                        echo "REACT_APP_BASE_URL=https://apimusicrecommender.samipaan.com" > .env.development
+                        echo "REACT_APP_BASE_URL=https://apimusicrecommender.samipaan.com" > .env.production
                         CI=false npm install
                         CI=false npm run build
                         aws s3 cp build/ s3://samipaan.com/music-recommender --recursive
