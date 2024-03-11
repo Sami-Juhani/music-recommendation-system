@@ -172,8 +172,8 @@ const Home: React.FC = () => {
             <p>{user && user.firstname}</p>
           </div>
           <div className="sticky-nav-optons">
-            <button>
-              <Link to={PathConstants.PROFILE_UPDATE} className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2">
+            <button className="badge nav-item dark-badge">
+              <Link to={PathConstants.PROFILE_UPDATE} >
                 Edit User
               </Link>
             </button>
@@ -181,6 +181,7 @@ const Home: React.FC = () => {
                   onClick={logout} 
                   className="badge nav-item hide">Log out</button>
                 {/* <button className="badge nav-item dark-badge">Sign up</button> */}
+                {/* className="text-white py-2 px-4 rounded-lg bg-green-500 mr-2" */}
             
           </div>
         </div>
