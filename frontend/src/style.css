@@ -199,7 +199,7 @@ a {
     display: flex;
     flex-direction: column;
     background-color: #232323;
-    height: 350px;
+    /* height: 350px; */
     border-radius: 0.5rem;
     padding: 1rem;
     margin-left: 1.5rem;
@@ -257,11 +257,15 @@ a {
     padding-left: 1rem;
     font-size: medium;
     color: #a7a7a7;
+    overflow: hidden;
+    width: 200px;
+    height: 24px;
 }
 .card-year {
     padding-left: 1rem;
     font-size: medium;
     color: #a7a7a7;
+    padding-bottom: 1rem;
 }
 .card-img {
     width: 100%;
@@ -271,6 +275,8 @@ a {
 .card-title {
     font-weight: 600;
     margin-bottom: 0.5rem;
+    height: 75px;
+    overflow: hidden;
 }
 
 .card-info {

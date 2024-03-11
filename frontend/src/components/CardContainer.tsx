@@ -19,7 +19,7 @@ export const CardContainer:React.FC<CardContainerProps> = ({generated}) => {
             <div key={generated.id[index]} className="card">
               <img src={imageUrl} className="card-img" alt={`${name} album cover`} />
               <div className="card-content">
-                <h2 className="card-title">{name}</h2>
+                <h2 className="card-title">{name.length > 42 ? name.slice(0, 42)+"..." : name}</h2>
                 <p className="card-artists">{artists}</p>
                 <p className="card-year">Year: {albumYear}</p>
               </div>
