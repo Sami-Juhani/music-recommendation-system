@@ -7,35 +7,31 @@ import PathConstants from "../routes/PathConstants";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const useLogout = () => {
- 
-
   const navigate = useNavigate();
 
-  const { setUser } : UserContextType = useContext<UserContextType>(UserContext);
-
+  const { setUser }: UserContextType = useContext<UserContextType>(UserContext);
 
   const logout = () => {
-      fetch(`${BASE_URL}/api/user/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-          credentials: 'include',
+    fetch(`${BASE_URL}/api/user/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then(() => {
+        setUser(undefined);
+        console.log("User logged out");
       })
-        .then(() => {
-          setUser(undefined);
-          console.log("User logged out");
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        })
-        .finally(() => {
-            navigate(PathConstants.HOME);
-    });
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        navigate(PathConstants.HOME);
+      });
+  };
 
+  return { logout };
 };
-    
-      return { logout };
-    }	
 
 export default useLogout;
