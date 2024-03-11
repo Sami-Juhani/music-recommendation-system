@@ -145,7 +145,17 @@
   python manage.py test
   ```
 
-- Luo testi kattavuusraportti:
+- Aja kattavuusraportti:
+  ```bash
+  coverage run manage.py test
+  ```
+
+- Luo kattavuusraportt:
+  ```bash
+  coverage report
+  ```
+
+- Luo kattavuusraportti html muotoon:
   ```bash
   coverage html
   ```
