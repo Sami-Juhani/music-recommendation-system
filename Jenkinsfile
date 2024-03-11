@@ -113,17 +113,18 @@ pipeline {
             }
         }
 
-    post {
-        always {
-            script {
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: "${WORKSPACE}/backend/htmlcov",
-                    reportFiles: "index.html",
-                    reportName: "Coverage Report"
-                ])
+        post {
+            always {
+                script {
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "${WORKSPACE}/backend/htmlcov",
+                        reportFiles: "index.html",
+                        reportName: "Coverage Report"
+                    ])
+                }
             }
         }
     }
