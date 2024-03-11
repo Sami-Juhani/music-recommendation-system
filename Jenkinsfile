@@ -8,6 +8,9 @@ pipeline {
         DB_HOST = credentials('DB_HOST')
         DB_PASSWORD = credentials('DB_PASSWORD')
         DJANGO_ENV = credentials('DJANGO_ENV')
+        DOCKER_CREDENTIALS = credentials('samipaandocker')
+        DOCKER_IMAGE_TAG = "latest"
+        DOCKERHUB_REPO = "samijuhani/music-recommender"
     }
 
     stages {
@@ -43,21 +46,21 @@ pipeline {
 
         stage('Run tests') {
             steps {
-                // Run Django tests with coverage
                 script {
-                    if (isUnix()) {
-                        sh '''
-                        cd ${WORKSPACE}/backend
-                        . venv/bin/activate
-                        yes | coverage run manage.py test
-                        '''
-                    } else {
-                        bat '''
-                        cd ${WORKSPACE}/backend
-                        . venv/bin/activate
-                        yes | coverage run manage.py test
-                        '''
-                    }
+                    sh '''
+                    cd ${WORKSPACE}/backend
+                    . venv/bin/activate
+                    yes | coverage run manage.py test
+                    '''     
+                }
+            }
+            post {
+                success {
+                    sh '''
+                    cd ${WORKSPACE}/backend
+                    . venv/bin/activate
+                    coverage html
+                    '''
                 }
             }
         }
@@ -82,22 +85,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Build Docker image
                 script {
-                    if (isUnix()) {
-                        sh '''
-                        cd ${WORKSPACE}
-                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
-                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
-                        docker build -t music-recommender .
-                        '''
-                    } else {
-                        bat '''
-                        cd ${WORKSPACE}
-                        cp /var/lib/jenkins/envs/.musicrecommender backend/.env
-                        cp -r /var/lib/jenkins/data/. backend/recommendations/data
-                        docker build -t music-recommender .
-                        '''
+                    docker.build("music-recommender:${DOCKER_IMAGE_TAG}")
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
+                        docker.image("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
@@ -105,21 +103,13 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                // Run Docker container
                 script {
                     if (isUnix()) {
                         sh '''
                         docker stop -t 10 music-recommender-container || true 
                         docker rm music-recommender-container || true
-                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
+                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}
                         '''
-                    } else {
-                        bat '''
-                        docker stop -t 10 music-recommender-container || true 
-                        docker rm music-recommender-container || true
-                        docker run -d -p 4000:4000 --env-file /var/lib/jenkins/envs/.musicrecommender --name music-recommender-container music-recommender
-                        '''
-                    }
                 }
             }
         }
@@ -127,32 +117,16 @@ pipeline {
 
     post {
         always {
-            // Generate HTML coverage report
             script {
-                if (isUnix()) {
-                    sh '''
-                    cd ${WORKSPACE}/backend
-                    . venv/bin/activate
-                    coverage html
-                    '''
-                } else {
-                    bat '''
-                    cd ${WORKSPACE}/backend
-                    . venv/bin/activate
-                    coverage html
-                    '''
-                }
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: "${WORKSPACE}/backend/htmlcov",
+                    reportFiles: "index.html",
+                    reportName: "Coverage Report"
+                ])
             }
-
-            // Publish HTML coverage report
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: "${WORKSPACE}/backend/htmlcov",
-                reportFiles: "index.html",
-                reportName: "Coverage Report"
-            ])
         }
     }
 }
