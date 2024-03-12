@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import msToMinutesAndSeconds from "../utils/timeConvret";
 import PlayListHeader from "./PlayListHeader";
 import testAlbum from "../assets/album.webp";
@@ -119,7 +121,9 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                   {/* Display play/pause button */}
                   {selectedSong && selectedSong.id === item.track.id ? (
                     <button onClick={(e) => handleAudioToggle(item.track, e)}>
-                      {selectedSong.isPlaying ? "Pause" : "Play"}
+                      <FontAwesomeIcon
+                        icon={selectedSong.isPlaying ? faPause : faPlay}
+                      />
                     </button>
                   ) : null}
                 </div>
