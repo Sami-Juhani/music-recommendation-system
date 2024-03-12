@@ -69,7 +69,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               ))
             ) : (
-              <div>Something went wrong</div>
+              <div className="sidebar-error">
+                ----------- ERROR! ------------
+                <br /> Something went wrong
+              </div>
             )}
           </div>
         </div>
