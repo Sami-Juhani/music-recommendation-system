@@ -12,6 +12,7 @@ import { useLogout } from "../hooks/useLogout";
 import { UserContext } from "../context/UserContextProvider";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
+import Modal from '../components/Modal';
 
 
 const Home: React.FC = () => {
@@ -30,9 +31,18 @@ const Home: React.FC = () => {
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
-
+  const showModal = (message: string) => {
+    setModalMessage(message);
+    setIsModalVisible(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+  
   useEffect(() => {
     const getPlaylists = async () => {
       setAllPLIsLoading(true); // Start loading
@@ -54,7 +64,7 @@ const Home: React.FC = () => {
       } catch (error) {
         console.log(error);
         dispatchPlaylists({ type: "SET_PLAYLISTS", payload: [playlists] });
-        //setError(true);
+        showModal('An error occurred. Please try again.');
       }
 
       setAllPLIsLoading(false);
@@ -86,6 +96,7 @@ const Home: React.FC = () => {
       } catch (error) {
         console.log(error);
         dispatchSingle({ type: "SET_PLAYLIST", payload: [] });
+        showModal('An error occurred. Please try again.');
         //setError(true);
       }
       setOnePLIsLoading(false);
@@ -151,6 +162,7 @@ const Home: React.FC = () => {
     } catch (error) {
       console.log(error);
       dispatchGenerated({ type: "SET_GENERATED", payload: [] });
+      showModal('An error occurred. Please try again.');
       //setError(true);
     }
     document
@@ -208,7 +220,13 @@ const Home: React.FC = () => {
             generatedIsLoading = {generatedIsLoading}/>
         </div>) : null}
 
+
       </div>
+      <Modal
+      isVisible={isModalVisible}
+      message={modalMessage}
+      onClose={closeModal}
+      />
     </div>
 
 
