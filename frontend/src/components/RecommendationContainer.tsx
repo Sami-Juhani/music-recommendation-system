@@ -16,16 +16,12 @@ const RecommendationsContainer: React.FC<RecommendationsContainerProps> = ({
   playlist,
   generated,
 }) => {
-  return (
-    <div className={`cards-container ${isVisible ? "" : "hidden"}`}>
+  return isVisible && generated?.name?.length > 0 ? (
+    <div className="cards-container">
       <h1>List of recommendations based on {`"${playlist.name}"`}</h1>
-      {generated && generated.name && generated.name.length > 0 ? (
-        <CardContainer generated={generated} />
-      ) : (
-        <h2>Sorry. Something went wrong. Try again</h2>
-      )}
+      <CardContainer generated={generated} />
     </div>
-  );
+  ) : null;
 };
 
 export default RecommendationsContainer;

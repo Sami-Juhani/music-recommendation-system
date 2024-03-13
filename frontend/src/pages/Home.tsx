@@ -29,6 +29,7 @@ const Home: React.FC = () => {
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
+  const [searchRecommendationsError, setSearchRecommendationsError] = useState("");
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -100,6 +101,7 @@ const Home: React.FC = () => {
   const generateRecommendation = async () => {
     try {
       setGeneratedIsLoading(true);
+      setSearchRecommendationsError("");
       const response = await fetch(
         BASE_URL + `/api/recommendations/generate/${selectedPlaylistIndex}`,
         {
@@ -107,7 +109,8 @@ const Home: React.FC = () => {
         }
       );
       if (!response.ok) {
-        console.log(`ERROR: ${await response.text()}`);
+        const responseError = await response.json();
+        setSearchRecommendationsError(responseError.message);
         return;
       } else {
         const data = await response.json();
@@ -122,6 +125,8 @@ const Home: React.FC = () => {
   };
 
   const handlePlaylistClick = (index: number) => {
+    setSearchRecommendationsError("");
+
     if (selectedPlaylistIndex !== null) {
       document
         ?.querySelector(
@@ -129,6 +134,7 @@ const Home: React.FC = () => {
         )
         ?.classList.remove("pushed");
     }
+    
     setIsVisible(false);
     setSelectedPlaylistIndex(index);
     dispatchGenerated({ type: "SET_GENERATED", payload: [] });
@@ -174,6 +180,7 @@ const Home: React.FC = () => {
               onePLIsLoading={onePLIsLoading}
               allPLisLoading={allPLisLoading}
               generatedIsLoading={generatedIsLoading}
+              searchRecommendationsError={searchRecommendationsError}
               isVisible={isVisible}
             />
           </div>

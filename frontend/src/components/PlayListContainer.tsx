@@ -10,6 +10,7 @@ interface PlayListContainerProps {
   onePLIsLoading: boolean;
   allPLisLoading: boolean;
   generatedIsLoading: boolean;
+  searchRecommendationsError: string;
   isVisible: boolean;
 }
 
@@ -19,6 +20,7 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({
   generateRecommendation,
   onePLIsLoading,
   allPLisLoading,
+  searchRecommendationsError,
   isVisible,
   generatedIsLoading,
 }) => {
@@ -38,12 +40,12 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({
           {generatedIsLoading ? "Loading..." : "Generate recommendations"}
         </button>
       </div>
-      {!generatedIsLoading && !isVisible && (
+      {!generatedIsLoading && !isVisible && !searchRecommendationsError ? (
         <PlayListTracks
           playlist={playlist}
           onePLIsLoading={onePLIsLoading}
         />
-      )}
+      ) : <h2 className="text-center text-xl">{searchRecommendationsError}</h2>}
     </div>
   );
 };

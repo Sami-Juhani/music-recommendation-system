@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     alt="playlist"
                   />
                   <div className="preview-text">
-                    <h1>{playlist.name}</h1>
+                    <h1>{playlist.name && playlist.name.slice(0, 20)}</h1>
                     <p>{playlist.type}</p>
                   </div>
                 </div>
