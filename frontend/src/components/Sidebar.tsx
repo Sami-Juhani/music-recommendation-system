@@ -64,7 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   />
                   <div className="preview-text">
                     <h1>{playlist.name}</h1>
-                    <p>{playlist.description}</p>
+                    <p>{playlist.type}</p>
                   </div>
                 </div>
               ))
