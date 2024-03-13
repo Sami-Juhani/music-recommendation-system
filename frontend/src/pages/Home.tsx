@@ -13,10 +13,7 @@ import { useLogout } from "../hooks/useLogout";
 import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
-import { NotificationModal } from "../components/NotificationModal";
 import PathConstants from "../routes/PathConstants";
-import { NotificationContext } from "../context/NotificationContextProvider";
-import { NotificationType } from "../types/NotificationType";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -35,7 +32,7 @@ const Home: React.FC = () => {
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
   const { user } = useContext(UserContext);
-  const { notification, setNotification } = useContext(NotificationContext);
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -210,13 +207,7 @@ const Home: React.FC = () => {
           </div>
         )}
       </div>
-      {notification?.text && (
-        <NotificationModal
-          text={notification.text}
-          success={notification.success}
-          setNotification={setNotification}
-        />
-      )}
+
     </div>
   );
 };

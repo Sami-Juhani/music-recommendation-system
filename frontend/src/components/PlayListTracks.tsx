@@ -6,7 +6,6 @@ import PlayListHeader from "./PlayListHeader";
 import testAlbum from "../assets/album.webp";
 import { Playlist } from "../types/PlayListInterface";
 import SongRating from "./SongRating";
-import AddSongRating from "./AddSongRating";
 
 interface TracksPlayListProps {
   playlist: Playlist;

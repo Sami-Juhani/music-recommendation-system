@@ -9,29 +9,34 @@ export const NotificationModal = ({
   success,
   setNotification,
 }: {
-  text: string;
-  success: boolean;
+  text: string | undefined;
+  success: boolean | undefined;
   setNotification: Dispatch<SetStateAction<NotificationType>>;
 }) => {
-  const baseStyles = "flex justify-center items-center px-4 py-4";
+  const baseStyles =
+  "flex justify-center items-center transition-opacity duration-1000 ease-in-out transition-visibility";
   const modalStyles = success ? "bg-green-100" : "bg-red-100";
 
   return createPortal(
-    <div className={`${baseStyles} ${modalStyles}`}>
-      <div className={`relative rounded-lg p-4 shadow-lg`}>
-        <h1 className="text-xl text-black font-bold mb-4">
+    <div
+      className={`${baseStyles} ${modalStyles} ${
+        text ? "opacity-100 visible h-auto py-4" : "opacity-0 invisible h-0"
+      }`}
+    >
+      <div className={`relative rounded-lg p-4 shadow-lg ${success? "bg-green-200" : "bg-red-200"}`}>
+        <h1 className="text-l text-black font-bold mb-4">
           {success ? "Success" : "Error"}
         </h1>
         <span className="text-black">{text}</span>
         <FontAwesomeIcon
-          className="absolute top-2 right-2 pointer-events-auto"
+          className="absolute top-2 right-2 pointer-events-auto cursor-pointer"
           icon={faTimes}
           size="lg"
           color="black"
           onClick={() => {
             setNotification({
+              success: success as boolean,
               text: "",
-              success: false,
             });
           }}
         />

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../styles/SongRating.css";
+import { NotificationContext } from "../context/NotificationContextProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -7,6 +8,7 @@ const SongRating = ({ spotifyId }: { spotifyId: string }) => {
   const [rating, setRating] = useState(0);
   const [newRating, setNewRating] = useState(0);
   const [numberOfReviews, setNumberOfReviews] = useState(0);
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     const fetchRating = async () => {
@@ -25,7 +27,7 @@ const SongRating = ({ spotifyId }: { spotifyId: string }) => {
     };
 
     fetchRating();
-  }, []);
+  }, [spotifyId]);
 
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newInputRating = parseInt(e.target.value);
@@ -56,8 +58,10 @@ const SongRating = ({ spotifyId }: { spotifyId: string }) => {
         const newSongRating = await response.json();
         setRating(newSongRating.overall_rating);
         setNumberOfReviews(newSongRating.number_of_reviews);
+        setNotification({text: "Review submitted succesfully", success: true})
       } else {
         console.error(`ERROR: ${await response.text()}`);
+        setNotification({text: "Error submitting review", success: false})
       }
     } catch (error) {
       console.error("Error adding rating:", error);
