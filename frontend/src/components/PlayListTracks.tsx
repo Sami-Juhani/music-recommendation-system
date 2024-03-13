@@ -128,15 +128,8 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                   ) : null}
                 </div>
                 <div className="col">
-                  {/* Display SongRating component */}
                   {selectedSong && selectedSong.id === item.track.id && (
                     <SongRating spotifyId={item.track.id} />
-                  )}
-                </div>
-                <div className="col">
-                  {/* AddSongRating component with condition to display only when a song is selected */}
-                  {selectedSong && selectedSong.id === item.track.id && (
-                    <AddSongRating spotifyId={selectedSong.id} />
                   )}
                 </div>
               </div>
