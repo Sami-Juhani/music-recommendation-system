@@ -20,6 +20,7 @@ export const useLogin = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -45,6 +46,10 @@ export const useLogin = () => {
       if (response.status !== 200) {
         const error = await response.json();
         setNotification({ text: error.message, success: false });
+        setError(
+          error.message || "An unexpected error occurred. Please try again."
+        );
+        return;
       }
 
       const data = await response.json();
@@ -81,7 +86,7 @@ export const useLogin = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, error };
 };
 
 export default useLogin;

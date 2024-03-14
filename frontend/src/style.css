@@ -15,6 +15,7 @@ body {
 .sidebar {
     width: 340px;
     border-radius: 1rem;
+    /*1rem = 16px*/
     margin-right: 0.5rem;
     overflow: hidden;
 }
@@ -23,6 +24,7 @@ body {
     background-color: #121212;
     flex: 1;
     border-radius: 1rem;
+    /*1rem = 16px*/
     overflow: auto;
     padding: 0 1.5rem 0 1.5rem;
 }
@@ -274,8 +276,12 @@ a {
 .card-title {
     font-weight: 600;
     margin-bottom: 0.5rem;
-    height: 75px;
+    height: 80px;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
 }
 
 .card-info {
