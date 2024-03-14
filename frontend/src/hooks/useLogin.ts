@@ -45,7 +45,7 @@ export const useLogin = () => {
 
       if (response.status !== 200) {
         const error = await response.json();
-        setNotification({ text: error.message, success: false });
+        //setNotification({ text: error.message, success: false });
         setError(
           error.message || "An unexpected error occurred. Please try again."
         );

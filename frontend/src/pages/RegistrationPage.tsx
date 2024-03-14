@@ -9,7 +9,7 @@ import Loader from "../components/Loader";
 import { loader } from "../utils/loader";
 
 function Registration() {
-  const { formData, handleChange, handleSubmit } = useRegistration();
+  const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;
   const user = loaderData ? loaderData.user : null;
@@ -68,7 +68,9 @@ function Registration() {
             formData={formData.password}
             handleChange={handleChange}
           />
-          
+
+          {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+
           <PrimaryButton type="submit" className="mt-5">
             Sign In
           </PrimaryButton>

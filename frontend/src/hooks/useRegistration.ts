@@ -16,7 +16,7 @@ interface RegistrationFormState {
 const useRegistration = () => {
   const navigate = useNavigate();
   const { setNotification } = useContext(NotificationContext);
-
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState<RegistrationFormState>({
     email: "",
     first_name: "",
@@ -43,7 +43,10 @@ const useRegistration = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setNotification({ text: data.message, success: false });
+        //setNotification({ text: data.message, success: false });
+        setError(
+          data.message || "An unexpected error occurred. Please try again."
+        );
       }
 
       if (response.ok) {
@@ -58,7 +61,7 @@ const useRegistration = () => {
     }
   };
 
-  return { formData, handleChange, handleSubmit };
+  return { formData, handleChange, handleSubmit, error };
 };
 
 export default useRegistration;
