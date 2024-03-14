@@ -533,7 +533,7 @@ a {
     width: 100%;
     .header-row {
       display: grid;
-      grid-template-columns: 0.3fr 2fr 2fr 0.1fr;
+      grid-template-columns: 0.3fr 2.12fr 2fr 0.1fr;
       margin: 1rem 0 0 0;
       color: #dddcdc;
       /* position: sticky; */
