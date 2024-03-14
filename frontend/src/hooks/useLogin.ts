@@ -41,12 +41,8 @@ export const useLogin = () => {
         credentials: "include",
       });
 
-      if (response.status !== 200) {
-        console.log(`ERROR: ${await response.text()}`);
-        return;
-      }
-
       const data = await response.json();
+
       if (response.status !== 200) {
         // Set the error message based on response
         setError(
