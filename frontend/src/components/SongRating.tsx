@@ -1,33 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/SongRating.css";
 import { NotificationContext } from "../context/NotificationContextProvider";
+import { RatingType } from "../types/RatingsType";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const SongRating = ({ spotifyId }: { spotifyId: string }) => {
-  const [rating, setRating] = useState(0);
-  const [newRating, setNewRating] = useState(0);
+const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotifyId: string }) => {
+  const [rating, setRating] = useState(songRating.overall_rating);
+  const [newRating, setNewRating] = useState(songRating.number_of_reviews);
   const [numberOfReviews, setNumberOfReviews] = useState(0);
   const { setNotification } = useContext(NotificationContext);
-
-  useEffect(() => {
-    const fetchRating = async () => {
-      try {
-        const response = await fetch(
-          `${BASE_URL}/api/song-ratings/get-rating/${spotifyId}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setRating(data.overall_rating);
-          setNumberOfReviews(data.number_of_reviews);
-        }
-      } catch (error) {
-        console.error("Error fetching song rating:", error);
-      }
-    };
-
-    fetchRating();
-  }, [spotifyId]);
 
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newInputRating = parseInt(e.target.value);
@@ -69,14 +51,14 @@ const SongRating = ({ spotifyId }: { spotifyId: string }) => {
   };
 
   return (
-    <>
-      <div className="song-rating-container">
+    <div className="flex gap-[20px] py-4">
+      <div className="flex flex-col gap-[10px]">
         <p className="rating-value">Rating: {rating}</p>
         <p className="number-of-reviews">
           Number of Reviews: {numberOfReviews}
         </p>
       </div>
-      <div className="add-song-rating-container flex">
+      <div className="flex gap-[10px] items-center">
         <input
           type="number"
           min="1"
@@ -89,7 +71,7 @@ const SongRating = ({ spotifyId }: { spotifyId: string }) => {
           Submit Rating
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

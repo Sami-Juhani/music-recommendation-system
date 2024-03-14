@@ -128,7 +128,7 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                 </div>
                 <div className="col">
                   {selectedSong && selectedSong.id === item.track.id && (
-                    <SongRating spotifyId={item.track.id} />
+                    <SongRating spotifyId={item.track.id} songRating={item.rating} />
                   )}
                 </div>
               </div>
