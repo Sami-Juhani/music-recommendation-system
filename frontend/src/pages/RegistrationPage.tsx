@@ -68,9 +68,9 @@ function Registration() {
             formData={formData.password}
             handleChange={handleChange}
           />
-          
-          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-          
+
+          {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+
           <PrimaryButton type="submit" className="mt-5">
             Sign In
           </PrimaryButton>

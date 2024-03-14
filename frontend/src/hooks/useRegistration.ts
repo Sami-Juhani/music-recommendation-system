@@ -1,7 +1,8 @@
 // useRegistration.ts
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
+import { NotificationContext } from "../context/NotificationContextProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -14,7 +15,8 @@ interface RegistrationFormState {
 
 const useRegistration = () => {
   const navigate = useNavigate();
-
+  const { setNotification } = useContext(NotificationContext);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState<RegistrationFormState>({
     email: "",
     first_name: "",
@@ -27,7 +29,6 @@ const useRegistration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const [error, setError] = useState<string>("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -42,18 +43,18 @@ const useRegistration = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        console.log(`ERROR: ${await response.text()}`);
-        return;
-      }
-
-      if (response.ok) {
-        console.log("Registration successful:", data);
-        navigate(PathConstants.HOME);
-      } else {
+        //setNotification({ text: data.message, success: false });
         setError(
           data.message || "An unexpected error occurred. Please try again."
         );
-        console.error("Registration failed:", data.message);
+      }
+
+      if (response.ok) {
+        setNotification({
+          text: "Registration succesfull, please login...",
+          success: true,
+        });
+        navigate(PathConstants.HOME);
       }
     } catch (error) {
       console.error("Error:", error);

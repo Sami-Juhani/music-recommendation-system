@@ -6,7 +6,6 @@ import PlayListHeader from "./PlayListHeader";
 import testAlbum from "../assets/album.webp";
 import { Playlist } from "../types/PlayListInterface";
 import SongRating from "./SongRating";
-import AddSongRating from "./AddSongRating";
 
 interface TracksPlayListProps {
   playlist: Playlist;
@@ -128,15 +127,8 @@ const TracksPlayList: React.FC<TracksPlayListProps> = ({
                   ) : null}
                 </div>
                 <div className="col">
-                  {/* Display SongRating component */}
                   {selectedSong && selectedSong.id === item.track.id && (
-                    <SongRating spotifyId={item.track.id} />
-                  )}
-                </div>
-                <div className="col">
-                  {/* AddSongRating component with condition to display only when a song is selected */}
-                  {selectedSong && selectedSong.id === item.track.id && (
-                    <AddSongRating spotifyId={selectedSong.id} />
+                    <SongRating spotifyId={item.track.id} songRating={item.rating} />
                   )}
                 </div>
               </div>

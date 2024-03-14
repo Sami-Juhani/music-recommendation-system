@@ -1,5 +1,6 @@
 // HorizontalScrollFeed.tsx
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
@@ -12,7 +13,6 @@ import { useLogout } from "../hooks/useLogout";
 import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
-import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -29,8 +29,10 @@ const Home: React.FC = () => {
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [searchRecommendationsError, setSearchRecommendationsError] = useState("");
+  const [searchRecommendationsError, setSearchRecommendationsError] =
+    useState("");
   const { user } = useContext(UserContext);
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -134,7 +136,7 @@ const Home: React.FC = () => {
         )
         ?.classList.remove("pushed");
     }
-    
+
     setIsVisible(false);
     setSelectedPlaylistIndex(index);
     dispatchGenerated({ type: "SET_GENERATED", payload: [] });
@@ -205,6 +207,7 @@ const Home: React.FC = () => {
           </div>
         )}
       </div>
+
     </div>
   );
 };

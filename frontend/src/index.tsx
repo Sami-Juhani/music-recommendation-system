@@ -7,6 +7,7 @@ import { UserContextProvider } from "./context/UserContextProvider";
 import { PlaylistsGetAllContextProvider } from "./context/PlaylistsGetAllContext";
 import { PlaylistGetContextProvider } from "./context/PlaylistGetContext";
 import { GeneratedContextProvider } from "./context/GeneratedContext";
+import { NotificationContextProvider } from "./context/NotificationContextProvider";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 
@@ -16,18 +17,20 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <UserContextProvider>
-      <MusicGetAllContextProvider>
-        <PlaylistsGetAllContextProvider>
-          <PlaylistGetContextProvider>
-            <GeneratedContextProvider>
-              <div className="relative flex">
-                <RouterProvider router={router} />
-              </div>
-            </GeneratedContextProvider>
-          </PlaylistGetContextProvider>
-        </PlaylistsGetAllContextProvider>
-      </MusicGetAllContextProvider>
-    </UserContextProvider>
+    <NotificationContextProvider>
+      <UserContextProvider>
+        <MusicGetAllContextProvider>
+          <PlaylistsGetAllContextProvider>
+            <PlaylistGetContextProvider>
+              <GeneratedContextProvider>
+                <div className="relative flex">
+                  <RouterProvider router={router} />
+                </div>
+              </GeneratedContextProvider>
+            </PlaylistGetContextProvider>
+          </PlaylistsGetAllContextProvider>
+        </MusicGetAllContextProvider>
+      </UserContextProvider>
+    </NotificationContextProvider>
   </React.StrictMode>
 );

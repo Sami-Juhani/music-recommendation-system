@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContextProvider";
 import PathConstants from "../routes/PathConstants";
 import { UserContextType } from "../types/UserContextType";
+import { NotificationContext } from "../context/NotificationContextProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const IS_AUTHENTICATED_URL = BASE_URL + "/api/spotify/is-authenticated/";
@@ -14,10 +15,12 @@ interface LoginFormState {
 }
 
 export const useLogin = () => {
+  const { setNotification } = useContext(NotificationContext);
   const [formData, setFormData] = useState<LoginFormState>({
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -28,7 +31,6 @@ export const useLogin = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const [error, setError] = useState<string>("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -41,15 +43,16 @@ export const useLogin = () => {
         credentials: "include",
       });
 
-      const data = await response.json();
-
       if (response.status !== 200) {
-        // Set the error message based on response
+        const error = await response.json();
+        //setNotification({ text: error.message, success: false });
         setError(
-          data.message || "An unexpected error occurred. Please try again."
+          error.message || "An unexpected error occurred. Please try again."
         );
         return;
       }
+
+      const data = await response.json();
 
       setUser(data.user);
 

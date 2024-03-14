@@ -15,6 +15,7 @@ from music_recommender.settings import BASE_URL
 from .utils import *
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import *
+from song_ratings.views import get_song_rating
 
 dotenv.load_dotenv()
 
@@ -214,6 +215,9 @@ class SpotifyOnePlaylist(APIView):
 
         if 'message' in playlist or not playlist:
             return Response(playlist, status=status.HTTP_404_NOT_FOUND)
+
+        for track in playlist['tracks']['items']:
+           track['rating'] = get_song_rating(track['track']['id'])
 
         return Response(playlist, status=status.HTTP_200_OK)
 
