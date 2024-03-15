@@ -40,10 +40,10 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
         const newSongRating = await response.json();
         setRating(newSongRating.overall_rating);
         setNumberOfReviews(newSongRating.number_of_reviews);
-        setNotification({text: "Review submitted succesfully", success: true})
+        //setNotification({text: "Review submitted succesfully", success: true})
       } else {
         console.error(`ERROR: ${await response.text()}`);
-        setNotification({text: "Error submitting review", success: false})
+        //setNotification({text: "Error submitting review", success: false})
       }
     } catch (error) {
       console.error("Error adding rating:", error);
