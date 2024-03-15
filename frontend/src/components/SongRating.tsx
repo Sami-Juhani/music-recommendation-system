@@ -7,8 +7,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotifyId: string }) => {
   const [rating, setRating] = useState(songRating.overall_rating);
-  const [newRating, setNewRating] = useState(songRating.number_of_reviews);
-  const [numberOfReviews, setNumberOfReviews] = useState(0);
+  const [newRating, setNewRating] = useState(1);
+  const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
   const { setNotification } = useContext(NotificationContext);
 
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
