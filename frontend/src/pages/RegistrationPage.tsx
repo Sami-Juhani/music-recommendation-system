@@ -23,7 +23,7 @@ function Registration() {
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
       <header className="md: px-8 md:px-12 md:mb-8 bg-black"></header>
 
-      <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-8 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
+      <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-4 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
         <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
           Registration
         </h1>
