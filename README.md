@@ -45,6 +45,12 @@
     python3 setup.py
     ```
 
+#### Kopio spotify datasetti
+  - Kopioi datasetti linkistä:
+    [Spotify Dataset](https://drive.google.com/drive/folders/1Pxis6EJep70fZrNEMy3yLcawbskVddGX?usp=drive_link)
+
+  - Pura datasetti backend/recommendations/data kansioon.
+
 #### Luo SQL tietokanta
   - Ydistä tietokantaan ja luo *music_recommender*:
 
