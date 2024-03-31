@@ -6,9 +6,6 @@ import PathConstants from "../routes/PathConstants";
 import { useLogin } from '../hooks/useLogin'
 import { useTranslation } from "react-i18next";
 
-
-
-
 export default function Login() {
   const { t } = useTranslation();
   const { formData, handleChange, handleSubmit, error } = useLogin();
@@ -34,6 +31,7 @@ export default function Login() {
             id="email"
             name="email"
             placeholder={t("email")}
+
             handleChange={handleChange} 
             formData={formData.email}
           />
@@ -43,12 +41,14 @@ export default function Login() {
             id="password"
             name="password"
             placeholder={t("password")}
+
             formData={formData.password}
             handleChange={handleChange}
           />
 
           <PrimaryButton type="submit" className="mt-5">
             {t("login")}
+
           </PrimaryButton>
         </form>
 
