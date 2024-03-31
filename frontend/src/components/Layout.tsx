@@ -4,14 +4,16 @@ import { Suspense } from "react";
 import Loader from "./Loader";
 import { NotificationModal } from "./NotificationModal";
 import { NotificationContext } from "../context/NotificationContextProvider";
+import { useTranslation } from "react-i18next";
 
 export default function Layout() {
+  const { t } = useTranslation();
   const { notification, setNotification } = useContext(NotificationContext);
 
   return (
     <div className="flex-1 flex flex-col">
       <main>
-        <Suspense fallback={<Loader title={"Loading..."} />}>
+        <Suspense fallback={<Loader title={t("loading")} />}>
           <Outlet />
         </Suspense>
         <NotificationModal

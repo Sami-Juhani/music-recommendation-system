@@ -10,6 +10,7 @@ import { GeneratedContextProvider } from "./context/GeneratedContext";
 import { NotificationContextProvider } from "./context/NotificationContextProvider";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
+import "./langLocalization/i18n";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

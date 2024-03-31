@@ -1,4 +1,3 @@
-// HorizontalScrollFeed.tsx
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,10 +13,13 @@ import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
 import PathConstants from "../routes/PathConstants";
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from "../langLocalization/LanguageSelector";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const { logout } = useLogout();
   const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<
     number | null
@@ -165,11 +167,12 @@ const Home: React.FC = () => {
             <p>{user?.firstName}</p>
           </div>
           <div className="sticky-nav-optons">
+            <button className=""><LanguageSelector /> </button>
             <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>Edit User</Link>
+              <Link to={PathConstants.PROFILE_UPDATE}>{t('editUser')}</Link>
             </button>
             <button onClick={logout} className="badge nav-item hide">
-              Log out
+              {t('logOut')}
             </button>
           </div>
         </div>
