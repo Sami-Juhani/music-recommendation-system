@@ -1,9 +1,10 @@
-import "../styles/ProfileUpdate.css";
+﻿import "../styles/ProfileUpdate.css";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContextProvider";
 import PathConstants from "../routes/PathConstants";
 import { UserContextType } from "../types/UserContextType";
+import { useTranslation } from 'react-i18next';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -15,6 +16,7 @@ interface ProfileUpdateFormState {
 }
 
 const ProfileUpdate = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, setUser }: UserContextType = useContext(UserContext);
 
@@ -74,7 +76,7 @@ const ProfileUpdate = () => {
     e.stopPropagation();
 
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete your profile? This action cannot be undone."
+      t("deleteProfileConfirm")
     );
 
     if (!confirmDelete) {
@@ -116,44 +118,44 @@ const ProfileUpdate = () => {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Update or Delete Profile</h2>
+      <h2 className="form-title">{t("updateOrdeleteUser")}</h2>
       <form onSubmit={handleSubmit} className="profile_update_form">
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Email"
+          placeholder={t("email")}
         />
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder={t("password")}
         />
         <input
           type="text"
           name="first_name"
           value={formData.first_name}
           onChange={handleChange}
-          placeholder="First Name"
+          placeholder={t("firstName")}
         />
         <input
           type="text"
           name="last_name"
           value={formData.last_name}
           onChange={handleChange}
-          placeholder="Last Name"
+          placeholder={t("lastName")}
         />
         <button className="update_profile" type="submit">
-          Update Profile
+          {t("updateProfile")}
         </button>
         <button className="cancel" onClick={() => navigate(PathConstants.HOME)}>
-          Cancel
+          {t("cancel")}
         </button>
         <button type="submit" className="delete" onClick={deleteProfile}>
-          Delete Profile
+          {t("deleteProfile")}
         </button>
       </form>
     </div>

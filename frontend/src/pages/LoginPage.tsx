@@ -6,11 +6,9 @@ import PathConstants from "../routes/PathConstants";
 import { useLogin } from '../hooks/useLogin'
 import { useTranslation } from "react-i18next";
 
-
-
 export default function Login() {
-  const { formData, handleChange, handleSubmit, error } = useLogin();
   const { t } = useTranslation();
+  const { formData, handleChange, handleSubmit, error } = useLogin();
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
@@ -19,7 +17,7 @@ export default function Login() {
 
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-8 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
         <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
-          {t('login.title')}
+          {t("login")}
         </h1>
 
         <hr className="border-t-[1px] border-zinc-800" />
@@ -32,7 +30,8 @@ export default function Login() {
             type="text"
             id="email"
             name="email"
-            placeholder={(t('login.email') as string)}
+            placeholder={t("email")}
+
             handleChange={handleChange} 
             formData={formData.email}
           />
@@ -41,24 +40,25 @@ export default function Login() {
             type="password"
             id="password"
             name="password"
-            placeholder={(t('login.password') as string)}
+            placeholder={t("password")}
+
             formData={formData.password}
             handleChange={handleChange}
           />
 
           <PrimaryButton type="submit" className="mt-5">
-            {t('login.submit')}
+            {t("login")}
+
           </PrimaryButton>
         </form>
 
         {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
         <div className="flex flex-col gap-2 items-center text-center">
-            <Link to="#">{t('login.forgot')}</Link>
+            <Link to="#">{t("forgetYourPassword")}</Link>
             <hr className="hidden md:block w-full border-t-[1px] mb-6 border-zinc-800" />
             <div className="flex flex-col gap-1 md:gap-2 md:flex-row">
-              {/* <Link to={PathConstants.REGISTER}>Don&apos;t have an account?</Link> */}
-              <Link to={PathConstants.REGISTER}>{t('login.register')}</Link>
+              <Link to={PathConstants.REGISTER}>{t("noAccountyet")}</Link>
             </div>
         </div>
       </main>

@@ -3,17 +3,20 @@ import { Playlist } from "../types/PlayListInterface";
 import testAlbum from "../assets/album.webp";
 import PlayListPreviewSkeleton from "./Skeleton/PlayListPreviewSkeleton";
 import { useNavigation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface PlayListContainerProps {
     playlist: Playlist;
     selectedPlaylistIndex: number | null;
     onePLIsLoading: boolean;
     
-  }
-  export const PlayListPreview: React.FC<PlayListContainerProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
+}
+
+export const PlayListPreview: React.FC<PlayListContainerProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
     const { state } = useNavigation();
     const isLoading = state === "loading";
     const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (playlist.images && playlist.images.length > 0 && playlist.images[0].url) {
@@ -41,7 +44,7 @@ interface PlayListContainerProps {
                             <img src={playlist.images ? playlist.images[0].url : testAlbum} alt="selected playlist" />
                         </div>
                         <div className="details">
-                            <span className="type">PLAYLIST</span>
+                            <span className="type">{t("playlist")}</span>
                             <h1 className="title">{playlist.name && playlist.name}</h1>
                             <p className="description">{playlist.description}</p>
                         </div>

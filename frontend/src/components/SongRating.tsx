@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import "../styles/SongRating.css";
 import { NotificationContext } from "../context/NotificationContextProvider";
 import { RatingType } from "../types/RatingsType";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotifyId: string }) => {
+  const { t } = useTranslation();
   const [rating, setRating] = useState(songRating.overall_rating);
   const [newRating, setNewRating] = useState(1);
   const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
@@ -53,9 +55,9 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
   return (
     <div className="flex gap-[20px] py-4">
       <div className="flex flex-col gap-[10px]">
-        <p className="rating-value">Rating: {rating}</p>
+        <p className="rating-value">{t("rating")} {rating}</p>
         <p className="number-of-reviews">
-          Number of Reviews: {numberOfReviews}
+          {t("numberOfReviews")} {numberOfReviews}
         </p>
       </div>
       <div className="flex gap-[10px] items-center">
@@ -68,7 +70,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
           className="rating-input"
         />
         <button onClick={handleSubmitRating} className="submit-button">
-          Submit Rating
+          {t("submitRatings")}
         </button>
       </div>
     </div>

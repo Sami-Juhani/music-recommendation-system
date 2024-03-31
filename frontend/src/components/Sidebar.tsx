@@ -4,6 +4,7 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import testAlbum from "../assets/album.webp";
 import { Playlist } from "../types/PlayListInterface";
 import { SideBarSceleton } from "./Skeleton/SideBarSceleton";
+import { useTranslation } from "react-i18next";
 
 interface PlaylistsResponse {
   href: string;
@@ -23,19 +24,20 @@ const Sidebar: React.FC<SidebarProps> = ({
   handlePlaylistClick,
   allPLisLoading,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="sidebar">
       <div className="nav">
         <div className="nav-option" id="nav-option-home">
           <FontAwesomeIcon icon={faHouse} />
-          <a href="/">Home</a>
+          <a href="/">{t("home")}</a>
         </div>
       </div>
       <div className="library">
         <div className="options">
           <div className="lib-option nav-option">
             <img src="./assets/library_icon.png" alt="library_icon" />
-            <a href="/">Your library</a>
+            <a href="/">{t("yourlibrary")}</a>
           </div>
         </div>
         <div className="lib-box">
@@ -70,8 +72,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               ))
             ) : (
               <div className="sidebar-error">
-                ----------- ERROR! ------------
-                <br /> Something went wrong
+                ----------- {t("error")} ------------
+                <br /> {t("errorLoadingPlaylists")}
               </div>
             )}
           </div>

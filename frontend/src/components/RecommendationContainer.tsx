@@ -2,6 +2,7 @@ import React from "react";
 import { Playlist } from "../types/PlayListInterface";
 import { Generated } from "../types/GeneratedInterface";
 import { CardContainer } from "./CardContainer";
+import { useTranslation } from "react-i18next";
 
 interface RecommendationsContainerProps {
   playlist: Playlist;
@@ -16,9 +17,10 @@ const RecommendationsContainer: React.FC<RecommendationsContainerProps> = ({
   playlist,
   generated,
 }) => {
+  const { t } = useTranslation();
   return isVisible && generated?.name?.length > 0 ? (
     <div className="cards-container">
-      <h1>List of recommendations based on {`"${playlist.name}"`}</h1>
+      <h1>{t("listOfRecommendationBasedOn")} {`"${playlist.name}"`}</h1>
       <CardContainer generated={generated} />
     </div>
   ) : null;

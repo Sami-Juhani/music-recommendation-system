@@ -2,6 +2,7 @@ import React from "react";
 import PlayListTracks from "./PlayListTracks";
 import { Playlist } from "../types/PlayListInterface";
 import { PlayListPreview } from "./PlayListPreview";
+import { useTranslation } from "react-i18next";
 
 interface PlayListContainerProps {
   playlist: Playlist;
@@ -24,6 +25,7 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({
   isVisible,
   generatedIsLoading,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="data-inside">
       <PlayListPreview
@@ -37,7 +39,7 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({
           onClick={() => generateRecommendation()}
           disabled={generatedIsLoading || onePLIsLoading || allPLisLoading}
         >
-          {generatedIsLoading ? "Loading..." : "Generate recommendations"}
+          {generatedIsLoading ? t("loading") : t("generateRecommendations")}
         </button>
       </div>
       {!generatedIsLoading && !isVisible && !searchRecommendationsError ? (

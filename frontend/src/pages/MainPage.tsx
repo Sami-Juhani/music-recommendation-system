@@ -4,6 +4,7 @@ import Home from "./Home";
 import Login from "./LoginPage";
 import Loader from "../components/Loader";
 import { loader } from "../utils/loader";
+import { t } from "i18next";
 
 function MainPage() {
   const { state } = useNavigation();
@@ -11,7 +12,7 @@ function MainPage() {
   const user = loaderData ? loaderData.user : null;
   const isLoading = state === "loading";
 
-  if (isLoading) return <Loader title={"Loading"} />;
+  if (isLoading) return <Loader title={t("loading")} />;
 
   return user && !isLoading ? <Home /> : <Login />;
 }
