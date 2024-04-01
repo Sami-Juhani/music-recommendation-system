@@ -14,6 +14,7 @@ import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
 import PathConstants from "../routes/PathConstants";
+import Languages from "../components/LanguageMenu";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -164,7 +165,8 @@ const Home: React.FC = () => {
             <FontAwesomeIcon icon={faUser} />
             <p>{user?.firstName}</p>
           </div>
-          <div className="sticky-nav-optons">
+          <div className="flex sticky-nav-optons">
+          <Languages />
             <button className="badge nav-item dark-badge">
               <Link to={PathConstants.PROFILE_UPDATE}>Edit User</Link>
             </button>
