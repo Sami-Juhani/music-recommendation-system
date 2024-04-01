@@ -173,7 +173,7 @@ const Home: React.FC = () => {
               <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
             </button>
             <button onClick={logout} className="badge nav-item hide">
-              Log out
+              {t('main.logout')}
             </button>
           </div>
         </div>

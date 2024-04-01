@@ -1,8 +1,12 @@
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import React from 'react'
 import { useTranslation } from "react-i18next";
+
+interface Language {
+  id: number;
+  name: string;
+}
 
 const languages = [
   {
@@ -29,18 +33,31 @@ function classNames(...classes: string[]) {
 }
 
 export default function Languages() {
-  const [selected, setSelected] = useState(languages[3])
   const [t, i18n] = useTranslation();
+  const [selected, setSelected] = useState<Language | null>(null);
+
+  useEffect(() => {
+    const systemLanguage = i18n.languages[0]; 
+    console.log(systemLanguage);
+    const languageCode = systemLanguage.substring(0, 2)
+    const selectedLanguage = languages.find(lang => lang.name.toLowerCase() === languageCode.toLowerCase());
+
+    if (selectedLanguage) {
+      setSelected(selectedLanguage);
+    } else {
+      setSelected(languages[0]); 
+    }
+  }, [i18n.languages]);
 
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <div>
           <div className="relative mt-2 w-250">
-            <Listbox.Button className="relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[rgb(30,215,96)] sm:text-sm sm:leading-6">
+            <Listbox.Button className="h-8 relative w-full cursor-default rounded-full bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[rgb(30,215,96)] sm:text-sm">
               <span className="flex items-center">
                 {/* <img src={selected.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full" /> */}
-                <span className="ml-3 block text-[16px] font-bold">{selected.name}</span>
+                <span className="ml-3 block text-[16px] font-bold">{selected && selected.name}</span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

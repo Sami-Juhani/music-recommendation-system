@@ -4,6 +4,7 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import testAlbum from "../assets/album.webp";
 import { Playlist } from "../types/PlayListInterface";
 import { SideBarSceleton } from "./Skeleton/SideBarSceleton";
+import { useTranslation } from "react-i18next";
 
 interface PlaylistsResponse {
   href: string;
@@ -23,19 +24,20 @@ const Sidebar: React.FC<SidebarProps> = ({
   handlePlaylistClick,
   allPLisLoading,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="sidebar">
       <div className="nav">
         <div className="nav-option" id="nav-option-home">
           <FontAwesomeIcon icon={faHouse} />
-          <a href="/">Home</a>
+          <a href="/">{t('sidebar.home')}</a>
         </div>
       </div>
       <div className="library">
         <div className="options">
           <div className="lib-option nav-option">
             <img src="./assets/library_icon.png" alt="library_icon" />
-            <a href="/">Your library</a>
+            <a href="/">{t('sidebar.library')}</a>
           </div>
         </div>
         <div className="lib-box">
@@ -64,14 +66,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                   />
                   <div className="preview-text">
                     <h1>{playlist.name && playlist.name.slice(0, 20)}</h1>
-                    <p>{playlist.type}</p>
+                    <p>{playlist.type === 'playlist' ? t('sidebar.type1') : t('sidebar.type2')}</p>
                   </div>
                 </div>
               ))
             ) : (
               <div className="sidebar-error">
-                ----------- ERROR! ------------
-                <br /> Something went wrong
+                {t('sidebar.error')}
+                <br /> {t('sidebar.errorMessage')}
               </div>
             )}
           </div>

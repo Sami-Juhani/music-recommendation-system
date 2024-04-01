@@ -1,5 +1,7 @@
 import { Generated } from "../types/GeneratedInterface";
 import React from 'react';
+import { useTranslation } from "react-i18next";
+
 
 interface CardContainerProps {
   generated: Generated;
@@ -8,6 +10,7 @@ interface CardContainerProps {
 
 
 export const CardContainer:React.FC<CardContainerProps> = ({generated}) => {
+  const { t } = useTranslation();
     return (
         <div className="cards-container">          
         {generated.name && generated.name.map((name, index) => {
@@ -21,7 +24,7 @@ export const CardContainer:React.FC<CardContainerProps> = ({generated}) => {
               <div className="card-content">
                 <h2 className="card-title">{name.length > 42 ? name.slice(0, 42)+"..." : name}</h2>
                 <p className="card-artists">{artists}</p>
-                <p className="card-year">Year: {albumYear}</p>
+                <p className="card-year">{t('cardContainer.year')}: {albumYear}</p>
               </div>
             </div>
           );
