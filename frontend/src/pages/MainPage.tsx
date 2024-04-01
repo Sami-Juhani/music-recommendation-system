@@ -12,7 +12,7 @@ function MainPage() {
   const loaderData = useLoaderData() as { user: object | null } | null;
   const user = loaderData ? loaderData.user : null;
   const isLoading = state === "loading";
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   if (isLoading) return <Loader title={t('layout.loading')} />;
 

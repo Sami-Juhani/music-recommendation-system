@@ -57,7 +57,6 @@ export default function Login() {
             <Link to="#">{t('login.forgot')}</Link>
             <hr className="hidden md:block w-full border-t-[1px] mb-6 border-zinc-800" />
             <div className="flex flex-col gap-1 md:gap-2 md:flex-row">
-              {/* <Link to={PathConstants.REGISTER}>Don&apos;t have an account?</Link> */}
               <Link to={PathConstants.REGISTER}>{t('login.register')}</Link>
             </div>
         </div>
@@ -65,4 +64,3 @@ export default function Login() {
     </div>
   );
 }
-
