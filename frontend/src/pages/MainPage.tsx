@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
 
+
 function MainPage() {
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;

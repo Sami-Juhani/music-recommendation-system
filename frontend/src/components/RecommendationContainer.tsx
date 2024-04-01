@@ -4,7 +4,6 @@ import { Generated } from "../types/GeneratedInterface";
 import { CardContainer } from "./CardContainer";
 import { useTranslation } from "react-i18next";
 
-
 interface RecommendationsContainerProps {
   playlist: Playlist;
   selectedPlaylistIndex: number | null;

@@ -7,6 +7,7 @@ import { genres, song, list } from "../assets/constants";
 import { musicExamples } from "../assets/musicExapmles";
 import { useMusicGetAllContext } from "../hooks/useMusicGetAllContext";
 import { RootState } from "../redux/features/rootReducer";
+import { useTranslation } from "react-i18next";
 
 const Discover = () => {
 
@@ -42,11 +43,12 @@ const Discover = () => {
     }, [dispatch]);
 
     if (isLoading) {
+        const { t } = useTranslation();
         return (
             <div className="flex-1 flex flex-col bg-gradient-to-br">
                 <div className="px-6 h-[calc(100vh-72px)] overflow-y-scroll hide-scrollbar flex xl:flex-row flex-col-reverse">
                     <div className="flex-1 h-fit pb-40">
-                        <Loader title="Loading" />;
+                        <Loader title={t("loading")} />;
                     </div>
                 </div>
             </div>);

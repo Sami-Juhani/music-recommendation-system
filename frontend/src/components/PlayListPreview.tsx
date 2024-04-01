@@ -10,8 +10,9 @@ interface PlayListContainerProps {
     selectedPlaylistIndex: number | null;
     onePLIsLoading: boolean;
     
-  }
-  export const PlayListPreview: React.FC<PlayListContainerProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
+}
+
+export const PlayListPreview: React.FC<PlayListContainerProps> = ({ playlist, selectedPlaylistIndex, onePLIsLoading }) => {
     const { state } = useNavigation();
     const isLoading = state === "loading";
     const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
