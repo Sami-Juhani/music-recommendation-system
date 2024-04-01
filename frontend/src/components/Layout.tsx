@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 export default function Layout() {
   const { t } = useTranslation();
   const { notification, setNotification } = useContext(NotificationContext);
-  const [t] = useTranslation();
 
   return (
     <div className="flex-1 flex flex-col">

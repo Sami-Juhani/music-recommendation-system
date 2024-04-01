@@ -19,7 +19,6 @@ import { useTranslation } from "react-i18next";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
   const { logout } = useLogout();
   const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<
     number | null
