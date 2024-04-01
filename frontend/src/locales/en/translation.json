@@ -1,0 +1,17 @@
+{
+    "login": {
+       "title": "Log in",
+       "email": "Email",
+       "password": "Password",
+       "submit": "Log in",
+       "forgot": "Forgot your password?",
+       "register": "Don&apos;t have an account?"
+    },
+    
+    "main": {
+       "profile": "Edit user"
+       
+    }
+ 
+     
+ }

@@ -6,11 +6,14 @@ i18next
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        fallbackLng: "ru",
+        fallbackLng: "en",
         resources: {
             ru: {
                 translation: require("./locales/ru/translation.json"),
-            }
+            },
+            en: {
+                translation: require("./locales/en/translation.json"),
+            },
         },
     });
 

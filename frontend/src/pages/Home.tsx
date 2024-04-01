@@ -15,6 +15,7 @@ import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
 import PathConstants from "../routes/PathConstants";
 import Languages from "../components/LanguageMenu";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
   const { user } = useContext(UserContext);
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -168,7 +170,7 @@ const Home: React.FC = () => {
           <div className="flex sticky-nav-optons">
           <Languages />
             <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>Edit User</Link>
+              <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
             </button>
             <button onClick={logout} className="badge nav-item hide">
               Log out
