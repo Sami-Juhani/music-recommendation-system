@@ -39,7 +39,7 @@ const PlayListContainer: React.FC<PlayListContainerProps> = ({
           onClick={() => generateRecommendation()}
           disabled={generatedIsLoading || onePLIsLoading || allPLisLoading}
         >
-          {generatedIsLoading ? t("loading") : t("generateRecommendations")}
+          {generatedIsLoading ? t('playListContainer.loading') : t('playListContainer.generateButton') }
         </button>
       </div>
       {!generatedIsLoading && !isVisible && !searchRecommendationsError ? (

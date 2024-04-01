@@ -231,7 +231,7 @@ a {
         font-size: x-large;
         justify-self: center;
         background-color: #232323;
-        padding: 1rem;
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
         border-radius: 20px;
     }
 }
@@ -278,10 +278,11 @@ a {
     margin-bottom: 0.5rem;
     height: 80px;
     overflow: hidden;
+    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     -webkit-line-clamp: 2;
+
 }
 
 .card-info {

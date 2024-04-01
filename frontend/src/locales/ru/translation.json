@@ -6,6 +6,42 @@
       "submit": "Войти",
       "forgot": "Забыли пароль?",
       "register": "Регистрация"
+   },
+   
+   "main": {
+      "profile": "Профиль",
+      "logout": "Выйти"
+      
+   },
+   "sidebar": {
+       "home": "Главная",
+       "library": "Моя медиактека",
+       "error": "----------- Ошибка! ------------",
+       "errorMessage": "Что-то пошло не так...",
+       "type1": "Плейлист",
+       "type2": "Альбом"
+
+   },
+   "playListPreview": {
+       "type": "ПЛЕЙЛИСТ"
+   },
+   "playListHeader": {
+       "title": "НАЗВАНИЕ",
+       "album": "АЛЬБОМ"
+   },
+   "recommendation": {
+       "h1": "Список рекомендаций на основе"
+   },
+   "cardContainer": {
+       "year": "Год"
+   },
+   "playListContainer": {
+       "loading": "Загрузка...",
+       "generateButton": "Генерировать рекоммендации"
+   },
+   "layout": {
+       "loading": "Загрузка..."
    }
+
     
 }

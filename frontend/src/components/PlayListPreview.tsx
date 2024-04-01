@@ -44,7 +44,7 @@ export const PlayListPreview: React.FC<PlayListContainerProps> = ({ playlist, se
                             <img src={playlist.images ? playlist.images[0].url : testAlbum} alt="selected playlist" />
                         </div>
                         <div className="details">
-                            <span className="type">{t("playlist")}</span>
+                            <span className="type">{t('playListPreview.type')}</span>
                             <h1 className="title">{playlist.name && playlist.name}</h1>
                             <p className="description">{playlist.description}</p>
                         </div>

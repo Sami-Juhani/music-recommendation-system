@@ -13,8 +13,8 @@ import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
 import PathConstants from "../routes/PathConstants";
-import { useTranslation } from 'react-i18next';
-import LanguageSelector from "../langLocalization/LanguageSelector";
+import Languages from "../components/LanguageMenu";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -34,6 +34,7 @@ const Home: React.FC = () => {
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
   const { user } = useContext(UserContext);
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -166,13 +167,13 @@ const Home: React.FC = () => {
             <FontAwesomeIcon icon={faUser} />
             <p>{user?.firstName}</p>
           </div>
-          <div className="sticky-nav-optons">
-            <button className=""><LanguageSelector /> </button>
+          <div className="flex sticky-nav-optons">
+          <Languages />
             <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>{t('editUser')}</Link>
+              <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
             </button>
             <button onClick={logout} className="badge nav-item hide">
-              {t('logOut')}
+              {t('main.logout')}
             </button>
           </div>
         </div>
