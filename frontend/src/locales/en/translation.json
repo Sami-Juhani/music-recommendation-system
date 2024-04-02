@@ -41,6 +41,27 @@
     },
     "layout": {
         "loading": "Loading..."
+    },
+    "registration": {
+        "title": "Registration",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Sign up",
+        "login": "Log in",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "forgot": "Forgot your password?",
+        "loading": "Loading..."
+    },
+    "profile": {
+        "title": "Edit user",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete profile",
+        "firstName": "First name",
+        "lastName": "Last name"
     }
  
      

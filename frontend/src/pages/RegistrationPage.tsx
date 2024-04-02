@@ -7,7 +7,7 @@ import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
 import Loader from "../components/Loader";
 import { loader } from "../utils/loader";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
@@ -15,8 +15,9 @@ function Registration() {
   const loaderData = useLoaderData() as { user: object | null } | null;
   const user = loaderData ? loaderData.user : null;
   const isLoading = state === "loading";
+  const { t } = useTranslation();
 
-  if (isLoading) return <Loader title={"Loading"} />;
+  if (isLoading) return <Loader title={t("registration.loading")} />;
 
   if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
 
@@ -26,7 +27,7 @@ function Registration() {
 
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-4 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
         <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
-          {t("register")}
+          {t("registration.title")}
         </h1>
 
         <hr className="border-t-[1px] border-zinc-800" />
@@ -39,7 +40,7 @@ function Registration() {
             type="text"
             id="email"
             name="email"
-            placeholder={t("email")}
+            placeholder={t("registration.email")}
             handleChange={handleChange}
             formData={formData.email}
           />
@@ -48,7 +49,7 @@ function Registration() {
             type="text"
             id="first_name"
             name="first_name"
-            placeholder={t("firstName")}
+            placeholder={t("registration.firstName")}
             handleChange={handleChange}
             formData={formData.first_name}
           />
@@ -56,7 +57,7 @@ function Registration() {
             type="text"
             id="last_name"
             name="last_name"
-            placeholder={t("lastName")}
+            placeholder={t("registration.lastName")}
             handleChange={handleChange}
             formData={formData.last_name}
           />
@@ -65,7 +66,7 @@ function Registration() {
             type="password"
             id="password"
             name="password"
-            placeholder={t("password")}
+            placeholder={t("registration.password")}
             formData={formData.password}
             handleChange={handleChange}
           />
@@ -73,15 +74,15 @@ function Registration() {
           {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
           <PrimaryButton type="submit" className="mt-5">
-            {t("signIn")}
+            {t("registration.submit")}
           </PrimaryButton>
         </form>
 
         <div className="flex flex-col gap-2 items-center text-center">
-          <Link to="#">{t("forgetYourPassword")}</Link>
+          <Link to="#">{t("registration.forgot")}</Link>
           <hr className="hidden md:block w-full border-t-[1px] mb-6 border-zinc-800" />
           <div className="flex flex-col gap-1 md:gap-2 md:flex-row">
-            <Link to={PathConstants.HOME}>{t("loginHere")}</Link>
+            <Link to={PathConstants.HOME}>{t("registration.login")}</Link>
           </div>
         </div>
       </main>
