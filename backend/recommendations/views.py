@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.utils.translation import gettext, get_language_from_request, activate
 from drf_yasg.utils import swagger_auto_schema
 from spotify.utils import execute_spotify_api_request
 from .services import generate_recommendations
@@ -23,6 +24,9 @@ class RecommendationView(APIView):
     def get(self, request, playlist_id):
         user_id: str = request.session.get('user_id')
         endpoint: str = f'playlists/{playlist_id}'
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         playlist: dict = execute_spotify_api_request(user_id, endpoint)
 
@@ -32,8 +36,8 @@ class RecommendationView(APIView):
         # Get the user's recommendations
         recommendations = generate_recommendations(playlist, user_id)
 
-        if 'message' in recommendations or recommendations.empty:
-            return Response({"message": recommendations['message']}, status=status.HTTP_404_NOT_FOUND)
+        if recommendations.empty:
+            return Response({"message": gettext("no_recommendations")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(recommendations, status=status.HTTP_200_OK)
 

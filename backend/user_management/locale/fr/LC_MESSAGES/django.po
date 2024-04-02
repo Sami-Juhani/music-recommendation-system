@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-02 07:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: user_management/views.py:22 user_management/views.py:46
+#: user_management/views.py:93
+msgid "email_password_required"
+msgstr "L'email et le mot de passe sont requis."
+
+#: user_management/views.py:27
+msgid "invalid_email_password"
+msgstr "Email ou mot de passe invalide."
+
+#: user_management/views.py:49 user_management/views.py:96
+msgid "firstname_lastname_required"
+msgstr "Prénom et nom de famille requis."
+
+#: user_management/views.py:55
+msgid "user_already_exists"
+msgstr "Un utilisateur existe déjà avec cet email."
+
+#: user_management/views.py:58
+msgid "user_not_created"
+msgstr "Utilisateur non créé."
+
+#: user_management/views.py:60
+msgid "user_created"
+msgstr "Utilisateur créé."
+
+#: user_management/views.py:71 user_management/views.py:101
+#: user_management/views.py:144
+msgid "no_user_id"
+msgstr "Aucun identifiant utilisateur trouvé."
+
+#: user_management/views.py:76 user_management/views.py:106
+#: user_management/views.py:149
+msgid "user_not_found"
+msgstr "Utilisateur non trouvé."
+
+#: user_management/views.py:129
+msgid "logged_out"
+msgstr "Déconnecté."
+
+#: user_management/views.py:153
+msgid "user_deleted"
+msgstr "Utilisateur supprimé."

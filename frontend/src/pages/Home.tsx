@@ -33,7 +33,8 @@ const Home: React.FC = () => {
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
   const { user } = useContext(UserContext);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
 
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const Home: React.FC = () => {
 
       try {
         const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
+          headers: {'Accept-Language': i18n.language},
           credentials: "include",
           signal: controller.signal,
         });
@@ -67,18 +69,20 @@ const Home: React.FC = () => {
     getPlaylists();
 
     return () => controller.abort();
-  }, [dispatchPlaylists]);
+  }, [dispatchPlaylists, i18n.language]);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const getPlaylist = async () => {
+      if (selectedPlaylistIndex == null) return;
       setOnePLIsLoading(true);
 
       try {
         const response = await fetch(
           BASE_URL + `/api/spotify/playlist/${selectedPlaylistIndex}/`,
           {
+            headers: {'Accept-Language': i18n.language},
             credentials: "include",
             signal: controller.signal,
           }
@@ -100,7 +104,7 @@ const Home: React.FC = () => {
     getPlaylist();
 
     return () => controller.abort();
-  }, [dispatchSingle, selectedPlaylistIndex]);
+  }, [dispatchSingle, selectedPlaylistIndex, i18n.language]);
 
   const generateRecommendation = async () => {
     try {
@@ -109,6 +113,7 @@ const Home: React.FC = () => {
       const response = await fetch(
         BASE_URL + `/api/recommendations/generate/${selectedPlaylistIndex}`,
         {
+          headers: {'Accept-Language': i18n.language},
           credentials: "include",
         }
       );

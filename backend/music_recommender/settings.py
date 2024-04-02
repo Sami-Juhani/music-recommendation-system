@@ -19,7 +19,6 @@ dotenv.load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -115,6 +114,7 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
         },
     }
 }
@@ -142,7 +142,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
+FILE_CHARSET = 'utf-8'
+
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('fr', 'French'),
+    ('fi', 'Finnish'),
+    ('ru', 'Russian'),
+    ('la', 'Latin'),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'recommendations', 'locale'),
+]
 
 TIME_ZONE = 'UTC'
 
