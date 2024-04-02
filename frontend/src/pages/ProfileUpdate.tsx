@@ -118,44 +118,44 @@ const ProfileUpdate = () => {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">{t("updateOrdeleteUser")}</h2>
+      <h2 className="form-title">{t("profile.title")}</h2>
       <form onSubmit={handleSubmit} className="profile_update_form">
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder={t("email")}
+          placeholder={t("profile.email")}
         />
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder={t("password")}
+          placeholder={t("profile.password")}
         />
         <input
           type="text"
           name="first_name"
           value={formData.first_name}
           onChange={handleChange}
-          placeholder={t("firstName")}
+          placeholder={t("profile.firstName")}
         />
         <input
           type="text"
           name="last_name"
           value={formData.last_name}
           onChange={handleChange}
-          placeholder={t("lastName")}
+          placeholder={t("profile.lastName")}
         />
         <button className="update_profile" type="submit">
-          {t("updateProfile")}
+          {t("profile.submit")}
         </button>
         <button className="cancel" onClick={() => navigate(PathConstants.HOME)}>
-          {t("cancel")}
+          {t("profile.cancel")}
         </button>
         <button type="submit" className="delete" onClick={deleteProfile}>
-          {t("deleteProfile")}
+          {t("profile.delete")}
         </button>
       </form>
     </div>
