@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
+from django.utils.translation import gettext, get_language_from_request, activate
 from drf_yasg.utils import swagger_auto_schema
 from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
-from django.http import HttpResponse
 
 
 class UserLogin(APIView):
@@ -14,14 +14,17 @@ class UserLogin(APIView):
     def post(self, request):
         email: str = request.data.get('email')
         password: str = request.data.get('password')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not email or not password:
-            return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("email_password_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         user: User = authenticate(username=email, password=password)
-
+        
         if not user:
-            return Response({"message": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("invalid_email_password")}, status=status.HTTP_400_BAD_REQUEST)
 
         request.session['user_id'] = user.id
 
@@ -35,36 +38,42 @@ class RegisterUser(APIView):
         password: str = request.data.get('password')
         first_name: str = request.data.get('first_name')
         last_name: str = request.data.get('last_name')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not email or not password:
-            return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("email_password_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         if not first_name or not last_name:
-            return Response({"message": "First name and last name are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("firstname_lastname_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user: User = User.objects.create_user(
                 username=email, password=password, first_name=first_name, last_name=last_name)
         except IntegrityError:
-            return Response({"message": f"User already exists with email: {email}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("user_already_exists") + " " + {email}}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user:
-            return Response({"message": "User not created"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("user_not_created")}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
+        return Response({"message": gettext("user_created")}, status=status.HTTP_201_CREATED)
 
 
 class GetUser(APIView):
     def get(self, request):
         user_id: int = request.session.get('user_id')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not user_id:
-            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("no_user_id")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
 
@@ -76,22 +85,25 @@ class UpdateUser(APIView):
         password: str = request.data.get('password')
         first_name: str = request.data.get('first_name')
         last_name: str = request.data.get('last_name')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not email or not password:
-            return Response({"message": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("email_password_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         if not first_name or not last_name:
-            return Response({"message": "First name and last name are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("firstname_lastname_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         user_id: int = request.session.get('user_id')
 
         if not user_id:
-            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("no_user_id")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         user.username = email
         user.set_password(password)
@@ -110,8 +122,11 @@ class LogoutUser(APIView):
     @swagger_auto_schema(responses={200: "Logged out"})
     def post(self, request):
         request.session.flush()
+        preferred_language: str = get_language_from_request(request)
 
-        return Response({"message": "Logged out"}, status=status.HTTP_200_OK)
+        activate(preferred_language)
+
+        return Response({"message": gettext("logged_out")}, status=status.HTTP_200_OK)
 
 
 class DeleteUser(APIView):
@@ -121,15 +136,18 @@ class DeleteUser(APIView):
     @swagger_auto_schema(responses={200: "User deleted"})
     def delete(self, request):
         user_id: int = request.session.get('user_id')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not user_id:
-            return Response({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("no_user_id")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         user.delete()
 
-        return Response({"message": "User deleted"}, status=status.HTTP_200_OK)
+        return Response({"message": gettext("user_deleted")}, status=status.HTTP_200_OK)

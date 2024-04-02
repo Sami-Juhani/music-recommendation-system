@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from .models import Song
 from .models import Rating
 from rest_framework import status
+from django.utils.translation import gettext, get_language_from_request, activate
 from .serializers import SongSerializer, rating_param, rating_result
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
@@ -23,17 +24,21 @@ class AddRatingView(APIView):
     def post(self, request, song_id: int, format=None):
         user_id: int = request.session.get('user_id')
         rating: int = request.data.get('rating')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not user_id:
-            return Response({"message": "User not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"message": gettext("user_not_logged_in")}, status=status.HTTP_401_UNAUTHORIZED)
 
         if not rating:
-            return Response({"message": "Rating is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": gettext("rating_required")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            #User not found
+            return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         song, exists = Song.objects.get_or_create(spotify_id=song_id)
 

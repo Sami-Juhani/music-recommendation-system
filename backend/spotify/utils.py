@@ -86,7 +86,7 @@ def refresh_spotify_token(user: User, refresh_token: str) -> str:
     data = response.json()
     
     if 'error' in data or not data:
-        return JsonResponse({'message' : 'Failed to refresh token'}, status=401)
+        return None
 
     access_token = data.get('access_token')
     token_type = data.get('token_type')
@@ -133,13 +133,13 @@ def get_access_token(user_id: int) -> Union[str, Dict[str, str]]:
     try:
         user: User = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return {'message' : 'User not found'}
+        return None
 
 
     try:
         spotify_token = SpotifyToken.objects.get(user=user)
     except SpotifyToken.DoesNotExist:
-        return {'message' : 'No token found for user'}
+        return None
 
     if spotify_token.expires_in <= timezone.now():
         spotify_token = refresh_spotify_token(user, spotify_token.refresh_token)
@@ -162,8 +162,8 @@ def execute_spotify_api_request(user_id: int, endpoint: str, post_: bool=False, 
     """
     access_token: Union[str, Dict[str, str]] = get_access_token(user_id)
 
-    if 'message' in access_token or not access_token:
-        return {'message' : 'No access token found'}
+    if not access_token:
+        return None
 
     headers = {'Content-Type': 'application/json',
                'Authorization': "Bearer " + access_token}
@@ -177,5 +177,5 @@ def execute_spotify_api_request(user_id: int, endpoint: str, post_: bool=False, 
     try:
         return response.json()
     except:
-        return {'message': 'Issue with request'}
+        return None
  

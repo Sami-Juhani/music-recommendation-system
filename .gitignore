@@ -29,6 +29,7 @@ backend/.ipynb_checkpoints/
 backend/setup_env_variables.sh
 backend/recommendations/data
 backend/.mypy_cache
+backend/commands.md
 frontend/.DS_Store
 frontend/.env.local
 frontend/.env.development.local

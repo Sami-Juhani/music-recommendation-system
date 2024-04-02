@@ -44,8 +44,6 @@ def generate_recommendations(user_playlist: dict, user_id: int, recently_played:
     float_cols = prepared_data.dtypes[prepared_data.dtypes ==
                                       'float64'].index.values
 
-    ohe_cols = 'popularity'
-
     # create 5 point buckets for popularity
     prepared_data['popularity_red'] = prepared_data['popularity'].apply(
         lambda x: int(x/5))
@@ -62,7 +60,7 @@ def generate_recommendations(user_playlist: dict, user_id: int, recently_played:
     # Create the necessary outputs
     filtered_playlist_df = create_necessary_outputs(
         user_playlist, prepared_data, recently_played)
-    if 'message' in filtered_playlist_df:
+    if filtered_playlist_df.empty:
         return filtered_playlist_df
 
     # Generate the playlist feature set and non-playlist feature set
@@ -72,8 +70,5 @@ def generate_recommendations(user_playlist: dict, user_id: int, recently_played:
     # Generate the top 40 song recommendations
     top_40_recommendations = generate_playlist_recos(
         prepared_data, feature_set_playlist_vector, feature_set_nonplaylist, user_id, recently_played)
-
-    if top_40_recommendations.empty:
-        return {'message': 'No recommendations found'}
 
     return top_40_recommendations
