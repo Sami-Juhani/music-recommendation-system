@@ -61,8 +61,7 @@
         "cancel": "Cancel",
         "delete": "Delete profile",
         "firstName": "First name",
-        "lastName": "Last name"
+        "lastName": "Last name",
+        "confirmation": "Are you sure you want to delete your account?"
     }
- 
-     
  }
