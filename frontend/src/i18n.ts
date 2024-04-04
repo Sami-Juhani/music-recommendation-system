@@ -7,6 +7,7 @@ import ruTranslation from "./locales/ru/translation.json";
 import frTranslation from "./locales/fr/translation.json";
 import jpTranslation from "./locales/jp/translation.json";
 import faTranslation from "./locales/fa/translation.json";
+import fiTranslation from "./locales/fi/translation.json";
 
 interface Resources {
   [key: string]: {
@@ -29,6 +30,9 @@ const resources: Resources = {
   },
   fa: {
     translation: faTranslation,
+  },
+  fi: {
+    translation: fiTranslation,
   },
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, useNavigation, useLoaderData } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
@@ -8,6 +8,9 @@ import useRegistration from "../hooks/useRegistration";
 import Loader from "../components/Loader";
 import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
+import Languages from "../components/LanguageMenu";
+
+
 
 function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
@@ -15,7 +18,11 @@ function Registration() {
   const loaderData = useLoaderData() as { user: object | null } | null;
   const user = loaderData ? loaderData.user : null;
   const isLoading = state === "loading";
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+  }, [i18n, i18n.language]);
 
   if (isLoading) return <Loader title={t("registration.loading")} />;
 
@@ -23,7 +30,15 @@ function Registration() {
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
-      <header className="md: px-8 md:px-12 md:mb-8 bg-black"></header>
+      <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
+        {/* Placeholder for other header elements */}
+        <div className="w-full">
+          {/* Empty div if needed for balancing header layout */}
+        </div>
+        <div className="w-1/8 max-w-[100px]"> {/* Adjust width and max-width as necessary */}
+          <Languages />
+        </div>
+      </header>
 
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-4 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
         <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
@@ -31,7 +46,6 @@ function Registration() {
         </h1>
 
         <hr className="border-t-[1px] border-zinc-800" />
-
         <form
           className="flex flex-col gap-3 md:px-[5.5rem]"
           onSubmit={handleSubmit}
