@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 
 import enTranslation from "./locales/en/translation.json";
 import ruTranslation from "./locales/ru/translation.json";
+import fiTranslation from "./locales/fi/translation.json";
 
 interface Resources {
   [key: string]: {
@@ -17,6 +18,9 @@ const resources: Resources = {
   },
   ru: {
     translation: ruTranslation,
+  },
+  fi: {
+    translation: fiTranslation
   },
 };
 
