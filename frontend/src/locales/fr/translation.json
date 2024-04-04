@@ -1,0 +1,64 @@
+{
+    "login": {
+      "title": "Connexion",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgot": "Mot de passe oublié ?",
+      "register": "Vous n'avez pas de compte ?"
+    },
+    "main": {
+      "profile": "Modifier l'utilisateur",
+      "logout": "Se déconnecter"
+    },
+    "sidebar": {
+      "home": "Accueil",
+      "library": "Bibliothèque",
+      "error": "----------- ERREUR ! ------------",
+      "errorMessage": "Quelque chose s'est mal passé",
+      "type1": "Playlist",
+      "type2": "Album"
+    },
+    "playListPreview": {
+      "type": "PLAYLIST"
+    },
+    "playListHeader": {
+      "title": "TITRE",
+      "album": "ALBUM"
+    },
+    "recommendation": {
+      "h1": "Liste de recommandations basée sur"
+    },
+    "cardContainer": {
+      "year": "Année"
+    },
+    "playListContainer": {
+      "loading": "Chargement...",
+      "generateButton": "Générer des recommandations"
+    },
+    "layout": {
+      "loading": "Chargement..."
+    },
+    "registration": {
+      "title": "Inscription",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "S'inscrire",
+      "login": "Se connecter",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "forgot": "Mot de passe oublié ?",
+      "loading": "Chargement..."
+    },
+    "profile": {
+      "title": "Modifier l'utilisateur",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Sauvegarder",
+      "cancel": "Annuler",
+      "delete": "Supprimer le profil",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille"
+    }
+  }
+  

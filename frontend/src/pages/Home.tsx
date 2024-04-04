@@ -36,6 +36,9 @@ const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
 
 
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+  }, [i18n, i18n.language]);
 
   useEffect(() => {
     const controller = new AbortController();
