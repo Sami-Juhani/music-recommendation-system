@@ -25,6 +25,14 @@ const languages = [
     id: 4,
     name: "Fr",
   },
+  {
+    id: 5,
+    name: "Jp",
+  },
+  {
+    id: 6,
+    name: "Fa",
+  },
 ];
 
 function classNames(...classes: string[]) {

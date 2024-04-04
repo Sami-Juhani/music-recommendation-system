@@ -1,0 +1,63 @@
+{
+  "login": {
+    "title": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "submit": "وارد شوید",
+    "forgot": "رمز عبور را فراموش کرده‌اید؟",
+    "register": "حساب کاربری ندارید؟"
+  },
+  "main": {
+    "profile": "ویرایش کاربر",
+    "logout": "خروج"
+  },
+  "sidebar": {
+    "home": "خانه",
+    "library": "کتابخانه",
+    "error": "----------- خطا! ------------",
+    "errorMessage": "مشکلی پیش آمده است",
+    "type1": "لیست پخش",
+    "type2": "آلبوم"
+  },
+  "playListPreview": {
+    "type": "لیست پخش"
+  },
+  "playListHeader": {
+    "title": "عنوان",
+    "album": "آلبوم"
+  },
+  "recommendation": {
+    "h1": "لیست توصیه‌ها بر اساس"
+  },
+  "cardContainer": {
+    "year": "سال"
+  },
+  "playListContainer": {
+    "loading": "در حال بارگذاری...",
+    "generateButton": "تولید توصیه‌ها"
+  },
+  "layout": {
+    "loading": "در حال بارگذاری..."
+  },
+  "registration": {
+    "title": "ثبت نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "submit": "ثبت نام کنید",
+    "login": "ورود",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "forgot": "رمز عبور را فراموش کرده‌اید؟",
+    "loading": "در حال بارگذاری..."
+  },
+  "profile": {
+    "title": "ویرایش کاربر",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "submit": "ذخیره",
+    "cancel": "لغو",
+    "delete": "حذف پروفایل",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی"
+  }
+}

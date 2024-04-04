@@ -15,6 +15,7 @@ import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkele
 import PathConstants from "../routes/PathConstants";
 import Languages from "../components/LanguageMenu";
 import { useTranslation } from "react-i18next";
+import Modal from '../components/Modal';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -36,7 +37,22 @@ const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
 
 
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+  }, [i18n, i18n.language]);
 
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const showModal = (message: string) => {
+    setModalMessage(message);
+    setIsModalVisible(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+  
   useEffect(() => {
     const controller = new AbortController();
 
@@ -216,6 +232,11 @@ const Home: React.FC = () => {
         )}
       </div>
 
+      <Modal
+      isVisible={isModalVisible}
+      message={modalMessage}
+      onClose={closeModal}
+      />
     </div>
   );
 };
