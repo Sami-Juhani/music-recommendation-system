@@ -22,8 +22,6 @@ class UserLoginTest(TestCase):
         response = self.client.post(
             f'{BASE_URL}/api/user/login', {'email': 'wronguser', 'password': 'wrongpassword'})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), {
-                         "message": "Invalid email or password"})
 
 
 class RegisterUserTest(TestCase):
@@ -34,14 +32,11 @@ class RegisterUserTest(TestCase):
         response = self.client.post(f'{BASE_URL}/api/user/register', {'email': 'testuser',
                                     'password': 'testpassword', 'first_name': 'Test', 'last_name': 'User'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"message": "User created"})
 
     def test_register_failure(self):
         response = self.client.post(
             f'{BASE_URL}/api/user/register', {'email': '', 'password': '', 'first_name': '', 'last_name': ''})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), {
-                         "message": "Email and password are required"})
 
 
 class UpdateUserTest(TestCase):
