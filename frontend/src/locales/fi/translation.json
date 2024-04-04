@@ -1,0 +1,67 @@
+{
+    "login": {
+       "title": "Kirjautuminen",
+       "email": "Sähköposti",
+       "password": "Salasana",
+       "submit": "Kirjaudu",
+       "forgot": "Unohdistko salasanasi?",
+       "register": "Ei tiliä? Rekisteröidy..."
+    },
+    
+    "main": {
+        "profile": "Muokkaa tiliä",
+        "logout": "Kirjaudu ulos"
+       
+    },
+    "sidebar": {
+        "home": "Koti",
+        "library": "Kirjasto",
+        "error": "----------- VIRHE! ------------",
+        "errorMessage": "Jokin meni pieleen. Yritä myöhemmin uudelleen...",
+        "type1": "Soittolista",
+        "type2": "Albumi"
+
+    },
+    "playListPreview": {
+        "type": "SOITTOLISTA"
+    },
+    "playListHeader": {
+        "title": "NIMI",
+        "album": "ALBUMI"
+    },
+    "recommendation": {
+        "h1": "Suositukset perustuen listaan"
+    },
+    "cardContainer": {
+        "year": "Vuosi"
+    },
+    "playListContainer": {
+        "loading": "Ladataan...",
+        "generateButton": "Luo suosituksia"
+    },
+    "layout": {
+        "loading": "Ladataan..."
+    },
+    "registration": {
+        "title": "Rekisteröinti",
+        "email": "Sähköposti",
+        "password": "Salasana",
+        "submit": "Rekisteröidy",
+        "login": "Kirjaudu sisään",
+        "firstName": "Etunimi",
+        "lastName": "Sukunimi",
+        "forgot": "Unohditko salasanasi?",
+        "loading": "Ladataan..."
+    },
+    "profile": {
+        "title": "Muokkaa tiliä",
+        "email": "Sähköposti",
+        "password": "Salasana",
+        "submit": "Tallenna",
+        "cancel": "Peruuta",
+        "delete": "Poista profiili",
+        "firstName": "Etunimi",
+        "lastName": "Sukunimi",
+        "confirmation": "Oletko varma että haluat poistaa profiilin?"
+    }
+ }

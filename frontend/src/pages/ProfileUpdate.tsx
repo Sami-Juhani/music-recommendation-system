@@ -76,7 +76,7 @@ const ProfileUpdate = () => {
     e.stopPropagation();
 
     const confirmDelete = window.confirm(
-      t("deleteProfileConfirm")
+      t("profile.confirmation")
     );
 
     if (!confirmDelete) {
