@@ -13,13 +13,13 @@ import { UserContext } from "../context/UserContextProvider";
 import CardSkeleton from "../components/Skeleton/CardSkeleton";
 import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkeleton";
 import PathConstants from "../routes/PathConstants";
-import { useTranslation } from 'react-i18next';
-import LanguageSelector from "../langLocalization/LanguageSelector";
+import Languages from "../components/LanguageMenu";
+import { useTranslation } from "react-i18next";
+import Modal from '../components/Modal';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
   const { logout } = useLogout();
   const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<
     number | null
@@ -34,8 +34,25 @@ const Home: React.FC = () => {
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
   const { user } = useContext(UserContext);
+  const { t, i18n } = useTranslation();
 
 
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+  }, [i18n, i18n.language]);
+
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const showModal = (message: string) => {
+    setModalMessage(message);
+    setIsModalVisible(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+  
   useEffect(() => {
     const controller = new AbortController();
 
@@ -44,6 +61,7 @@ const Home: React.FC = () => {
 
       try {
         const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
+          headers: {'Accept-Language': i18n.language},
           credentials: "include",
           signal: controller.signal,
         });
@@ -67,18 +85,20 @@ const Home: React.FC = () => {
     getPlaylists();
 
     return () => controller.abort();
-  }, [dispatchPlaylists]);
+  }, [dispatchPlaylists, i18n.language]);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const getPlaylist = async () => {
+      if (selectedPlaylistIndex == null) return;
       setOnePLIsLoading(true);
 
       try {
         const response = await fetch(
           BASE_URL + `/api/spotify/playlist/${selectedPlaylistIndex}/`,
           {
+            headers: {'Accept-Language': i18n.language},
             credentials: "include",
             signal: controller.signal,
           }
@@ -100,7 +120,7 @@ const Home: React.FC = () => {
     getPlaylist();
 
     return () => controller.abort();
-  }, [dispatchSingle, selectedPlaylistIndex]);
+  }, [dispatchSingle, selectedPlaylistIndex, i18n.language]);
 
   const generateRecommendation = async () => {
     try {
@@ -109,6 +129,7 @@ const Home: React.FC = () => {
       const response = await fetch(
         BASE_URL + `/api/recommendations/generate/${selectedPlaylistIndex}`,
         {
+          headers: {'Accept-Language': i18n.language},
           credentials: "include",
         }
       );
@@ -166,13 +187,13 @@ const Home: React.FC = () => {
             <FontAwesomeIcon icon={faUser} />
             <p>{user?.firstName}</p>
           </div>
-          <div className="sticky-nav-optons">
-            <button className=""><LanguageSelector /> </button>
+          <div className="flex sticky-nav-optons">
+          <Languages />
             <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>{t('editUser')}</Link>
+              <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
             </button>
             <button onClick={logout} className="badge nav-item hide">
-              {t('logOut')}
+              {t('main.logout')}
             </button>
           </div>
         </div>
@@ -211,6 +232,11 @@ const Home: React.FC = () => {
         )}
       </div>
 
+      <Modal
+      isVisible={isModalVisible}
+      message={modalMessage}
+      onClose={closeModal}
+      />
     </div>
   );
 };

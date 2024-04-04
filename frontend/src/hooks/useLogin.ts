@@ -4,6 +4,7 @@ import { UserContext } from "../context/UserContextProvider";
 import PathConstants from "../routes/PathConstants";
 import { UserContextType } from "../types/UserContextType";
 import { NotificationContext } from "../context/NotificationContextProvider";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const IS_AUTHENTICATED_URL = BASE_URL + "/api/spotify/is-authenticated/";
@@ -15,6 +16,7 @@ interface LoginFormState {
 }
 
 export const useLogin = () => {
+  const { i18n } = useTranslation(); 
   const { setNotification } = useContext(NotificationContext);
   const [formData, setFormData] = useState<LoginFormState>({
     email: "",
@@ -37,6 +39,7 @@ export const useLogin = () => {
       const response = await fetch(`${BASE_URL}/api/user/login`, {
         method: "POST",
         headers: {
+          'Accept-Language': i18n.language,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
@@ -59,6 +62,7 @@ export const useLogin = () => {
       if (response.ok) {
         try {
           const response = await fetch(IS_AUTHENTICATED_URL, {
+            headers: {'Accept-Language': i18n.language},
             credentials: "include",
           });
           if (response.status !== 200) {

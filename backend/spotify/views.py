@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.utils.translation import gettext, get_language_from_request, activate
 from music_recommender.settings import BASE_URL
 from .utils import *
 from drf_yasg.utils import swagger_auto_schema
@@ -30,12 +31,14 @@ class SpotifyAuth(APIView):
     """
     @swagger_auto_schema(operation_description="Redirect to Spotify Auth", responses={302: 'Redirect to Spotify Auth'})
     def get(self, request):
-
         SPOTIFY_CLIENT_ID: str = os.environ.get('SPOTIFY_CLIENT_ID')
         SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')
+        preferred_language: str = get_language_from_request(request)
 
+        activate(preferred_language)
+        
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
-            return Response({"message": 'SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be provided'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"message": gettext("spotify_client_secret_error")}, status=status.HTTP_401_UNAUTHORIZED)
 
         state: str = secrets.token_urlsafe(16)
         scope: str = 'user-read-private user-read-email playlist-modify-private playlist-modify-public user-read-currently-playing user-read-playback-position user-read-playback-state playlist-read-private user-read-recently-played user-top-read user-library-read user-modify-playback-state'
@@ -62,25 +65,27 @@ def spotify_callback(request) -> Response:
     Returns:
     Response: The response object with the user data
     """
-
     user_id = request.session.get('user_id')
     code: str = request.GET.get('code')
     state: str = request.GET.get('state')
     error: str = request.GET.get('error')
+    preferred_language: str = get_language_from_request(request)
+
+    activate(preferred_language)
 
     if not user_id:
-        return JsonResponse({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
     if error:
         return HttpResponse(error, status=status.HTTP_400_BAD_REQUEST)
 
     if not state:
-        return JsonResponse({"message:": "State not found"}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"message:": gettext("state_not_found")}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return JsonResponse({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
     SPOTIFY_CLIENT_ID: str = os.environ.get('SPOTIFY_CLIENT_ID')
     SPOTIFY_CLIENT_SECRET: str = os.environ.get('SPOTIFY_CLIENT_SECRET')
@@ -95,7 +100,7 @@ def spotify_callback(request) -> Response:
             'Authorization': f'Basic {base64.b64encode(f"{SPOTIFY_CLIENT_ID}:{SPOTIFY_CLIENT_SECRET}".encode()).decode()}'
         })
     except requests.exceptions.RequestException as e:
-        return JsonResponse({"message": 'Failed to retrieve access token'}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"message": gettext("access_token_error")}, status=status.HTTP_401_UNAUTHORIZED)
 
     data: dict = response.json()
     access_token: str = data['access_token']
@@ -120,17 +125,20 @@ class IsAuthenticated(APIView):
     @swagger_auto_schema(operation_description="Check if a user is authenticated", responses={200: IsAuthenticatedSerializer()})
     def get(self, request):
         user_id: int = request.session.get('user_id')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not user_id:
-            return JsonResponse({"message": 'No user id found'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message": gettext("user_id_not_found")}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user: User = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         if not user:
-            return JsonResponse({"message": 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
         is_auth: bool = is_authenticated(user)
 
@@ -149,9 +157,12 @@ class SpotifyAccessToken(APIView):
     def get(self, request):
         user_id: int = request.session.get('user_id')
         access_token: str = get_access_token(user_id)
+        preferred_language: str = get_language_from_request(request)
 
-        if 'message' in access_token or not access_token:
-            return JsonResponse({"message": 'No access token found'}, status=status.HTTP_404_NOT_FOUND)
+        activate(preferred_language)
+
+        if not access_token:
+            return JsonResponse({"message": gettext("access_token_error")}, status=status.HTTP_404_NOT_FOUND)
 
         return JsonResponse({"access_token": access_token}, status=status.HTTP_200_OK)
 
@@ -167,10 +178,13 @@ class SpotifyRecentlyPlayed(APIView):
     def get(self, request):
         user_id: int = request.session.get('user_id')
         endpoint: str = 'me/player/recently-played'
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         recently_played: dict = execute_spotify_api_request(user_id, endpoint)
 
-        if 'message' in recently_played or not recently_played:
+        if not recently_played:
             return Response(recently_played, status=status.HTTP_404_NOT_FOUND)
 
         return Response(recently_played, status=status.HTTP_200_OK)
@@ -187,10 +201,13 @@ class SpotifyPlaylists(APIView):
     def get(self, request):
         user_id: int = request.session.get('user_id')
         endpoint: str = 'me/playlists'
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         playlists: dict = execute_spotify_api_request(user_id, endpoint)
 
-        if 'message' in playlists or not playlists:
+        if not playlists:
             return Response(playlists, status=status.HTTP_404_NOT_FOUND)
 
         return Response(playlists, status=status.HTTP_200_OK)
@@ -210,10 +227,13 @@ class SpotifyOnePlaylist(APIView):
     def get(self, request, playlist_id):
         user_id: int = request.session.get('user_id')
         endpoint: str = f'playlists/{playlist_id}'
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         playlist: dict = execute_spotify_api_request(user_id, endpoint)
 
-        if 'message' in playlist or not playlist:
+        if not playlist:
             return Response(playlist, status=status.HTTP_404_NOT_FOUND)
 
         for track in playlist['tracks']['items']:
@@ -234,11 +254,14 @@ class SpotifyPlaylistsWithTracks(APIView):
         playlists_with_tracks = []
         user_id: int = request.session.get('user_id')
         endpoint: str = 'me/playlists'
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         # Get the playlists
         playlists: dict = execute_spotify_api_request(user_id, endpoint)
 
-        if 'message' in playlists or not playlists:
+        if not playlists:
             return Response(playlists, status=status.HTTP_404_NOT_FOUND)
 
         # Get the tracks for each playlist
@@ -246,8 +269,8 @@ class SpotifyPlaylistsWithTracks(APIView):
             playlists_with_tracks.append(execute_spotify_api_request(
                 user_id, f"playlists/{playlist['id']}"))
 
-        if 'message' in playlists_with_tracks or not playlists_with_tracks:
-            return Response(playlists_with_tracks, status=status.HTTP_404_NOT_FOUND)
+        if not playlists_with_tracks:
+            return JsonResponse({"message" : gettext("playlist_with_tracks_error")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(playlists_with_tracks, status=status.HTTP_200_OK)
     
@@ -262,11 +285,14 @@ class SpotifyRecentlyPlayed(APIView):
     def get(self, request):
         user_id: int = request.session.get('user_id')
         endpoint: str = "me/player/recently-played?limit=50"
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         recently_played: dict = execute_spotify_api_request(user_id, endpoint)
 
-        if 'message' in recently_played or not recently_played:
-            return Response(recently_played, status=status.HTTP_404_NOT_FOUND)
+        if not recently_played:
+            return JsonResponse({"message" : gettext("recently_played_error")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(recently_played, status=status.HTTP_200_OK)
 

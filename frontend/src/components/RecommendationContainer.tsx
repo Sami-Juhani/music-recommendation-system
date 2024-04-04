@@ -20,7 +20,7 @@ const RecommendationsContainer: React.FC<RecommendationsContainerProps> = ({
   const { t } = useTranslation();
   return isVisible && generated?.name?.length > 0 ? (
     <div className="cards-container">
-      <h1>{t("listOfRecommendationBasedOn")} {`"${playlist.name}"`}</h1>
+      <h1>{t('recommendation.h1')} {`"${playlist.name}"`}</h1>
       <CardContainer generated={generated} />
     </div>
   ) : null;

@@ -1,0 +1,67 @@
+{
+    "login": {
+       "title": "Log in",
+       "email": "Email",
+       "password": "Password",
+       "submit": "Log in",
+       "forgot": "Forgot your password?",
+       "register": "Don&apos;t have an account?"
+    },
+    
+    "main": {
+        "profile": "Edit user",
+        "logout": "Log out"
+       
+    },
+    "sidebar": {
+        "home": "Home",
+        "library": "Library",
+        "error": "----------- ERROR! ------------",
+        "errorMessage": "Something went wrong",
+        "type1": "Playlist",
+        "type2": "Album"
+
+    },
+    "playListPreview": {
+        "type": "PLAYLIST"
+    },
+    "playListHeader": {
+        "title": "TITLE",
+        "album": "ALBUM"
+    },
+    "recommendation": {
+        "h1": "List of recommendations based on"
+    },
+    "cardContainer": {
+        "year": "Year"
+    },
+    "playListContainer": {
+        "loading": "Loading...",
+        "generateButton": "Generate recommendations"
+    },
+    "layout": {
+        "loading": "Loading..."
+    },
+    "registration": {
+        "title": "Registration",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Sign up",
+        "login": "Log in",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "forgot": "Forgot your password?",
+        "loading": "Loading..."
+    },
+    "profile": {
+        "title": "Edit user",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete profile",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "confirmation": "Are you sure you want to delete your account?"
+    }
+ }

@@ -1,0 +1,68 @@
+{
+   "login": {
+      "title": "Вход",
+      "email": "Адрес эл. почты",
+      "password": "Пароль",
+      "submit": "Войти",
+      "forgot": "Забыли пароль?",
+      "register": "Регистрация"
+   },
+   
+   "main": {
+      "profile": "Профиль",
+      "logout": "Выйти"
+      
+   },
+   "sidebar": {
+       "home": "Главная",
+       "library": "Моя медиатека",
+       "error": "----------- Ошибка! ------------",
+       "errorMessage": "Что-то пошло не так...",
+       "type1": "Плейлист",
+       "type2": "Альбом"
+
+   },
+   "playListPreview": {
+       "type": "ПЛЕЙЛИСТ"
+   },
+   "playListHeader": {
+       "title": "НАЗВАНИЕ",
+       "album": "АЛЬБОМ"
+   },
+   "recommendation": {
+       "h1": "Список рекомендаций на основе"
+   },
+   "cardContainer": {
+       "year": "Год"
+   },
+   "playListContainer": {
+       "loading": "Загрузка...",
+       "generateButton": "Генерировать рекоммендации"
+   },
+   "layout": {
+       "loading": "Загрузка..."
+   },
+   "registration": {
+       "title": "Регистрация",
+       "email": "Адрес эл. почты",
+       "password": "Пароль",
+       "submit": "Зарегистрироваться",
+       "login": "Войти",
+       "firstName": "Имя",
+       "lastName": "Фамилия",
+       "forgot": "Забыли пароль?",
+       "loading": "Загрузка..."
+   },
+   "profile": {
+       "title": "Редактирование профиля",
+       "email": "Адрес эл. почты",
+       "password": "Пароль",
+       "submit": "Обновить",
+       "cancel": "Отмена",
+       "delete": "Удалить профиль",
+       "firstName": "Имя",
+       "lastName": "Фамилия"
+   }
+
+    
+}

@@ -40,10 +40,6 @@ def create_necessary_outputs(spotify_playlist: dict, df: pd.DataFrame, recently_
     playlist = playlist[playlist['id'].isin(df['id'].values)].sort_values(
         'date_added', ascending=False)
 
-    # If the playlist is empty after filtering, print a message and return None
-    if playlist.shape[0] == 0:
-        return ({'message': 'No songs in the playlist are available in the dataset'})
-
     # Return the filtered and sorted playlist
     return playlist
 
@@ -143,7 +139,7 @@ def generate_playlist_recos(df: pd.DataFrame, features: pd.Series, nonplaylist_f
         lambda x: get_song_rating(x))
 
     if non_playlist_df_top_40.shape[0] == 0:
-        return ({'message': 'No songs in the playlist are available in the dataset'})
+        return non_playlist_df_top_40
 
     # Get rid of wrongs artists row and replace with correct one
     non_playlist_df_top_40.drop("artists", axis=1, inplace=True)

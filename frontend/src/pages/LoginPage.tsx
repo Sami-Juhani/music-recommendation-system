@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormInput from "../components/FormInput";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import { useLogin } from '../hooks/useLogin'
 import { useTranslation } from "react-i18next";
-
-
+import Languages from "../components/LanguageMenu";
 
 
 export default function Login() {
-  const { t } = useTranslation();
   const { formData, handleChange, handleSubmit, error } = useLogin();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+  }, [i18n, i18n.language]);
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
-      <header className="md:px-8 md:px-12 md:mb-8 bg-black">
+      <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
+        <div className="w-full">
+        </div>
+        <div className="w-1/8 max-w-[100px]">
+          <Languages />
+        </div>
       </header>
-
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-8 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
         <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
-          {t("login")}
+          {t('login.title')}
         </h1>
 
         <hr className="border-t-[1px] border-zinc-800" />
-
         <form
           className="flex flex-col gap-3 md:px-[5.5rem]"
           onSubmit={handleSubmit}
@@ -33,7 +39,7 @@ export default function Login() {
             type="text"
             id="email"
             name="email"
-            placeholder={t("email")}
+            placeholder={(t('login.email') as string)}
             handleChange={handleChange} 
             formData={formData.email}
           />
@@ -42,23 +48,23 @@ export default function Login() {
             type="password"
             id="password"
             name="password"
-            placeholder={t("password")}
+            placeholder={(t('login.password') as string)}
             formData={formData.password}
             handleChange={handleChange}
           />
 
           <PrimaryButton type="submit" className="mt-5">
-            {t("login")}
+            {t('login.submit')}
           </PrimaryButton>
         </form>
 
         {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
         <div className="flex flex-col gap-2 items-center text-center">
-            <Link to="#">{t("forgetYourPassword")}</Link>
+            <Link to="#">{t('login.forgot')}</Link>
             <hr className="hidden md:block w-full border-t-[1px] mb-6 border-zinc-800" />
             <div className="flex flex-col gap-1 md:gap-2 md:flex-row">
-              <Link to={PathConstants.REGISTER}>{t("noAccountyet")}</Link>
+              <Link to={PathConstants.REGISTER}>{t('login.register')}</Link>
             </div>
         </div>
       </main>

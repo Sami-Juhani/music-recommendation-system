@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiFillClockCircle } from 'react-icons/ai';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const PlayListHeader: React.FC = () => {
     const { t } = useTranslation();
@@ -12,10 +12,10 @@ const PlayListHeader: React.FC = () => {
                 <span>#</span>
             </div>
             <div className="col">
-                <span>{t("title")}</span>
+                <span>{t('playListHeader.title')}</span>
             </div>
             <div className="col">
-                <span>{t("album")}</span>
+                <span>{t('playListHeader.album')}</span>
             </div>
             <div className="col">
                 <span>

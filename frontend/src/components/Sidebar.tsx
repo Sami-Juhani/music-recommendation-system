@@ -30,14 +30,14 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="nav">
         <div className="nav-option" id="nav-option-home">
           <FontAwesomeIcon icon={faHouse} />
-          <a href="/">{t("home")}</a>
+          <a href="/">{t('sidebar.home')}</a>
         </div>
       </div>
       <div className="library">
         <div className="options">
           <div className="lib-option nav-option">
             <img src="./assets/library_icon.png" alt="library_icon" />
-            <a href="/">{t("yourlibrary")}</a>
+            <a href="/">{t('sidebar.library')}</a>
           </div>
         </div>
         <div className="lib-box">
@@ -66,14 +66,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                   />
                   <div className="preview-text">
                     <h1>{playlist.name && playlist.name.slice(0, 20)}</h1>
-                    <p>{playlist.type}</p>
+                    <p>{playlist.type === 'playlist' ? t('sidebar.type1') : t('sidebar.type2')}</p>
                   </div>
                 </div>
               ))
             ) : (
               <div className="sidebar-error">
-                ----------- {t("error")} ------------
-                <br /> {t("errorLoadingPlaylists")}
+                {t('sidebar.error')}
+                <br /> {t('sidebar.errorMessage')}
               </div>
             )}
           </div>
