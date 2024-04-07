@@ -25,7 +25,7 @@ const resources: Resources = {
   fr: {
     translation: frTranslation,
   },
-  jp: {
+  ja: {
     translation: jpTranslation,
   },
   fa: {
