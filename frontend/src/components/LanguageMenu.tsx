@@ -1,7 +1,8 @@
-import React, { Fragment, useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { Fragment, useState, useEffect, Dispatch, SetStateAction, useContext } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../context/UserContextProvider";
 
 interface Language {
   id: number;
@@ -40,6 +41,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Languages({ setSearchRecommendationsError } : { setSearchRecommendationsError?: Dispatch<SetStateAction<string>> }) {
+  const { user } = useContext(UserContext);
   const { i18n } = useTranslation();
   const [selected, setSelected] = useState<Language | null>(null);
 
@@ -56,7 +58,20 @@ export default function Languages({ setSearchRecommendationsError } : { setSearc
     } else {
       setSelected(languages[0]);
     }
-  }, [i18n.languages]);
+  }, [i18n.languages, setSearchRecommendationsError]);
+    
+  useEffect(() => {
+    if (user === undefined || user.preferredLanguage === undefined) return;
+    
+      const selectedLanguage = languages.find(
+        (lang) => lang.name.toLowerCase() === user.preferredLanguage.toLowerCase()
+      );
+
+      if (selectedLanguage) {
+        setSelected(selectedLanguage);
+        i18n.changeLanguage(user.preferredLanguage.toLowerCase())
+      }
+  }, [user, i18n])
 
   return (
     <Listbox value={selected} onChange={setSelected}>
