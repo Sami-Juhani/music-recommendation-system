@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,7 @@ const languages = [
   },
   {
     id: 5,
-    name: "Jp",
+    name: "Ja",
   },
   {
     id: 6,
@@ -39,13 +39,13 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Languages() {
+export default function Languages({ setSearchRecommendationsError } : { setSearchRecommendationsError?: Dispatch<SetStateAction<string>> }) {
   const { i18n } = useTranslation();
   const [selected, setSelected] = useState<Language | null>(null);
 
   useEffect(() => {
+    if (setSearchRecommendationsError) setSearchRecommendationsError("");
     const systemLanguage = i18n.languages[0];
-    console.log(systemLanguage);
     const languageCode = systemLanguage.substring(0, 2);
     const selectedLanguage = languages.find(
       (lang) => lang.name.toLowerCase() === languageCode.toLowerCase()
