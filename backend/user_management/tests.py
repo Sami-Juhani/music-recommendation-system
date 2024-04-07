@@ -1,6 +1,7 @@
 import json
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from .models import UserLocalization
 from rest_framework import status
 from music_recommender.settings import BASE_URL
 
@@ -9,14 +10,30 @@ class UserLoginTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
-            username='testuser', password='testpassword')
-
+            username='testaaja@gmail.com', password='testpassword', first_name='test', last_name='user')
+        self.localization =  UserLocalization.objects.create(
+                user=self.user, language_code='fi', first_name='test', last_name='user')
+        
+        self.user2 = User.objects.create_user(
+            username='明子', password='明子明子明子', first_name='明子', last_name='明子')
+        self.localization2 =  UserLocalization.objects.create(
+                user=self.user2, language_code='ja', first_name='明子', last_name='明子')
+        
     def test_login_success(self):
         response = self.client.post(
-            f'{BASE_URL}/api/user/login', {'email': 'testuser', 'password': 'testpassword'})
+            f'{BASE_URL}/api/user/login', {'email': 'testaaja@gmail.com', 'password': 'testpassword'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {"user": {
-                         "id": self.user.id, "firstName": self.user.first_name, "lastName": self.user.last_name}})
+
+        response = self.client.post(
+            f'{BASE_URL}/api/user/login', {'email': '明子', 'password': '明子明子明子'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_language_code_return(self):
+        response = self.client.post(
+            f'{BASE_URL}/api/user/login', {'email': '明子', 'password': '明子明子明子'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('preferredLanguage', response.data['user'])
+        self.assertEqual(response.data['user']['preferredLanguage'], "ja")
 
     def test_login_failure(self):
         response = self.client.post(
@@ -30,7 +47,7 @@ class RegisterUserTest(TestCase):
 
     def test_register_success(self):
         response = self.client.post(f'{BASE_URL}/api/user/register', {'email': 'testuser',
-                                    'password': 'testpassword', 'first_name': 'Test', 'last_name': 'User'})
+                                    'password': 'testpassword', 'first_name': 'Test', 'last_name': 'User', 'preferred_language': 'fi'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_register_failure(self):
