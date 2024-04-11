@@ -9,23 +9,11 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotifyId: string }) => {
   const { t } = useTranslation();
   const [rating, setRating] = useState(songRating.overall_rating);
-  const [newRating, setNewRating] = useState(1);
   const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
   const { setNotification } = useContext(NotificationContext);
 
-  const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newInputRating = parseInt(e.target.value);
-
-    if (newInputRating < 1) {
-      newInputRating = 1;
-    } else if (newInputRating > 5) {
-      newInputRating = 5;
-    }
-
-    setNewRating(newInputRating);
-  };
-
-  const handleSubmitRating = async () => {
+  const handleRatingChange = async (newRating: number, event: React.MouseEvent<HTMLSpanElement>) => {
+    event.stopPropagation();
     try {
       const response = await fetch(
         `${BASE_URL}/api/song-ratings/add-rating/${spotifyId}`,
@@ -61,17 +49,15 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
         </p>
       </div>
       <div className="flex gap-[10px] items-center">
-        <input
-          type="number"
-          min="1"
-          max="5"
-          value={newRating}
-          onChange={handleRatingChange}
-          className="rating-input"
-        />
-        <button onClick={handleSubmitRating} className="submit-button">
-          {t("submitRatings")}
-        </button>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            onClick={(event) => handleRatingChange(star, event)}
+            className={`star ${star <= rating ? 'filled' : ''} ${star - 0.5 === rating ? 'half-filled' : ''}`}
+          >
+            ★
+          </span>
+        ))}
       </div>
     </div>
   );

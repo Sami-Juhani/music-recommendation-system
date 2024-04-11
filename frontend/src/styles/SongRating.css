@@ -47,3 +47,26 @@
 .submit-button:hover {
     background-color: #0056b3;
 }
+
+
+.star {
+    cursor: pointer;
+    color: rgba(119, 150, 148, 0.5);
+}
+  
+.star.filled, .star.half-filled {
+    color: gold;
+}
+
+.star.half-filled::before {
+    content: "★";
+    position: absolute;
+    width: 50%;
+    overflow: hidden;
+    color: transparent;
+}
+
+.star:hover  {
+    color: gold;
+}
+  
