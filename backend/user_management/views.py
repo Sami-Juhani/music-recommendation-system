@@ -7,7 +7,8 @@ from django.utils.translation import gettext, get_language_from_request, activat
 from drf_yasg.utils import swagger_auto_schema
 from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
-
+from song_ratings.models import Rating
+from song_ratings.serializers import RatingSerializer
 
 class UserLogin(APIView):
     @swagger_auto_schema(request_body=UserLoginRequestSerializer, responses={200: UserLoginResponseSerializer})
@@ -75,7 +76,13 @@ class GetUser(APIView):
         except User.DoesNotExist:
             return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name}}, status=status.HTTP_200_OK)
+        try:
+            ratings = Rating.objects.filter(user=user)
+            parsed_ratings = RatingSerializer(ratings, many=True)
+        except Rating.DoesNotExist:
+            ratings = []
+
+        return Response({"user": {"id": user.id, "firstName": user.first_name, "lastName": user.last_name, "userRatings" : parsed_ratings.data or ratings}}, status=status.HTTP_200_OK)
 
 
 class UpdateUser(APIView):

@@ -26,5 +26,5 @@ rating_param = openapi.Schema(
 rating_result = openapi.Schema(type=openapi.TYPE_OBJECT,
                               properties={'spotify_id': openapi.Schema(type=openapi.TYPE_STRING, description='Spotify ID of the song'),
                                           'number_of_reviews': openapi.Schema(type=openapi.TYPE_INTEGER, description='Number of reviews'),
-                                          'overall_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Overall rating'), })
-
+                                          'overall_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Overall rating'), 
+                                          'user_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description="User's rating"),})
