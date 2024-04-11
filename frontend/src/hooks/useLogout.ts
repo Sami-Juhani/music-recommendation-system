@@ -24,7 +24,6 @@ export const useLogout = () => {
     })
       .then(() => {
         setUser(undefined);
-        console.log("User logged out");
       })
       .catch((error) => {
         console.error("Error:", error);

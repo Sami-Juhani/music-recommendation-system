@@ -7,6 +7,8 @@ from django.utils.translation import gettext, get_language_from_request, activat
 from drf_yasg.utils import swagger_auto_schema
 from django.db.utils import IntegrityError
 from .serializers import UserLoginRequestSerializer, UserLoginResponseSerializer, RegisterUserRequestSerializer, RegisterUserResponseSerializer
+from song_ratings.serializers import UserRatingSerializer
+from song_ratings.models import Rating
 from .models import UserLocalization
 
 
@@ -26,9 +28,22 @@ class UserLogin(APIView):
 
         locale_user_data = UserLocalization.get_user_localized_data(user)
 
+        try:
+            ratings = Rating.objects.filter(user=user)
+            parsed_ratings = UserRatingSerializer(ratings, many=True)
+        except Rating.DoesNotExist:
+            ratings = []
+
         request.session['user_id'] = user.id
 
-        return Response({"user": {"id": user.id, "firstName": locale_user_data.get('first_name'), "lastName": locale_user_data.get('last_name'), "preferredLanguage": locale_user_data.get('language_code') or ""}}, status=status.HTTP_200_OK)
+        return Response({"user": 
+                         {"id": user.id, 
+                          "firstName": locale_user_data.get('first_name'), 
+                          "lastName": locale_user_data.get('last_name'), 
+                          "preferredLanguage": locale_user_data.get('language_code') or "", 
+                          "userRatings" : parsed_ratings.data or ratings
+                          }
+                        }, status=status.HTTP_200_OK)
 
 
 class RegisterUser(APIView):
@@ -78,7 +93,20 @@ class GetUser(APIView):
         except User.DoesNotExist:
             return Response({"message": gettext("user_not_found")}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"user": {"id": user.id, "firstName": locale_user_data.get('first_name'), "lastName": locale_user_data.get('last_name'), "preferredLanguage": locale_user_data.get('language_code') or ""}}, status=status.HTTP_200_OK)
+        try:
+            ratings = Rating.objects.filter(user=user)
+            parsed_ratings = UserRatingSerializer(ratings, many=True)
+        except Rating.DoesNotExist:
+            ratings = []
+
+        return Response({"user": 
+                         {"id": user.id, 
+                          "firstName": locale_user_data.get('first_name'), 
+                          "lastName": locale_user_data.get('last_name'), 
+                          "preferredLanguage": locale_user_data.get('language_code') or "", 
+                          "userRatings" : parsed_ratings.data or ratings
+                          }
+                        }, status=status.HTTP_200_OK)
 
 
 class UpdateUser(APIView):
@@ -124,12 +152,19 @@ class UpdateUser(APIView):
 
         user.save()
 
+        try:
+            ratings = Rating.objects.filter(user=user)
+            parsed_ratings = UserRatingSerializer(ratings, many=True)
+        except Rating.DoesNotExist:
+            ratings = []
+
         return Response({
             "user": {
                 "id": user.id,
                 "firstName": locale_user_data.first_name if locale_user_data else user.first_name,
                 "lastName": locale_user_data.last_name if locale_user_data else user.last_name,
-                "preferredLanguage": locale_user_data.language_code if locale_user_data else ""
+                "preferredLanguage": locale_user_data.language_code if locale_user_data else "",
+                "userRatings" : parsed_ratings.data or ratings
             }
         }, status=status.HTTP_200_OK)
 
