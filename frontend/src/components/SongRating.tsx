@@ -40,6 +40,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
       );
       if (response.ok) {
         const newSongRating = await response.json();
+        console.log(newSongRating)
         setRating(newSongRating.overall_rating);
         setNumberOfReviews(newSongRating.number_of_reviews);
         //setNotification({text: "Review submitted succesfully", success: true})

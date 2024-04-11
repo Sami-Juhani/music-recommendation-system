@@ -32,6 +32,7 @@ export function UserContextProvider({
         }
 
         const data = await response.json();
+        console.log(data.user)
 
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
