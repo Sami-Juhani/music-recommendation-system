@@ -67,7 +67,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
       <div className="flex gap-[10px] items-center">
         <input type="number" min="1" max="5" value={newRating} onChange={handleRatingChange} className="rating-input" />
         <button onClick={handleSubmitRating} className="submit-button">
-          {t("submitRatings")}
+          {t("playListContainer.submitRatings")}
         </button>
       </div>
     </div>

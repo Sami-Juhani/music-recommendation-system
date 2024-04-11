@@ -39,7 +39,8 @@
         "loading": "Ladataan...",
         "generateButton": "Luo suosituksia",
         "numberOfReviews": "Arvosteluja:",
-        "rating": "Arvosana:"
+        "rating": "Arvosana:",
+        "submitRatings": "Anna arviosi"
     },
     "layout": {
         "loading": "Ladataan..."
