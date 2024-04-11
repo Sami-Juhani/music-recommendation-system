@@ -37,7 +37,9 @@
     },
     "playListContainer": {
         "loading": "Ladataan...",
-        "generateButton": "Luo suosituksia"
+        "generateButton": "Luo suosituksia",
+        "numberOfReviews": "Arvosteluja:",
+        "rating": "Arvosana:"
     },
     "layout": {
         "loading": "Ladataan..."
