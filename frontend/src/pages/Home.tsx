@@ -33,6 +33,8 @@ const Home: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [searchRecommendationsError, setSearchRecommendationsError] =
     useState("");
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user } = useContext(UserContext);
   const { t, i18n } = useTranslation();
 
@@ -40,9 +42,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     document.body.dir = i18n.dir();
   }, [i18n, i18n.language]);
-
-  const [modalMessage, setModalMessage] = useState<string>('');
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const showModal = (message: string) => {
     setModalMessage(message);
@@ -188,7 +187,7 @@ const Home: React.FC = () => {
             <p>{user?.firstName}</p>
           </div>
           <div className="flex sticky-nav-optons">
-          <Languages />
+          <Languages setSearchRecommendationsError={setSearchRecommendationsError}/>
             <button className="badge nav-item dark-badge">
               <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
             </button>
@@ -231,7 +230,6 @@ const Home: React.FC = () => {
           </div>
         )}
       </div>
-
       <Modal
       isVisible={isModalVisible}
       message={modalMessage}
