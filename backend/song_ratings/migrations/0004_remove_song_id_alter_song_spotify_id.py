@@ -10,6 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+         migrations.RunSQL(
+            "ALTER TABLE song_ratings_rating DROP FOREIGN KEY song_ratings_rating_song_id_ceb7a362_fk;",
+        ),
         migrations.RemoveField(
             model_name='song',
             name='id',

@@ -10,9 +10,21 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 class SongSerializer(serializers.ModelSerializer):
+    user_rating = serializers.ListField(
+        child=serializers.CharField(), required=False)
+
     class Meta:
         model = Song
-        fields = ['spotify_id', 'number_of_reviews', 'overall_rating']
+        fields = ['spotify_id', 'number_of_reviews',
+                  'overall_rating', 'user_rating']
+
+
+class UserRatingSerializer(serializers.ModelSerializer):
+    spotifyId = serializers.CharField(source='song_id')
+
+    class Meta:
+        model = Rating
+        fields = ['spotifyId', 'rating']
 
 
 rating_param = openapi.Schema(
@@ -24,7 +36,7 @@ rating_param = openapi.Schema(
 )
 
 rating_result = openapi.Schema(type=openapi.TYPE_OBJECT,
-                              properties={'spotify_id': openapi.Schema(type=openapi.TYPE_STRING, description='Spotify ID of the song'),
-                                          'number_of_reviews': openapi.Schema(type=openapi.TYPE_INTEGER, description='Number of reviews'),
-                                          'overall_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Overall rating'), 
-                                          'user_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description="User's rating"),})
+                               properties={'spotify_id': openapi.Schema(type=openapi.TYPE_STRING, description='Spotify ID of the song'),
+                                           'number_of_reviews': openapi.Schema(type=openapi.TYPE_INTEGER, description='Number of reviews'),
+                                           'overall_rating': openapi.Schema(type=openapi.TYPE_NUMBER, description='Overall rating'),
+                                           })

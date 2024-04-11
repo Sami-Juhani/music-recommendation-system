@@ -16,11 +16,17 @@ class AddRatingView(APIView):
 
     POST /api/song_ratings/<int:song_id>/
     """
-    @swagger_auto_schema(operation_description="Add a rating to a song", request_body=rating_param, responses={status.HTTP_201_CREATED: SongSerializer(),
-                                                                                                               status.HTTP_200_OK: SongSerializer(),
-                                                                                                               status.HTTP_400_BAD_REQUEST: 'Rating is required',
-                                                                                                               status.HTTP_401_UNAUTHORIZED: 'User not logged in',
-                                                                                                status.HTTP_404_NOT_FOUND: 'User not found'})
+    @swagger_auto_schema(operation_description="Add a rating to a song", 
+                         request_body=rating_param, 
+                         responses={
+                            status.HTTP_201_CREATED: SongSerializer(),                                                                                                           
+                            status.HTTP_200_OK: SongSerializer(),
+                            status.HTTP_400_BAD_REQUEST: 'Rating is required',
+                            status.HTTP_401_UNAUTHORIZED: 'User not logged in',
+                            status.HTTP_404_NOT_FOUND: 'User not found'
+                            }
+                        )
+    
     def post(self, request, song_id: int, format=None):
         user_id: int = request.session.get('user_id')
         rating: int = request.data.get('rating')
