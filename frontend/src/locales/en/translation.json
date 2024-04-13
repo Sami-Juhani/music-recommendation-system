@@ -37,7 +37,10 @@
     },
     "playListContainer": {
         "loading": "Loading...",
-        "generateButton": "Generate recommendations"
+        "generateButton": "Generate recommendations",
+        "numberOfReviews": "Number of reviews:",
+        "rating": "Overall review:",
+        "submitRatings": "Submit review"
     },
     "layout": {
         "loading": "Loading..."
