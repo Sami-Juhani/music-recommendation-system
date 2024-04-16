@@ -16,11 +16,17 @@ class AddRatingView(APIView):
 
     POST /api/song_ratings/<int:song_id>/
     """
-    @swagger_auto_schema(operation_description="Add a rating to a song", request_body=rating_param, responses={status.HTTP_201_CREATED: SongSerializer(),
-                                                                                                               status.HTTP_200_OK: SongSerializer(),
-                                                                                                               status.HTTP_400_BAD_REQUEST: 'Rating is required',
-                                                                                                               status.HTTP_401_UNAUTHORIZED: 'User not logged in',
-                                                                                                               status.HTTP_404_NOT_FOUND: 'User not found'})
+    @swagger_auto_schema(operation_description="Add a rating to a song", 
+                         request_body=rating_param, 
+                         responses={
+                            status.HTTP_201_CREATED: SongSerializer(),                                                                                                           
+                            status.HTTP_200_OK: SongSerializer(),
+                            status.HTTP_400_BAD_REQUEST: 'Rating is required',
+                            status.HTTP_401_UNAUTHORIZED: 'User not logged in',
+                            status.HTTP_404_NOT_FOUND: 'User not found'
+                            }
+                        )
+    
     def post(self, request, song_id: int, format=None):
         user_id: int = request.session.get('user_id')
         rating: int = request.data.get('rating')
@@ -62,10 +68,12 @@ class AddRatingView(APIView):
 
         song_serializer = SongSerializer(song)
 
+        song_data = { **song_serializer.data, "user_rating": rating }
+
         if exists:
-            return Response(song_serializer.data, status=status.HTTP_200_OK)
+            return Response(song_data, status=status.HTTP_200_OK)
         else:
-            return Response(song_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(song_data, status=status.HTTP_201_CREATED)
 
 
 class GetRatingView(APIView):
@@ -78,6 +86,7 @@ class GetRatingView(APIView):
     - spotify_id: str
     - number_of_reviews: int
     - overall_rating: float
+    - user_rating: int
     """
     @swagger_auto_schema(operation_description="Get the rating of a song", responses={200: rating_result})
     def get(self, request, song_id: int, format=None):

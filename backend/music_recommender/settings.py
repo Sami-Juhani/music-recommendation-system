@@ -152,6 +152,8 @@ LANGUAGES = [
     ('fi', 'Finnish'),
     ('ru', 'Russian'),
     ('la', 'Latin'),
+    ('fa', 'Farsi'),
+    ('ja', 'Japanese'),
 ]
 
 LOCALE_PATHS = [

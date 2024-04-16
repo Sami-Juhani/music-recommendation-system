@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Song(models.Model):
-    spotify_id = models.CharField(max_length=255, unique=True)
+    spotify_id = models.CharField(max_length=255, unique=True, primary_key=True)
     number_of_reviews = models.IntegerField(default=0)
     overall_rating = models.FloatField(default=0)
 
@@ -18,5 +18,4 @@ class Rating(models.Model):
     rating = models.IntegerField()
 
     class Meta:
-        unique_together = ('user', 'song')
-    
+        unique_together = ('user', 'song',)

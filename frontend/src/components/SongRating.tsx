@@ -3,11 +3,13 @@ import "../styles/SongRating.css";
 import { NotificationContext } from "../context/NotificationContextProvider";
 import { RatingType } from "../types/RatingsType";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../context/UserContextProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotifyId: string }) => {
+const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotifyId: string }) => {
   const { t } = useTranslation();
+  const { user } = useContext(UserContext);
   const [rating, setRating] = useState(songRating.overall_rating);
   const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
   const { setNotification } = useContext(NotificationContext);
@@ -15,17 +17,14 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
   const handleRatingChange = async (newRating: number, event: React.MouseEvent<HTMLSpanElement>) => {
     event.stopPropagation();
     try {
-      const response = await fetch(
-        `${BASE_URL}/api/song-ratings/add-rating/${spotifyId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ rating: newRating }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/song-ratings/add-rating/${spotifyId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating: newRating }),
+        credentials: "include",
+      });
       if (response.ok) {
         const newSongRating = await response.json();
         setRating(newSongRating.overall_rating);
@@ -43,9 +42,11 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType, spotify
   return (
     <div className="flex gap-[20px] py-4">
       <div className="flex flex-col gap-[10px]">
-        <p className="rating-value">{t("rating")} {rating}</p>
+        <p className="rating-value">
+          {t("playListContainer.rating")} {rating}
+        </p>
         <p className="number-of-reviews">
-          {t("numberOfReviews")} {numberOfReviews}
+          {t("playListContainer.numberOfReviews")} {numberOfReviews}
         </p>
       </div>
       <div className="flex gap-[10px] items-center">
