@@ -38,7 +38,8 @@ ALLOWED_HOSTS = [
     '172.31.20.1'
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", 'http://musicrecommender.samipaan.com', 'http://apimusicrecommender.samipaan.com']
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1",
+                        'http://musicrecommender.samipaan.com', 'http://apimusicrecommender.samipaan.com']
 
 # Application definition
 
@@ -59,7 +60,7 @@ INSTALLED_APPS = [
 ]
 
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True 
+SESSION_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
@@ -179,4 +180,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 APPEND_SLASH = False
 
-BASE_URL = 'http://127.0.0.1:8000' if os.environ.get('DJANGO_ENV') == 'development' else 'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com'
+BASE_URL = 'http://127.0.0.1:8000' if os.environ.get(
+    'DJANGO_ENV') == 'development' else 'ec2-16-171-233-21.eu-north-1.compute.amazonaws.com'
