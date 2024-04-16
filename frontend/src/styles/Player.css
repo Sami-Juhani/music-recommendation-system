@@ -1,0 +1,150 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  background: #000;
+  padding: 0.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+
+  @media screen and (min-width: 880px) {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1rem;
+  }
+}
+
+.player-header {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-header > span {
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+}
+
+.player-song-information {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-right: 5px;
+  @media screen and (min-width: 880px){
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+
+.player-song-text {
+  color: rgb(190, 190, 190);
+}
+
+.player-song-text .player-artists-name {
+  display: none;
+}
+
+.player-song-information > img {
+  display: none;
+  width: 60px;
+  height: 60px;
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+
+  @media screen and (min-width: 880px) {
+    display: block;
+  }
+}
+
+.player-song-details {
+  display: flex;
+  gap: 10px;
+  @media screen and (min-width: 880px) {
+    flex-direction: column;
+    gap: unset;
+  }
+}
+
+.player-center-items {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.player-control-container {
+  grid-row: 2;
+  @media screen and (min-width: 880px) {
+    grid-row: unset;
+    grid-column: 2;
+  }
+}
+
+.player-controls {
+  display: flex;
+  gap: 30px;
+}
+
+.player-controls > button > svg {
+  color: rgb(190, 190, 190);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.player-controls > button:nth-child(2) > svg {
+  font-size: 1.7rem;
+}
+
+.player-controls > button > svg:hover {
+  color: white;
+}
+
+.player-controls > button:disabled {
+  pointer-events: none;
+}
+
+.player-progress {
+  display: flex;
+  width: 100%;
+  height: 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-progress > span {
+  font-size: 16px;
+  display: none;
+  @media screen and (min-width: 880px) {
+    display: block;
+  }
+}
+
+.player-progress-bar {
+  width: 300px;
+  height: 5px;
+  background-color: rgb(130, 130, 130);
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  --progress: 0;
+
+  @media screen and (min-width: 450px) {
+    width: 400px;
+  }
+}
+
+.player-progress-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--progress);
+  height: 100%;
+  background-color: white;
+}
