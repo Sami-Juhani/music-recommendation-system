@@ -34,7 +34,10 @@
     },
     "playListContainer": {
       "loading": "Chargement...",
-      "generateButton": "Générer des recommandations"
+      "generateButton": "Générer des recommandations",
+      "numberOfReviews": "Nombre d'avis:",
+      "rating": "Évaluation globale:",
+      "submitRatings": "Soumettre l'avis"
     },
     "layout": {
       "loading": "Chargement..."
@@ -58,7 +61,8 @@
       "cancel": "Annuler",
       "delete": "Supprimer le profil",
       "firstName": "Prénom",
-      "lastName": "Nom de famille"
+      "lastName": "Nom de famille",
+      "confirmation": "Êtes-vous sûr de vouloir supprimer votre profil ?"
     }
   }
   
