@@ -10,7 +10,20 @@ body {
     display: flex;
     height: 100vh;
     padding: 0.85rem 0.85rem 0 0.85rem;
-    height: calc(100vh - 100px);
+    animation: main-shrink-out 350ms forwards reverse;
+}
+
+@keyframes main-shrink-out {
+    0% {
+        height: 100vh;
+    }
+    100% {
+        height: calc(100vh - 100px);
+    }
+}
+
+.main-closing {
+    animation: mmin-shrink-out 350ms forwards;
 }
 
 .sidebar {

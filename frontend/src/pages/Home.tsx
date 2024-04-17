@@ -17,6 +17,7 @@ import Languages from "../components/LanguageMenu";
 import { useTranslation } from "react-i18next";
 import Modal from "../components/Modal";
 import { Player } from "../components/Player";
+import { usePlayer } from "../context/usePlayer";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -34,6 +35,7 @@ const Home: React.FC = () => {
   const [modalMessage, setModalMessage] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  const { currentSong } = usePlayer();
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
@@ -158,7 +160,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className="main">
+      <div className={`main ${!currentSong && "main-closing"}`}>
         <Sidebar
           playlists={playlists}
           selectedPlaylistIndex={selectedPlaylistIndex}
