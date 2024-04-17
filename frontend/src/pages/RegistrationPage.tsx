@@ -10,8 +10,6 @@ import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 
-
-
 function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
