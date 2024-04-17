@@ -11,6 +11,11 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const [rating, setRating] = useState(songRating.overall_rating);
+  const [usersRating, setUsersRating] = useState(() => {
+    const ratingObj = user?.userRatings.find((r) => r.spotifyId === spotifyId);
+    return ratingObj ? ratingObj.rating : 0;
+  });
+
   const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
   const { setNotification } = useContext(NotificationContext);
 
@@ -28,6 +33,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
       if (response.ok) {
         const newSongRating = await response.json();
         setRating(newSongRating.overall_rating);
+        setUsersRating(newSongRating.user_rating)
         setNumberOfReviews(newSongRating.number_of_reviews);
         //setNotification({text: "Review submitted succesfully", success: true})
       } else {
@@ -54,7 +60,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
           <span
             key={star}
             onClick={(event) => handleRatingChange(star, event)}
-            className={`star ${star <= rating ? 'filled' : ''} ${star - 0.5 === rating ? 'half-filled' : ''}`}
+            className={`star ${star <= usersRating ? 'filled' : ''} ${star - 0.5 === usersRating ? 'half-filled' : ''}`}
           >
             ★
           </span>
