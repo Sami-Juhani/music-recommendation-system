@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPauseCircle, faPlayCircle, faStepBackward, faStepForward } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Player.css";
@@ -7,9 +7,20 @@ import msToMinutesAndSeconds from "../utils/timeConvret";
 
 export function Player() {
   const { currentSong, isLoading, progressBarRef, playPrevSong, playSong, pause, playNextSong } = usePlayer();
+  const [isClosing, setIsClosing] = useState(false);
+  const prevIsOpenRef = useRef<boolean>();
+
+  useLayoutEffect(() => {
+    if (!currentSong && prevIsOpenRef.current) {
+      setIsClosing(true);
+    }
+    prevIsOpenRef.current = currentSong !== undefined;
+  }, [currentSong]);
+
+  if (!currentSong && !isClosing) return null;
 
   return (
-    <div className="player">
+    <div onAnimationEnd={() => setIsClosing(false)} className={`player ${isClosing ? "closing" : ""}`}>
       {currentSong && (
         <div className="player-song-information">
           <img src={!isLoading ? currentSong?.imageUrl : "./assets/album.webp"} alt="artist" />
@@ -39,9 +50,9 @@ export function Player() {
             </button>
           </div>
           <div className="player-progress">
-            <span>{currentSong ? msToMinutesAndSeconds(currentSong?.progressMs): ""}</span>
+            <span>{currentSong ? msToMinutesAndSeconds(currentSong?.progressMs) : ""}</span>
             <div className="player-progress-bar" ref={progressBarRef}></div>
-            <span>{currentSong ? msToMinutesAndSeconds(parseFloat(currentSong?.duration)): ""}</span>
+            <span>{currentSong ? msToMinutesAndSeconds(parseFloat(currentSong?.duration)) : ""}</span>
           </div>
         </div>
       </div>

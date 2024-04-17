@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -37,6 +37,15 @@ const Home: React.FC = () => {
   const { user } = useContext(UserContext);
   const { currentSong } = usePlayer();
   const { t, i18n } = useTranslation();
+  const [isClosing, setIsClosing] = useState(false);
+  const prevIsOpenRef = useRef<boolean>();
+
+  useLayoutEffect(() => {
+    if (!currentSong && prevIsOpenRef.current) {
+      setIsClosing(true);
+    }
+    prevIsOpenRef.current = currentSong !== undefined;
+  }, [currentSong]);
 
   useEffect(() => {
     document.body.dir = i18n.dir();
@@ -160,7 +169,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className={`main ${!currentSong && "main-closing"}`}>
+      <div onAnimationEnd={() => setIsClosing(false)} className={`main ${isClosing ? "player-closing" : ""} ${currentSong && !isClosing ? "player-opening" : ""}`}>
         <Sidebar
           playlists={playlists}
           selectedPlaylistIndex={selectedPlaylistIndex}
