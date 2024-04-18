@@ -1,11 +1,14 @@
 const { test, expect } = require('@playwright/test');
 
+const email = process.env.EMAIL;
+const password = process.env.PASSWORD;
+
 test('Main Content Localization Test', async ({ page }) => {
     await page.goto('http://localhost:3000/'); // Replace with your website URL
 
     // Fill in the email and password fields
-    await page.fill('#email', 'ivansemenov02@mail.ru');
-    await page.fill('#password', 'ctvtyjd2002');
+    await page.fill('#email', email);
+    await page.fill('#password', password);
 
     // Click the submit button
     await page.click('button[type="submit"]');
