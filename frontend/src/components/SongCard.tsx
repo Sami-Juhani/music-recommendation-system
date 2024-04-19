@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import PlayPause from "./PlayPause";
-import { playPause, setActiveSong } from "../redux/features/playerSlice";
 import testAlbum from "../assets/album.webp";
 
 const SongCard = ({ song, i, isPlaying, activeSong, music }: { song: any, i: any, isPlaying: any, activeSong: any, music: any }) => {

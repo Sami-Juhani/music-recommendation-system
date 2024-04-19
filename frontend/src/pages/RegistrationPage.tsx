@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Navigate, useNavigation, useLoaderData } from "react-router-dom";
 import FormInput from "../components/FormInput";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
+import { CustomButton } from "../components/Buttons/CustomButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
@@ -12,7 +12,7 @@ import Languages from "../components/LanguageMenu";
 
 
 
-function Registration() {
+export function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;
@@ -29,7 +29,7 @@ function Registration() {
   if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
 
   return (
-    <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
+    <div data-testid="perse" className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
       <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
         {/* Placeholder for other header elements */}
         <div className="w-full">
@@ -87,9 +87,9 @@ function Registration() {
 
           {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
-          <PrimaryButton type="submit" className="mt-5">
+          <CustomButton type="submit" className="mt-5" customStyle="primary">
             {t("registration.submit")}
-          </PrimaryButton>
+          </CustomButton>
         </form>
 
         <div className="flex flex-col gap-2 items-center text-center">

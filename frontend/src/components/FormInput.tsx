@@ -1,7 +1,16 @@
 import React from "react";
 
-export default function FormInput({ id, name, type, placeholder, formData, handleChange }: { id: string; name: string; type: string; placeholder: string; formData: string; handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void}) {
+type FormInputProps = {
+  id: string;
+  name: string;
+  dataTestId?: string;
+  type: string;
+  placeholder: string;
+  formData: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
+export default function FormInput({ id, name, dataTestId, type, placeholder, formData, handleChange }: FormInputProps) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="text-sm font-extrabold">
@@ -10,6 +19,7 @@ export default function FormInput({ id, name, type, placeholder, formData, handl
       <input
         type={type}
         name={name}
+        data-testid={dataTestId}
         id={id}
         placeholder={placeholder}
         value={formData}
