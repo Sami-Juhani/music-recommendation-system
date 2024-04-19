@@ -167,8 +167,6 @@ const Home: React.FC = () => {
     document?.querySelector(`.generate`)?.classList.remove("hidden");
   };
 
-  console.log(playlists);
-
   return (
     <>
       <div onAnimationEnd={() => setIsClosing(false)} className={`main ${isClosing ? "player-closing" : ""} ${currentSong && !isClosing ? "player-opening" : ""}`}>
