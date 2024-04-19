@@ -11,11 +11,11 @@ import { PlaylistsGetAllContextProvider } from "../context/PlaylistsGetAllContex
 import { GeneratedContextProvider } from "../context/GeneratedContext";
 import { mockServer } from "../../test-setup/mockServer";
 import { HttpResponse, http } from "msw";
+import { PlayerContextProvider } from "../context/PlayerContextProvider";
+import { UserContextProvider } from "../context/UserContextProvider";
 import Home from "../pages/Home";
 import Login from "../pages/LoginPage";
 import "../i18n";
-import { PlayerContextProvider } from "../context/PlayerContextProvider";
-import { UserContextProvider } from "../context/UserContextProvider";
 require("dotenv").config();
 let router: Router;
 
