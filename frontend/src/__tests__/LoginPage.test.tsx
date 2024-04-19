@@ -14,6 +14,8 @@ import { HttpResponse, http } from "msw";
 import Home from "../pages/Home";
 import Login from "../pages/LoginPage";
 import "../i18n";
+import { PlayerContextProvider } from "../context/PlayerContextProvider";
+import { UserContextProvider } from "../context/UserContextProvider";
 require("dotenv").config();
 let router: Router;
 
@@ -32,6 +34,26 @@ describe("Login page test", () => {
 
   it("should redirect to home after succesfull login", async () => {
     mockServer.use(
+      http.get("http://127.0.0.1:8000/api/user/get", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/player/playbackstate/", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
       http.post("http://127.0.0.1:8000/api/user/login", () => {
         return HttpResponse.json(
           {
@@ -105,15 +127,19 @@ describe("Login page test", () => {
     );
 
     render(
-      <GeneratedContextProvider>
-        <PlaylistsGetAllContextProvider>
-          <PlaylistGetContextProvider>
-            <div className="relative flex">
-              <RouterProvider router={router} />
-            </div>
-          </PlaylistGetContextProvider>
-        </PlaylistsGetAllContextProvider>
-      </GeneratedContextProvider>
+      <PlaylistsGetAllContextProvider>
+        <PlaylistGetContextProvider>
+          <PlayerContextProvider>
+            <UserContextProvider>
+              <GeneratedContextProvider>
+                <div className="relative flex">
+                  <RouterProvider router={router} />
+                </div>
+              </GeneratedContextProvider>
+            </UserContextProvider>
+          </PlayerContextProvider>
+        </PlaylistGetContextProvider>
+      </PlaylistsGetAllContextProvider>
     );
 
     const emailInput = await screen.findByTestId("loginEmailInput");
@@ -129,13 +155,33 @@ describe("Login page test", () => {
     fireEvent.click(submitBtn);
 
     // Validate redirect works
-    const homeText = await screen.findByText("Home");
+    const homeText = await screen.findByText("Koti");
     expect(homeText).toBeInTheDocument();
     expect(submitBtn).not.toBeInTheDocument();
   });
 
   it("should not allow you to login with wrong crendetials", async () => {
     mockServer.use(
+      http.get("http://127.0.0.1:8000/api/user/get", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/player/playbackstate/", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
       http.post("http://127.0.0.1:8000/api/user/login", () => {
         return HttpResponse.json(
           {
@@ -200,15 +246,19 @@ describe("Login page test", () => {
     );
 
     render(
-      <GeneratedContextProvider>
-        <PlaylistsGetAllContextProvider>
-          <PlaylistGetContextProvider>
-            <div className="relative flex">
-              <RouterProvider router={router} />
-            </div>
-          </PlaylistGetContextProvider>
-        </PlaylistsGetAllContextProvider>
-      </GeneratedContextProvider>
+      <PlaylistsGetAllContextProvider>
+        <PlaylistGetContextProvider>
+          <PlayerContextProvider>
+            <UserContextProvider>
+              <GeneratedContextProvider>
+                <div className="relative flex">
+                  <RouterProvider router={router} />
+                </div>
+              </GeneratedContextProvider>
+            </UserContextProvider>
+          </PlayerContextProvider>
+        </PlaylistGetContextProvider>
+      </PlaylistsGetAllContextProvider>
     );
 
     const emailInput = await screen.findByTestId("loginEmailInput");

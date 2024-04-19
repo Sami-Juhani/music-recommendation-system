@@ -1,8 +1,8 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect, useContext, useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 import Modal from "../components/Modal";
 import PlayListContainer from "../components/PlayListContainer";
@@ -16,6 +16,8 @@ import { useLogout } from "../hooks/useLogout";
 import { usePlaylistGetContext } from "../hooks/usePlaylistGetContext";
 import { usePlaylistsGetAllContext } from "../hooks/usePlaylistsGetAllContext";
 import PathConstants from "../routes/PathConstants";
+import { Player } from "../components/Player";
+import { usePlayer } from "../context/usePlayer";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -33,7 +35,17 @@ const Home: React.FC = () => {
   const [modalMessage, setModalMessage] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  const { currentSong } = usePlayer();
   const { t, i18n } = useTranslation();
+  const [isClosing, setIsClosing] = useState(false);
+  const prevIsOpenRef = useRef<boolean>();
+
+  useLayoutEffect(() => {
+    if (!currentSong && prevIsOpenRef.current) {
+      setIsClosing(true);
+    }
+    prevIsOpenRef.current = currentSong !== undefined;
+  }, [currentSong]);
 
   useEffect(() => {
     document.body.dir = i18n.dir();
@@ -158,66 +170,69 @@ const Home: React.FC = () => {
   console.log(playlists);
 
   return (
-    <div className="main">
-      <Sidebar
-        playlists={playlists}
-        selectedPlaylistIndex={selectedPlaylistIndex}
-        handlePlaylistClick={handlePlaylistClick}
-        allPLisLoading={allPLisLoading}
-      />
+    <>
+      <div onAnimationEnd={() => setIsClosing(false)} className={`main ${isClosing ? "player-closing" : ""} ${currentSong && !isClosing ? "player-opening" : ""}`}>
+        <Sidebar
+          playlists={playlists}
+          selectedPlaylistIndex={selectedPlaylistIndex}
+          handlePlaylistClick={handlePlaylistClick}
+          allPLisLoading={allPLisLoading}
+        />
 
-      <div className="main-content">
-        <div className="sticky-nav">
-          <div className="sticky-nav-icons">
-            <FontAwesomeIcon icon={faUser} />
-            <p>{user?.firstName}</p>
+        <div className="main-content">
+          <div className="sticky-nav">
+            <div className="sticky-nav-icons">
+              <FontAwesomeIcon icon={faUser} />
+              <p>{user?.firstName}</p>
+            </div>
+            <div className="flex sticky-nav-optons">
+              <Languages />
+              <button className="badge nav-item dark-badge">
+                <Link to={PathConstants.PROFILE_UPDATE}>{t("main.profile")}</Link>
+              </button>
+              <button onClick={logout} className="badge nav-item hide">
+                {t("main.logout")}
+              </button>
+            </div>
           </div>
-          <div className="flex sticky-nav-optons">
-            <Languages setSearchRecommendationsError={setSearchRecommendationsError} />
-            <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>{t("main.profile")}</Link>
-            </button>
-            <button onClick={logout} className="badge nav-item hide">
-              {t("main.logout")}
-            </button>
-          </div>
+          {playlist ? (
+            <div>
+              <PlayListContainer
+                playlist={playlist}
+                selectedPlaylistIndex={selectedPlaylistIndex}
+                generateRecommendation={generateRecommendation}
+                onePLIsLoading={onePLIsLoading}
+                allPLisLoading={allPLisLoading}
+                generatedIsLoading={generatedIsLoading}
+                searchRecommendationsError={searchRecommendationsError}
+                isVisible={isVisible}
+              />
+            </div>
+          ) : (
+            <PlayListPreviewSkeleton />
+          )}
+          {!generatedIsLoading && playlist ? (
+            <div>
+              <RecommendationsContainer
+                playlist={playlist}
+                selectedPlaylistIndex={selectedPlaylistIndex}
+                generated={generated}
+                isVisible={isVisible}
+                generatedIsLoading={generatedIsLoading}
+              />
+            </div>
+          ) : (
+            <div className="cards-container-skeleton">
+              {[...Array(6)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          )}
         </div>
-        {playlist ? (
-          <div>
-            <PlayListContainer
-              playlist={playlist}
-              selectedPlaylistIndex={selectedPlaylistIndex}
-              generateRecommendation={generateRecommendation}
-              onePLIsLoading={onePLIsLoading}
-              allPLisLoading={allPLisLoading}
-              generatedIsLoading={generatedIsLoading}
-              searchRecommendationsError={searchRecommendationsError}
-              isVisible={isVisible}
-            />
-          </div>
-        ) : (
-          <PlayListPreviewSkeleton />
-        )}
-        {!generatedIsLoading && playlist ? (
-          <div>
-            <RecommendationsContainer
-              playlist={playlist}
-              selectedPlaylistIndex={selectedPlaylistIndex}
-              generated={generated}
-              isVisible={isVisible}
-              generatedIsLoading={generatedIsLoading}
-            />
-          </div>
-        ) : (
-          <div className="cards-container-skeleton">
-            {[...Array(6)].map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
-          </div>
-        )}
+        <Modal isVisible={isModalVisible} message={modalMessage} onClose={closeModal} />
+        <Player />
       </div>
-      <Modal isVisible={isModalVisible} message={modalMessage} onClose={closeModal} />
-    </div>
+    </>
   );
 };
 

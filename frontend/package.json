@@ -26,7 +26,9 @@
     "start": "react-scripts start",
     "dev": "HOST=127.0.0.1 PORT=3000 react-scripts start",
     "build": "react-scripts build",
-    "test": "vitest",
+    "test": "vitest __tests__",
+    "test-coverage": "vitest __tests__ --coverage",
+    "test-playwright": "npx playwright test test/tests",
     "eject": "react-scripts eject",
     "build:css": "postcss src/styles.css -o dist/styles.css"
   },
@@ -50,6 +52,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@playwright/test": "^1.43.1",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.2",
     "@testing-library/user-event": "^14.5.2",

@@ -1,8 +1,7 @@
 // useRegistration.ts
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
-import { NotificationContext } from "../context/NotificationContextProvider";
 import { useTranslation } from "react-i18next";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -17,7 +16,6 @@ interface RegistrationFormState {
 const useRegistration = () => {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
-  const { setNotification } = useContext(NotificationContext);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState<RegistrationFormState>({
     email: "",
@@ -46,17 +44,12 @@ const useRegistration = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        //setNotification({ text: data.message, success: false });
         setError(
           data.message || "An unexpected error occurred. Please try again."
         );
       }
 
       if (response.ok) {
-        // setNotification({
-        //   text: "Registration succesfull, please login...",
-        //   success: true,
-        // });
         navigate(PathConstants.HOME);
       }
     } catch (error) {
