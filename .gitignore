@@ -22,6 +22,7 @@ backend/htmlcov
 frontend/build/
 
 # misc
+**Zone.Identifier**
 **cache**
 **/.DS_Store
 **/__pycache__
