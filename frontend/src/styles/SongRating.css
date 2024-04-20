@@ -1,39 +1,37 @@
-﻿SongRating.css
-
+﻿/* SongRating.css */
 .song-rating-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.rating-value {
+  }
+  
+  .rating-value {
     font-size: 15px;
     font-weight: bold;
-}
-
-.number-of-reviews {
+  }
+  
+  .number-of-reviews {
     font-size: 13px;
     color: #666;
-}
-
-/* AddSongRating.css */
-
-.add-song-rating-container {
+  }
+  
+  /* AddSongRating.css */
+  .add-song-rating-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.rating-input {
+  }
+  
+  .rating-input {
     width: 45px;
     padding: 5px;
     font-size: 16px;
     margin: 10px;
     border-radius: 4px;
     color: black;
-}
-
-.submit-button {
+  }
+  
+  .submit-button {
     height: fit-content;
     padding: 10px;
     font-size: 12px;
@@ -42,31 +40,31 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.submit-button:hover {
+  }
+  
+  .submit-button:hover {
     background-color: #0056b3;
-}
-
-
-.star {
+  }
+  
+  .star {
     cursor: pointer;
     color: rgba(119, 150, 148, 0.5);
-}
+  }
   
-.star.filled, .star.half-filled {
+  .star.filled,
+  .star.half-filled,
+  .star-container:hover .star {
     color: gold;
-}
-
-.star.half-filled::before {
+  }
+  
+  .star-container:hover .star:hover ~ .star {
+    color: rgba(119, 150, 148, 0.5);
+  }
+  
+  .star.half-filled::before {
     content: "★";
     position: absolute;
     width: 50%;
     overflow: hidden;
     color: transparent;
-}
-
-.star:hover  {
-    color: gold;
-}
-  
+  }

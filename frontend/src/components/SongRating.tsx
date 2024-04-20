@@ -55,12 +55,14 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
           {t("playListContainer.numberOfReviews")} {numberOfReviews}
         </p>
       </div>
-      <div className="flex gap-[10px] items-center">
+      <div className="flex gap-[10px] items-center star-container">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
             onClick={(event) => handleRatingChange(star, event)}
-            className={`star ${star <= usersRating ? 'filled' : ''} ${star - 0.5 === usersRating ? 'half-filled' : ''}`}
+            className={`star ${star <= usersRating ? 'filled' : ''} ${
+              star - 0.5 === usersRating ? 'half-filled' : ''
+            }`}
           >
             ★
           </span>
