@@ -10,8 +10,6 @@ import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 
-
-
 function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
@@ -85,9 +83,9 @@ function Registration() {
             handleChange={handleChange}
           />
 
-          {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+          {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
-          <PrimaryButton type="submit" className="mt-5">
+          <PrimaryButton type="submit" className="mt-5" testid="reg-button">
             {t("registration.submit")}
           </PrimaryButton>
         </form>

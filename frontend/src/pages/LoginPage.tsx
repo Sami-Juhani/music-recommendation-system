@@ -18,15 +18,13 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
-      <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
-        <div className="w-full">
-        </div>
-        <div className="w-1/8 max-w-[100px]">
+      <header className="flex px-6 py-4 mb-8 bg-black items-center justify-end">
           <Languages />
-        </div>
       </header>
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-8 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
-        <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
+        <h1 
+        className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold"
+        data-testid="login-title">
           {t('login.title')}
         </h1>
 

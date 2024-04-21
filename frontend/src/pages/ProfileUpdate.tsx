@@ -123,6 +123,7 @@ const ProfileUpdate = () => {
         <input
           type="email"
           name="email"
+          autoComplete="email"
           value={formData.email}
           onChange={handleChange}
           placeholder={t("profile.email")}
@@ -130,6 +131,7 @@ const ProfileUpdate = () => {
         <input
           type="password"
           name="password"
+          autoComplete="new-password"
           value={formData.password}
           onChange={handleChange}
           placeholder={t("profile.password")}
@@ -137,6 +139,7 @@ const ProfileUpdate = () => {
         <input
           type="text"
           name="first_name"
+          autoComplete="given-name"
           value={formData.first_name}
           onChange={handleChange}
           placeholder={t("profile.firstName")}
@@ -144,6 +147,7 @@ const ProfileUpdate = () => {
         <input
           type="text"
           name="last_name"
+          autoComplete="family-name"
           value={formData.last_name}
           onChange={handleChange}
           placeholder={t("profile.lastName")}
@@ -151,7 +155,7 @@ const ProfileUpdate = () => {
         <button className="update_profile" type="submit">
           {t("profile.submit")}
         </button>
-        <button className="cancel" onClick={() => navigate(PathConstants.HOME)}>
+        <button className="cancel" type="button" onClick={() => navigate(PathConstants.HOME)}>
           {t("profile.cancel")}
         </button>
         <button type="submit" className="delete" onClick={deleteProfile}>

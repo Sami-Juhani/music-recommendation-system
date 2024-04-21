@@ -147,7 +147,7 @@ def get_access_token(user_id: int) -> Union[str, Dict[str, str]]:
     return spotify_token.access_token
 
 
-def execute_spotify_api_request(user_id: int, endpoint: str, post_: bool=False, put_: bool=False) -> Union[str, Dict[str, str]]:
+def execute_spotify_api_request(user_id: int, endpoint: str, body: dict = {}, post_: bool=False, put_: bool=False) -> Union[str, Dict[str, str]]:
     """
     Execute a request on the Spotify API
 
@@ -169,13 +169,14 @@ def execute_spotify_api_request(user_id: int, endpoint: str, post_: bool=False, 
                'Authorization': "Bearer " + access_token}
 
     if post_:
-        post(SPOTIFY_BASE_URL + endpoint, headers=headers)
-    if put_:
-        put(SPOTIFY_BASE_URL + endpoint, headers=headers)
+        response = requests.post(SPOTIFY_BASE_URL + endpoint, headers=headers, json=body)
+    elif put_:
+        response = requests.put(SPOTIFY_BASE_URL + endpoint, headers=headers, json=body)
+    else:
+        response = requests.get(SPOTIFY_BASE_URL + endpoint, headers=headers)
 
-    response = get(SPOTIFY_BASE_URL + endpoint, {}, headers=headers)
     try:
         return response.json()
     except:
         return None
- 
+    

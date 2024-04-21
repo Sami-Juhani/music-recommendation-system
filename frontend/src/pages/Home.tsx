@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -15,15 +15,15 @@ import PlayListPreviewSkeleton from "../components/Skeleton/PlayListPreviewSkele
 import PathConstants from "../routes/PathConstants";
 import Languages from "../components/LanguageMenu";
 import { useTranslation } from "react-i18next";
-import Modal from '../components/Modal';
+import Modal from "../components/Modal";
+import { Player } from "../components/Player";
+import { usePlayer } from "../context/usePlayer";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Home: React.FC = () => {
   const { logout } = useLogout();
-  const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<
-    number | null
-  >(null);
+  const [selectedPlaylistIndex, setSelectedPlaylistIndex] = useState<number | null>(null);
   const [allPLisLoading, setAllPLIsLoading] = useState(true);
   const [onePLIsLoading, setOnePLIsLoading] = useState(true);
   const [generatedIsLoading, setGeneratedIsLoading] = useState(false);
@@ -31,13 +31,21 @@ const Home: React.FC = () => {
   const { playlist, dispatchSingle } = usePlaylistGetContext();
   const { generated, dispatchGenerated } = useGeneratedContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [searchRecommendationsError, setSearchRecommendationsError] =
-    useState("");
-  const [modalMessage, setModalMessage] = useState<string>('');
+  const [searchRecommendationsError, setSearchRecommendationsError] = useState("");
+  const [modalMessage, setModalMessage] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  const { currentSong } = usePlayer();
   const { t, i18n } = useTranslation();
+  const [isClosing, setIsClosing] = useState(false);
+  const prevIsOpenRef = useRef<boolean>();
 
+  useLayoutEffect(() => {
+    if (!currentSong && prevIsOpenRef.current) {
+      setIsClosing(true);
+    }
+    prevIsOpenRef.current = currentSong !== undefined;
+  }, [currentSong]);
 
   useEffect(() => {
     document.body.dir = i18n.dir();
@@ -47,11 +55,11 @@ const Home: React.FC = () => {
     setModalMessage(message);
     setIsModalVisible(true);
   };
-  
+
   const closeModal = () => {
     setIsModalVisible(false);
   };
-  
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -60,7 +68,7 @@ const Home: React.FC = () => {
 
       try {
         const response = await fetch(BASE_URL + "/api/spotify/playlists/", {
-          headers: {'Accept-Language': i18n.language},
+          headers: { "Accept-Language": i18n.language },
           credentials: "include",
           signal: controller.signal,
         });
@@ -94,14 +102,11 @@ const Home: React.FC = () => {
       setOnePLIsLoading(true);
 
       try {
-        const response = await fetch(
-          BASE_URL + `/api/spotify/playlist/${selectedPlaylistIndex}/`,
-          {
-            headers: {'Accept-Language': i18n.language},
-            credentials: "include",
-            signal: controller.signal,
-          }
-        );
+        const response = await fetch(BASE_URL + `/api/spotify/playlist/${selectedPlaylistIndex}/`, {
+          headers: { "Accept-Language": i18n.language },
+          credentials: "include",
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           console.log(`ERROR: ${await response.text()}`);
@@ -125,13 +130,10 @@ const Home: React.FC = () => {
     try {
       setGeneratedIsLoading(true);
       setSearchRecommendationsError("");
-      const response = await fetch(
-        BASE_URL + `/api/recommendations/generate/${selectedPlaylistIndex}`,
-        {
-          headers: {'Accept-Language': i18n.language},
-          credentials: "include",
-        }
-      );
+      const response = await fetch(BASE_URL + `/api/recommendations/generate/${selectedPlaylistIndex}`, {
+        headers: { "Accept-Language": i18n.language },
+        credentials: "include",
+      });
       if (!response.ok) {
         const responseError = await response.json();
         setSearchRecommendationsError(responseError.message);
@@ -152,11 +154,7 @@ const Home: React.FC = () => {
     setSearchRecommendationsError("");
 
     if (selectedPlaylistIndex !== null) {
-      document
-        ?.querySelector(
-          `.preview-playlist[data-index="${selectedPlaylistIndex}"]`
-        )
-        ?.classList.remove("pushed");
+      document?.querySelector(`.preview-playlist[data-index="${selectedPlaylistIndex}"]`)?.classList.remove("pushed");
     }
 
     setIsVisible(false);
@@ -165,77 +163,74 @@ const Home: React.FC = () => {
     document?.querySelector(`.list`)?.classList.remove("hidden");
     document?.querySelector(`.cards-container`)?.classList.add("hidden");
 
-    document
-      ?.querySelector(`.preview-playlist[data-index="${index}"]`)
-      ?.classList.add("pushed");
+    document?.querySelector(`.preview-playlist[data-index="${index}"]`)?.classList.add("pushed");
     document?.querySelector(`.generate`)?.classList.remove("hidden");
   };
 
   return (
-    <div className="main">
-      <Sidebar
-        playlists={playlists}
-        selectedPlaylistIndex={selectedPlaylistIndex}
-        handlePlaylistClick={handlePlaylistClick}
-        allPLisLoading={allPLisLoading}
-      />
+    <>
+      <div onAnimationEnd={() => setIsClosing(false)} className={`main ${isClosing ? "player-closing" : ""} ${currentSong && !isClosing ? "player-opening" : ""}`}>
+        <Sidebar
+          playlists={playlists}
+          selectedPlaylistIndex={selectedPlaylistIndex}
+          handlePlaylistClick={handlePlaylistClick}
+          allPLisLoading={allPLisLoading}
+        />
 
-      <div className="main-content">
-        <div className="sticky-nav">
-          <div className="sticky-nav-icons">
-            <FontAwesomeIcon icon={faUser} />
-            <p>{user?.firstName}</p>
+        <div className="main-content">
+          <div className="sticky-nav">
+            <div className="sticky-nav-icons">
+              <FontAwesomeIcon icon={faUser} />
+              <p>{user?.firstName}</p>
+            </div>
+            <div className="flex sticky-nav-optons">
+              <Languages />
+              <button className="badge nav-item dark-badge">
+                <Link to={PathConstants.PROFILE_UPDATE}>{t("main.profile")}</Link>
+              </button>
+              <button onClick={logout} className="badge nav-item hide">
+                {t("main.logout")}
+              </button>
+            </div>
           </div>
-          <div className="flex sticky-nav-optons">
-          <Languages setSearchRecommendationsError={setSearchRecommendationsError}/>
-            <button className="badge nav-item dark-badge">
-              <Link to={PathConstants.PROFILE_UPDATE}>{t('main.profile')}</Link>
-            </button>
-            <button onClick={logout} className="badge nav-item hide">
-              {t('main.logout')}
-            </button>
-          </div>
+          {playlist ? (
+            <div>
+              <PlayListContainer
+                playlist={playlist}
+                selectedPlaylistIndex={selectedPlaylistIndex}
+                generateRecommendation={generateRecommendation}
+                onePLIsLoading={onePLIsLoading}
+                allPLisLoading={allPLisLoading}
+                generatedIsLoading={generatedIsLoading}
+                searchRecommendationsError={searchRecommendationsError}
+                isVisible={isVisible}
+              />
+            </div>
+          ) : (
+            <PlayListPreviewSkeleton />
+          )}
+          {!generatedIsLoading && playlist ? (
+            <div>
+              <RecommendationsContainer
+                playlist={playlist}
+                selectedPlaylistIndex={selectedPlaylistIndex}
+                generated={generated}
+                isVisible={isVisible}
+                generatedIsLoading={generatedIsLoading}
+              />
+            </div>
+          ) : (
+            <div className="cards-container-skeleton">
+              {[...Array(6)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          )}
         </div>
-        {playlist ? (
-          <div>
-            <PlayListContainer
-              playlist={playlist}
-              selectedPlaylistIndex={selectedPlaylistIndex}
-              generateRecommendation={generateRecommendation}
-              onePLIsLoading={onePLIsLoading}
-              allPLisLoading={allPLisLoading}
-              generatedIsLoading={generatedIsLoading}
-              searchRecommendationsError={searchRecommendationsError}
-              isVisible={isVisible}
-            />
-          </div>
-        ) : (
-          <PlayListPreviewSkeleton />
-        )}
-        {!generatedIsLoading && playlist ? (
-          <div>
-            <RecommendationsContainer
-              playlist={playlist}
-              selectedPlaylistIndex={selectedPlaylistIndex}
-              generated={generated}
-              isVisible={isVisible}
-              generatedIsLoading={generatedIsLoading}
-            />
-          </div>
-        ) : (
-          <div className="cards-container-skeleton">
-            {[...Array(6)].map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
-          </div>
-        )}
+        <Modal isVisible={isModalVisible} message={modalMessage} onClose={closeModal} />
+        <Player />
       </div>
-      <Modal
-      isVisible={isModalVisible}
-      message={modalMessage}
-      onClose={closeModal}
-      />
-    </div>
+    </>
   );
 };
 
