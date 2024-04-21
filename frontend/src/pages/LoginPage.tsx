@@ -22,7 +22,9 @@ export default function Login() {
           <Languages />
       </header>
       <main className="self-center w-full max-w-[46rem] flex flex-col items-stretch gap-8 px-8 md:px-28 md:py-5 pb-5 md:rounded-lg bg-black">
-        <h1 className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold">
+        <h1 
+        className="text-3xl md:text-[2rem] md:text-center md:mb-2 font-extrabold"
+        data-testid="login-title">
           {t('login.title')}
         </h1>
 
