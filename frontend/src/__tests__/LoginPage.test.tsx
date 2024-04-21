@@ -308,8 +308,8 @@ describe("Login page test", () => {
     // Validate that Login page is used
     expect(submitBtn).toBeInTheDocument();
 
-    fireEvent.change(emailInput, { target: { value: "" } });
-    fireEvent.change(passwordInput, { target: { value: "" } });
+    fireEvent.change(emailInput, { target: { value: "afwawf" } });
+    fireEvent.change(passwordInput, { target: { value: "fawwaff" } });
 
     fireEvent.click(submitBtn);
 
@@ -318,6 +318,7 @@ describe("Login page test", () => {
     // Validate no redirect is not being made
     expect(errorMsg).toBeInTheDocument();
   });
+
   it("should not allow you to login without email or password", async () => {
     mockServer.use(
       http.get("http://127.0.0.1:8000/api/user/get", () => {
@@ -446,8 +447,8 @@ describe("Login page test", () => {
     // Validate that Login page is used
     expect(submitBtn).toBeInTheDocument();
   
-    fireEvent.change(emailInput, { target: { value: "sami@sami.com" } });
-    fireEvent.change(passwordInput, { target: { value: "sami" } });
+    fireEvent.change(emailInput, { target: { value: "" } });
+    fireEvent.change(passwordInput, { target: { value: "" } });
   
     fireEvent.click(submitBtn);
   
