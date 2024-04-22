@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
-import "../styles/SongRating.css";
-import { NotificationContext } from "../context/NotificationContextProvider";
 import { RatingType } from "../types/RatingsType";
 import { useTranslation } from "react-i18next";
 import { UserContext } from "../context/UserContextProvider";
+import "../styles/SongRating.css";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -17,7 +16,6 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
   });
 
   const [numberOfReviews, setNumberOfReviews] = useState(songRating.number_of_reviews);
-  const { setNotification } = useContext(NotificationContext);
 
   const handleRatingChange = async (newRating: number, event: React.MouseEvent<HTMLSpanElement>) => {
     event.stopPropagation();

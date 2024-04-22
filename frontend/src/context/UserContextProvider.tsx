@@ -1,6 +1,7 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState, createContext, useRef } from "react";
 import { UserContextType } from "../types/UserContextType";
 import { UserType } from "../types/UserType";
+import { usePlayer } from "./usePlayer";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -10,12 +11,11 @@ export const UserContext = createContext<UserContextType>({
   children: undefined,
 });
 
-export function UserContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function UserContextProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<object | undefined>(undefined);
+  const { getPlaybackState } = usePlayer();
+  const getPlaybackStateRef = useRef(getPlaybackState);
+  getPlaybackStateRef.current = getPlaybackState;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -34,6 +34,7 @@ export function UserContextProvider({
         const data = await response.json();
 
         setUser(data.user);
+        getPlaybackStateRef.current(new AbortController());
         localStorage.setItem("user", JSON.stringify(data.user));
       } catch (error: any) {
         if (error.name === "AbortError") {
@@ -48,9 +49,5 @@ export function UserContextProvider({
     return () => controller.abort();
   }, []);
 
-  return (
-    <UserContext.Provider value={{ user: user as UserType, setUser, children }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ user: user as UserType, setUser, children }}>{children}</UserContext.Provider>;
 }

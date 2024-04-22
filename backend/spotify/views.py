@@ -4,6 +4,7 @@ import requests
 import base64
 import os
 import dotenv
+import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -36,7 +37,7 @@ class SpotifyAuth(APIView):
         preferred_language: str = get_language_from_request(request)
 
         activate(preferred_language)
-        
+
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
             return Response({"message": gettext("spotify_client_secret_error")}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -237,7 +238,7 @@ class SpotifyOnePlaylist(APIView):
             return Response(playlist, status=status.HTTP_404_NOT_FOUND)
 
         for track in playlist['tracks']['items']:
-           track['rating'] = get_song_rating(track['track']['id'])
+            track['rating'] = get_song_rating(track['track']['id'])
 
         return Response(playlist, status=status.HTTP_200_OK)
 
@@ -270,10 +271,11 @@ class SpotifyPlaylistsWithTracks(APIView):
                 user_id, f"playlists/{playlist['id']}"))
 
         if not playlists_with_tracks:
-            return JsonResponse({"message" : gettext("playlist_with_tracks_error")}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": gettext("playlist_with_tracks_error")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(playlists_with_tracks, status=status.HTTP_200_OK)
-    
+
+
 class SpotifyRecentlyPlayed(APIView):
     """
     Get user's recently played songs
@@ -292,8 +294,63 @@ class SpotifyRecentlyPlayed(APIView):
         recently_played: dict = execute_spotify_api_request(user_id, endpoint)
 
         if not recently_played:
-            return JsonResponse({"message" : gettext("recently_played_error")}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"message": gettext("recently_played_error")}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(recently_played, status=status.HTTP_200_OK)
 
+
+class PlaybackState(APIView):
+    """
+    Get user's current playback state
+    """
+    def get(self, request):
+        user_id: int = request.session.get('user_id')
+        endpoint = "me/player/currently-playing"
+
+        playback_state = execute_spotify_api_request(user_id, endpoint)
+
+        if not playback_state:
+            return Response(playback_state, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(playback_state, status=status.HTTP_200_OK)
+    
+
+class Pause(APIView):
+    """
+    Pause the song playing
+    """
+    def put(self, request):
+        user_id: int = request.session.get('user_id')
+        endpoint = "me/player/pause"
+
+        paused = execute_spotify_api_request(user_id, endpoint, put_=True)
+
+        return Response(paused, status=status.HTTP_204_NO_CONTENT)
+    
+
+class Play(APIView):
+    """
+    Play a song or resume current song
+    """
+    def put(self, request):
+        user_id: int = request.session.get('user_id')
+        endpoint = "me/player/play"
+        data = json.loads(request.body)
+
+        paused = execute_spotify_api_request(user_id, endpoint, data, put_=True)
+
+        return Response(paused, status=status.HTTP_204_NO_CONTENT)
+    
+
+class Seek(APIView):
+    """
+    Play a song or resume current song
+    """
+    def put(self, request):
+        user_id: int = request.session.get('user_id')
+        endpoint = f"me/player/seek?position_ms={request.GET.get('position_ms')}"
+        print(endpoint)
+        paused = execute_spotify_api_request(user_id, endpoint, put_=True)
+
+        return Response(paused, status=status.HTTP_204_NO_CONTENT)
     
