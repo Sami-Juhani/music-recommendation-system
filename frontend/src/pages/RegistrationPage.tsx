@@ -51,7 +51,7 @@ export default function Registration() {
           onSubmit={handleSubmit}
         >
           <FormInput
-            type="text"
+            type="email"
             id="email"
             name="email"
             placeholder={t("registration.email")}

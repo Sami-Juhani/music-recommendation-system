@@ -34,7 +34,7 @@ export default function Login() {
           onSubmit={handleSubmit}
         >
           <FormInput
-            type="text"
+            type="email"
             id="email"
             name="email"
             placeholder={(t('login.email') as string)}

@@ -2,7 +2,7 @@
 import { render, fireEvent, act, waitFor, getByTestId } from '@testing-library/react';
 import { MemoryRouter, useLoaderData } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../langLocalization/i18n'; 
+import i18n from '../i18n';
 import Registration, { RegistrationRoute } from './RegistrationPage';
 import Login from './LoginPage';
 import { useNavigation } from 'react-router-dom';

@@ -50,6 +50,12 @@ const ProfileUpdate = () => {
         credentials: "include",
       });
 
+      if (formData.email === "" || formData.password === "" || formData.first_name === "" || formData.last_name === "") {
+        console.error("Please fill in all fields");
+        alert("Please fill in all fields");
+        return;
+      }
+
       if (!response.ok) {
         console.error("HTTP error", response.status);
         return;
