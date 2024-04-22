@@ -42,6 +42,7 @@ export default function Login() {
             placeholder={(t('login.email') as string)}
             handleChange={handleChange} 
             formData={formData.email}
+            dataTestId="email-input" // Add data-testid prop
           />
 
           <FormInput
@@ -51,6 +52,7 @@ export default function Login() {
             placeholder={(t('login.password') as string)}
             formData={formData.password}
             handleChange={handleChange}
+            dataTestId="password-input" // Add data-testid prop
           />
 
           <PrimaryButton type="submit" className="mt-5">
