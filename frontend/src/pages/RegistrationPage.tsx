@@ -10,7 +10,9 @@ import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 
-function Registration() {
+
+
+export default function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;
@@ -49,12 +51,13 @@ function Registration() {
           onSubmit={handleSubmit}
         >
           <FormInput
-            type="text"
+            type="email"
             id="email"
             name="email"
             placeholder={t("registration.email")}
             handleChange={handleChange}
             formData={formData.email}
+            dataTestId="email-input" // Add data-testid prop
           />
 
           <FormInput
@@ -64,7 +67,9 @@ function Registration() {
             placeholder={t("registration.firstName")}
             handleChange={handleChange}
             formData={formData.first_name}
+            dataTestId="firstName-input" // Add data-testid prop
           />
+
           <FormInput
             type="text"
             id="last_name"
@@ -72,6 +77,7 @@ function Registration() {
             placeholder={t("registration.lastName")}
             handleChange={handleChange}
             formData={formData.last_name}
+            dataTestId="lastName-input" // Add data-testid prop
           />
 
           <FormInput
@@ -81,6 +87,7 @@ function Registration() {
             placeholder={t("registration.password")}
             formData={formData.password}
             handleChange={handleChange}
+            dataTestId="password-input" // Add data-testid prop
           />
 
           {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
