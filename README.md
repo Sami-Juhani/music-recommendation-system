@@ -4,7 +4,7 @@
 
 - [Python](https://www.python.org/downloads/)
 - SQL tietokanta (e.g. [MySQL](https://dev.mysql.com/downloads/installer/), [PostgreSQL](https://www.postgresql.org/download/), [SQLite](https://www.sqlite.org/download.html))
-- Luotu SQL tietokanta nimeltä *music_recommender*
+- Luotu SQL tietokanta nimeltä _music_recommender_
 - Spotify tili [Spotify](https://www.spotify.com/)
 - Spotify API käyttäjätunnukset [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
 
@@ -14,55 +14,58 @@
 
 ### Asenna python paketit, tähän on kaksi tapaa:
 
-  1. Suorita nämä komennot backend kansiosta:
+1. Suorita nämä komennot backend kansiosta:
 
-  - Windows:  
+- Windows:
 
-    ```cmd
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-    
-  - Ubuntu:
-  
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    pip3 install -r requirements.txt
-    ```
+  ```cmd
+  python -m venv venv
+  venv\Scripts\activate
+  pip install -r requirements.txt
+  ```
 
-  2. Vaihtoehtoisesti:
+- Ubuntu:
 
-  - Windows:  
+  ```bash
+  python3 -m venv venv
+  source venv/bin/activate
+  pip3 install -r requirements.txt
+  ```
 
-    ```cmd
-    python setup.py
-    ```
-  
-  - Ubuntu:
-    ```bash
-    python3 setup.py
-    ```
+2. Vaihtoehtoisesti:
+
+- Windows:
+
+  ```cmd
+  python setup.py
+  ```
+
+- Ubuntu:
+  ```bash
+  python3 setup.py
+  ```
 
 #### Kopio spotify datasetti
-  - Kopioi datasetti linkistä:
-    [Spotify Dataset](https://drive.google.com/drive/folders/1Pxis6EJep70fZrNEMy3yLcawbskVddGX?usp=drive_link)
 
-  - Pura datasetti backend/recommendations/data kansioon.
+- Kopioi datasetti linkistä:
+  [Spotify Dataset](https://drive.google.com/drive/folders/1Pxis6EJep70fZrNEMy3yLcawbskVddGX?usp=drive_link)
+
+- Pura datasetti backend/recommendations/data kansioon.
 
 #### Luo SQL tietokanta
-  - Ydistä tietokantaan ja luo *music_recommender*:
 
-    ```sql
-    CREATE DATABASE music_recommender;
-    ```
+- Ydistä tietokantaan ja luo _music_recommender_:
+
+  ```sql
+  CREATE DATABASE music_recommender;
+  ```
 
 #### Luo spotify api käyttäjätunnukset
-  - Mene [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and create a new app.
-  - Määrittele app name ja description.
-  - Lisää redirect URIs: http://127.0.0.1:8000/api/spotify/callback/
-  - APIs used: Web API.
+
+- Mene [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and create a new app.
+- Määrittele app name ja description.
+- Lisää redirect URIs: http://127.0.0.1:8000/api/spotify/callback/
+- APIs used: Web API.
 
 #### Luo ympäristömuuttujat
 
@@ -95,36 +98,45 @@
   ```
 
   Ubuntu:
-    ```bash
-    sudo apt install direnv
-    ```
+
+  ```bash
+  sudo apt install direnv
+  ```
+
   MacOS:
-    ```bash
-    brew install direnv
-    ```
+
+  ```bash
+  brew install direnv
+  ```
 
   Aja nämä komennot backend kansiosta:
-    ```bash
-    nano ~/.bashrc
-    ```
-    Lisää seuraava rivi tiedoston loppuun:
-    ```bash
-    eval "$(direnv hook bash)"
-    ```
-    Tallenna ja sulje tiedosto. Ajaa seuraavat komennot:
-    ```bash
-    source ~/.bashrc
-    direnv allow
-    ```
 
-### Kehitysympäristö - Frontend  
+  ```bash
+  nano ~/.bashrc
+  ```
+
+  Lisää seuraava rivi tiedoston loppuun:
+
+  ```bash
+  eval "$(direnv hook bash)"
+  ```
+
+  Tallenna ja sulje tiedosto. Ajaa seuraavat komennot:
+
+  ```bash
+  source ~/.bashrc
+  direnv allow
+  ```
+
+### Kehitysympäristö - Frontend
+
 - Luo .env.development tiedosto frontend kansioon ja lisää seuraavat muuttujat:
 
   ```bash
   REACT_APP_BASE_URL=http://127.0.0.1:8000
   ```
 
-- Aja nämä komennot frontend kansiosta:  
+- Aja nämä komennot frontend kansiosta:
   ```bash
   npm install
   ```
@@ -132,31 +144,37 @@
 ### Käyttöohjeet - Backend
 
 - Suorita kaikki tarvittavat migraatiot:
+
   ```bash
   python manage.py makemigrations
-  ``` 
+  ```
 
 - Lisää muutokset tietokantaan:
+
   ```bash
   python manage.py migrate
   ```
 
 - Käynnistä palvelin:
+
   ```bash
   python manage.py runserver
   ```
 
 - Aja testit:
+
   ```bash
   python manage.py test
   ```
 
 - Aja kattavuusraportti:
+
   ```bash
   coverage run manage.py test
   ```
 
 - Luo kattavuusraportt:
+
   ```bash
   coverage report
   ```
@@ -169,21 +187,45 @@
 ### Käyttöohjeet - Frontend
 
 - Käynnistä sovellus:
+
   ```bash
   npm start
   ```
 
 - Luo tuotantoversio:
+
   ```bash
   npm run build
   ```
 
+- Testien ajo:
+
+  Unit test (Vitest):
+
+  ```bash
+  npm test
+  ```
+
+  Unit test (Jest):
+
+  ```bash
+  npm run test-jest
+  ```
+
+  Käytettävyystestit:
+
+  ```bash
+  npm run test-playwright
+  ```
+
 ## Dokumentaatio
+
 - Backend API swagger dokumentaatio löytyy osoitteesta http://127.0.0.1:8000/api/swagger kun palvelin on käynnissä.
 
 - Muu dokumentaatio löytyy [documentation](./documentation) kansiosta.
 
 ## Ohjelmoijat
+
 - Mamadou Balde
 - Sami Paananen
 - Vladimir Piniazhin
