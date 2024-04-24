@@ -8,5 +8,6 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./test-setup/setupTests.ts", 'dotenv/config'],
+    include: ["./src/__tests__/junit/vitest/**/*"]
   },
 });

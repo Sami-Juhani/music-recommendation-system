@@ -29,11 +29,9 @@ export function Registration() {
   return (
     <div data-testid="perse" className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
       <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
-        {/* Placeholder for other header elements */}
         <div className="w-full">
-          {/* Empty div if needed for balancing header layout */}
         </div>
-        <div className="w-1/8 max-w-[100px]"> {/* Adjust width and max-width as necessary */}
+        <div className="w-1/8 max-w-[100px]">
           <Languages />
         </div>
       </header>
@@ -49,12 +47,13 @@ export function Registration() {
           onSubmit={handleSubmit}
         >
           <FormInput
-            type="text"
+            type="email"
             id="email"
             name="email"
             placeholder={t("registration.email")}
             handleChange={handleChange}
             formData={formData.email}
+            dataTestId="email-input"
           />
 
           <FormInput
@@ -64,7 +63,9 @@ export function Registration() {
             placeholder={t("registration.firstName")}
             handleChange={handleChange}
             formData={formData.first_name}
+            dataTestId="firstName-input"
           />
+
           <FormInput
             type="text"
             id="last_name"
@@ -72,6 +73,7 @@ export function Registration() {
             placeholder={t("registration.lastName")}
             handleChange={handleChange}
             formData={formData.last_name}
+            dataTestId="lastName-input"
           />
 
           <FormInput
@@ -81,11 +83,10 @@ export function Registration() {
             placeholder={t("registration.password")}
             formData={formData.password}
             handleChange={handleChange}
+            dataTestId="password-input"
           />
-
-          {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
-
-          <CustomButton type="submit" className="mt-5" customStyle="primary">
+          {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+          <CustomButton type="submit" className="mt-5" customStyle="primary" dataTestId="reg-button">
             {t("registration.submit")}
           </CustomButton>
         </form>
