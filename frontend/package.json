@@ -28,7 +28,7 @@
     "dev": "HOST=127.0.0.1 PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "vitest",
-    "test-jest": "jest  __tests__/junit/jest",
+    "test-jest": "jest  __tests__/unit/jest",
     "test-coverage": "vitest --coverage",
     "test-playwright": "npx playwright test",
     "eject": "react-scripts eject",
