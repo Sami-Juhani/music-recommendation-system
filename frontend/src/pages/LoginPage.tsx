@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import FormInput from "../components/FormInput";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
+import { CustomButton } from "../components/Buttons/CustomButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import { useLogin } from '../hooks/useLogin'
 import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
-
 
 export default function Login() {
   const { formData, handleChange, handleSubmit, error } = useLogin();
@@ -37,25 +36,25 @@ export default function Login() {
             type="email"
             id="email"
             name="email"
+            dataTestId="loginEmailInput"
             placeholder={(t('login.email') as string)}
             handleChange={handleChange} 
             formData={formData.email}
-            dataTestId="email-input" // Add data-testid prop
           />
 
           <FormInput
             type="password"
             id="password"
             name="password"
+            dataTestId="loginPasswordInput"
             placeholder={(t('login.password') as string)}
             formData={formData.password}
             handleChange={handleChange}
-            dataTestId="password-input" // Add data-testid prop
           />
 
-          <PrimaryButton type="submit" className="mt-5">
+          <CustomButton type="submit" className="mt-5" dataTestId="loginSubmitBtn" customStyle="primary">
             {t('login.submit')}
-          </PrimaryButton>
+          </CustomButton>
         </form>
 
         {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}

@@ -1,10 +1,10 @@
-﻿import "../styles/ProfileUpdate.css";
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContextProvider";
 import PathConstants from "../routes/PathConstants";
+import "../styles/ProfileUpdate.css";
 import { UserContextType } from "../types/UserContextType";
-import { useTranslation } from 'react-i18next';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -75,15 +75,11 @@ const ProfileUpdate = () => {
     }
   };
 
-  const deleteProfile = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const deleteProfile = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const confirmDelete = window.confirm(
-      t("profile.confirmation")
-    );
+    const confirmDelete = window.confirm(t("profile.confirmation"));
 
     if (!confirmDelete) {
       return;

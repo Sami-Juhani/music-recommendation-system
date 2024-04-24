@@ -1,7 +1,16 @@
 import React from "react";
 
-export default function FormInput({ id, name, type, placeholder, formData, dataTestId, handleChange }: { id: string; name: string; type: string; placeholder: string; formData: string; dataTestId:string; handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void}) {
+type FormInputProps = {
+  id: string;
+  name: string;
+  dataTestId?: string;
+  type: string;
+  placeholder: string;
+  formData: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
+export default function FormInput({ id, name, dataTestId, type, placeholder, formData, handleChange }: FormInputProps) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="text-sm font-extrabold">
@@ -10,11 +19,11 @@ export default function FormInput({ id, name, type, placeholder, formData, dataT
       <input
         type={type}
         name={name}
+        data-testid={dataTestId}
         id={id}
         placeholder={placeholder}
         value={formData}
         onChange={handleChange}
-        data-testid={dataTestId} // Add data-testid attribute
         className="p-3 rounded-[5px] border-[1px] outline-none focus:outline-offset-0 focus:outline-2 focus:outline-white bg-zinc-900 border-zinc-400 hover:border-white placeholder:text-sm placeholder:font-bold transition-all"
       />
     </div>

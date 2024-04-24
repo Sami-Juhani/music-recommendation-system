@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Navigate, useNavigation, useLoaderData } from "react-router-dom";
 import FormInput from "../components/FormInput";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
+import { CustomButton } from "../components/Buttons/CustomButton";
 import { Link } from "react-router-dom";
 import PathConstants from "../routes/PathConstants";
 import useRegistration from "../hooks/useRegistration";
@@ -10,9 +10,7 @@ import { loader } from "../utils/loader";
 import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 
-
-
-export default function Registration() {
+export function Registration() {
   const { formData, handleChange, handleSubmit, error } = useRegistration();
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;
@@ -29,13 +27,11 @@ export default function Registration() {
   if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
 
   return (
-    <div className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
+    <div data-testid="perse" className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
       <header className="flex justify-between md:px-8 md:px-12 md:mb-8 bg-black">
-        {/* Placeholder for other header elements */}
         <div className="w-full">
-          {/* Empty div if needed for balancing header layout */}
         </div>
-        <div className="w-1/8 max-w-[100px]"> {/* Adjust width and max-width as necessary */}
+        <div className="w-1/8 max-w-[100px]">
           <Languages />
         </div>
       </header>
@@ -57,7 +53,7 @@ export default function Registration() {
             placeholder={t("registration.email")}
             handleChange={handleChange}
             formData={formData.email}
-            dataTestId="email-input" // Add data-testid prop
+            dataTestId="email-input"
           />
 
           <FormInput
@@ -67,7 +63,7 @@ export default function Registration() {
             placeholder={t("registration.firstName")}
             handleChange={handleChange}
             formData={formData.first_name}
-            dataTestId="firstName-input" // Add data-testid prop
+            dataTestId="firstName-input"
           />
 
           <FormInput
@@ -77,7 +73,7 @@ export default function Registration() {
             placeholder={t("registration.lastName")}
             handleChange={handleChange}
             formData={formData.last_name}
-            dataTestId="lastName-input" // Add data-testid prop
+            dataTestId="lastName-input"
           />
 
           <FormInput
@@ -87,14 +83,12 @@ export default function Registration() {
             placeholder={t("registration.password")}
             formData={formData.password}
             handleChange={handleChange}
-            dataTestId="password-input" // Add data-testid prop
+            dataTestId="password-input"
           />
-
           {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
-
-          <PrimaryButton type="submit" className="mt-5" testid="reg-button">
+          <CustomButton type="submit" className="mt-5" customStyle="primary" dataTestId="reg-button">
             {t("registration.submit")}
-          </PrimaryButton>
+          </CustomButton>
         </form>
 
         <div className="flex flex-col gap-2 items-center text-center">

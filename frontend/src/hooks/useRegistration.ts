@@ -44,17 +44,12 @@ const useRegistration = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        //setNotification({ text: data.message, success: false });
         setError(
           data.message || "An unexpected error occurred. Please try again."
         );
       }
 
       if (response.ok) {
-        // setNotification({
-        //   text: "Registration succesfull, please login...",
-        //   success: true,
-        // });
         navigate(PathConstants.HOME);
       }
     } catch (error) {
