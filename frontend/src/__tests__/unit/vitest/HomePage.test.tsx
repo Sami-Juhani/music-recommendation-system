@@ -363,7 +363,7 @@ describe("#HomePage test", () => {
     );
 
     const playlist1 = await screen.findByText("playlist 1");
-    const playlist2 = await screen.findByText("playlist 2");
+    const playlist2 = screen.getByText("playlist 2");
     const playlist1Artist = await screen.findByText("artist1");
 
     expect(playlist1).toBeInTheDocument();
@@ -375,9 +375,379 @@ describe("#HomePage test", () => {
 
     await user.click(playlist2);
 
-    const playlist2Artist = await screen.findByText("artist2");
+    const playlist2Artist = screen.getByText("artist2");
 
     // check playlist2's artist is in the document
     expect(playlist2Artist).toBeInTheDocument();
+  });
+
+  it("should display recommendations when valid data is available", async () => {
+    mockServer.use(
+      http.get("http://127.0.0.1:8000/api/user/get", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/player/playbackstate/", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.post("http://127.0.0.1:8000/api/user/login", () => {
+        return HttpResponse.json(
+          {
+            user: {
+              id: "1",
+              fistName: "sami",
+              lastName: "sami",
+              preferredLanguage: "fi",
+              userRatings: [],
+            },
+          },
+          {
+            status: 200,
+            headers: {
+              Location: "/",
+            },
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/is-authenticated/", () => {
+        return HttpResponse.json(
+          {
+            status: true,
+          },
+          {
+            status: 200,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/playlists/", () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          items: [
+            {
+              id: "1",
+              images: [{ url: "" }],
+              name: "playlist 1",
+              type: "playlist",
+            },
+            {
+              id: "2",
+              images: [{ url: "" }],
+              name: "playlist 2",
+              type: "playlist",
+            },
+          ],
+        });
+      }),
+      http.get(`http://127.0.0.1:8000/api/spotify/playlist/1`, () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          id: "4dawdc3215n22v2",
+          images: [{ url: "" }],
+          name: "Playlist",
+          tracks: {
+            items: [
+              {
+                id: "1",
+                images: [{ url: "http://example.com/image/1" }],
+                name: "playlist 2",
+                type: "playlist",
+                rating: { spotify_id: "4SjCJcgfhcZJ6wHdtJ5U8b", number_of_reviews: 2, overall_rating: 3.5 },
+                track: {
+                  album: { images: [{ url: "" }] },
+                  artists: [{ name: "artist1" }],
+                  id: "feamcas",
+                  name: "song",
+                },
+              },
+            ],
+          },
+        });
+      }),
+      http.get(`http://127.0.0.1:8000/api/spotify/playlist/2`, () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          id: "4dawdc3215n22v2",
+          images: [{ url: "" }],
+          name: "playlist 2",
+          tracks: {
+            items: [
+              {
+                id: "1",
+                images: [{ url: "http://example.com/image/1" }],
+                name: "Playlist 1",
+                type: "playlist",
+                rating: { spotify_id: "4SjCJcgfhcZJ6wHdtJ5U8b", number_of_reviews: 2, overall_rating: 3.5 },
+                track: {
+                  album: { images: [{ url: "" }] },
+                  artists: [{ name: "artist2" }],
+                  id: "feamcas",
+                  name: "song",
+                },
+              },
+            ],
+          },
+        });
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/playlist/", () => {
+        return HttpResponse.json(
+          {
+            tracks: {
+              items: [
+                {
+                  track: {
+                    id: "1",
+                    href: "http://example.com/track/1",
+                    album: {
+                      images: [{ url: "http://example.com/image/1" }],
+                      name: "Album 1",
+                    },
+                    name: "Track 1",
+                    artists: [{ name: "Artist 1" }],
+                    duration_ms: 200000,
+                    preview_url: "http://example.com/preview/1",
+                  },
+                  rating: 5,
+                },
+              ],
+            },
+          },
+          {
+            status: 200,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/recommendations/generate/1", () => {
+        return HttpResponse.json(
+          {
+            id: ["1"],
+            artists: ["generatedArtist"],
+            name: ["generatedSong"],
+            url: ["/"],
+            year: ["1900"],
+          },
+          { status: 200 }
+        );
+      })
+    );
+
+    render(
+      <PlaylistsGetAllContextProvider>
+        <PlaylistGetContextProvider>
+          <PlayerContextProvider>
+            <UserContextProvider>
+              <GeneratedContextProvider>
+                <div className="relative flex">
+                  <RouterProvider router={router} />
+                </div>
+              </GeneratedContextProvider>
+            </UserContextProvider>
+          </PlayerContextProvider>
+        </PlaylistGetContextProvider>
+      </PlaylistsGetAllContextProvider>
+    );
+
+    const user = userEvent.setup();
+
+    const filterBtn = await screen.findByText("Generate recommendations");
+    await user.click(filterBtn);
+
+    expect(screen.getByText("generatedSong")).toBeInTheDocument();
+  });
+
+  it("should display error message if no recommendations are available", async () => {
+    mockServer.use(
+      http.get("http://127.0.0.1:8000/api/user/get", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/player/playbackstate/", () => {
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 404,
+          }
+        );
+      }),
+      http.post("http://127.0.0.1:8000/api/user/login", () => {
+        return HttpResponse.json(
+          {
+            user: {
+              id: "1",
+              fistName: "sami",
+              lastName: "sami",
+              preferredLanguage: "fi",
+              userRatings: [],
+            },
+          },
+          {
+            status: 200,
+            headers: {
+              Location: "/",
+            },
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/is-authenticated/", () => {
+        return HttpResponse.json(
+          {
+            status: true,
+          },
+          {
+            status: 200,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/playlists/", () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          items: [
+            {
+              id: "1",
+              images: [{ url: "" }],
+              name: "playlist 1",
+              type: "playlist",
+            },
+            {
+              id: "2",
+              images: [{ url: "" }],
+              name: "playlist 2",
+              type: "playlist",
+            },
+          ],
+        });
+      }),
+      http.get(`http://127.0.0.1:8000/api/spotify/playlist/1`, () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          id: "4dawdc3215n22v2",
+          images: [{ url: "" }],
+          name: "Playlist",
+          tracks: {
+            items: [
+              {
+                id: "1",
+                images: [{ url: "http://example.com/image/1" }],
+                name: "playlist 2",
+                type: "playlist",
+                rating: { spotify_id: "4SjCJcgfhcZJ6wHdtJ5U8b", number_of_reviews: 2, overall_rating: 3.5 },
+                track: {
+                  album: { images: [{ url: "" }] },
+                  artists: [{ name: "artist1" }],
+                  id: "feamcas",
+                  name: "song",
+                },
+              },
+            ],
+          },
+        });
+      }),
+      http.get(`http://127.0.0.1:8000/api/spotify/playlist/2`, () => {
+        return HttpResponse.json({
+          href: "http://example.com/playlists",
+          id: "4dawdc3215n22v2",
+          images: [{ url: "" }],
+          name: "playlist 2",
+          tracks: {
+            items: [
+              {
+                id: "1",
+                images: [{ url: "http://example.com/image/1" }],
+                name: "Playlist 1",
+                type: "playlist",
+                rating: { spotify_id: "4SjCJcgfhcZJ6wHdtJ5U8b", number_of_reviews: 2, overall_rating: 3.5 },
+                track: {
+                  album: { images: [{ url: "" }] },
+                  artists: [{ name: "artist2" }],
+                  id: "feamcas",
+                  name: "song",
+                },
+              },
+            ],
+          },
+        });
+      }),
+      http.get("http://127.0.0.1:8000/api/spotify/playlist/", () => {
+        return HttpResponse.json(
+          {
+            tracks: {
+              items: [
+                {
+                  track: {
+                    id: "1",
+                    href: "http://example.com/track/1",
+                    album: {
+                      images: [{ url: "http://example.com/image/1" }],
+                      name: "Album 1",
+                    },
+                    name: "Track 1",
+                    artists: [{ name: "Artist 1" }],
+                    duration_ms: 200000,
+                    preview_url: "http://example.com/preview/1",
+                  },
+                  rating: 5,
+                },
+              ],
+            },
+          },
+          {
+            status: 200,
+          }
+        );
+      }),
+      http.get("http://127.0.0.1:8000/api/recommendations/generate/1", () => {
+        return HttpResponse.json(
+          {
+            message: "No songs are available in the datase, Cant't generate recommendations...",
+          },
+          { status: 404 }
+        );
+      })
+    );
+
+    render(
+      <PlaylistsGetAllContextProvider>
+        <PlaylistGetContextProvider>
+          <PlayerContextProvider>
+            <UserContextProvider>
+              <GeneratedContextProvider>
+                <div className="relative flex">
+                  <RouterProvider router={router} />
+                </div>
+              </GeneratedContextProvider>
+            </UserContextProvider>
+          </PlayerContextProvider>
+        </PlaylistGetContextProvider>
+      </PlaylistsGetAllContextProvider>
+    );
+
+    const user = userEvent.setup();
+
+    const filterBtn = await screen.findByText("Generate recommendations");
+    await user.click(filterBtn);
+
+    expect(
+      screen.getByText("No songs are available in the datase, Cant't generate recommendations...")
+    ).toBeInTheDocument();
   });
 });
