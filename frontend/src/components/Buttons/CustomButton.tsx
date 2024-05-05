@@ -8,10 +8,11 @@ type ButtonProps = {
   children: React.ReactNode;
   customStyle?: "flat" | "rounded" | "main" | "primary";
   dataTestId?: string;
+  disabled?: boolean;
 };
 let btnClass: string;
 
-export function CustomButton({ type, className, href = "", children, customStyle, dataTestId }: ButtonProps) {
+export function CustomButton({ type, className, href = "", children, customStyle, dataTestId, disabled }: ButtonProps) {
   if (customStyle === "flat") btnClass = `focus:outline-[3px] focus:outline-white whitespace-nowrap ${className}`;
   if (customStyle === "rounded") btnClass = `rounded-3xl ${className}`;
   if (customStyle === "main") btnClass = `text-black justify-center font-bold hover:scale-105 ${className}`;
