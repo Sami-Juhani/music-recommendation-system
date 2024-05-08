@@ -51,7 +51,7 @@ const SongRating = ({ songRating, spotifyId }: { songRating: RatingType; spotify
           {t("playListContainer.numberOfReviews")} {numberOfReviews}
         </p>
       </div>
-      <div className="flex gap-[10px] items-center star-container">
+      <div className="flex items-center star-container">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}

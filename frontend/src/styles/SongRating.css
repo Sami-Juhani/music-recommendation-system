@@ -49,6 +49,7 @@
   .star {
     cursor: pointer;
     color: rgba(119, 150, 148, 0.5);
+    padding: 3px;
   }
   
   .star.filled,

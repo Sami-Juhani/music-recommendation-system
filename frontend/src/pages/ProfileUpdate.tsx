@@ -50,7 +50,12 @@ const ProfileUpdate = () => {
         credentials: "include",
       });
 
-      if (formData.email === "" || formData.password === "" || formData.first_name === "" || formData.last_name === "") {
+      if (
+        formData.email === "" ||
+        formData.password === "" ||
+        formData.first_name === "" ||
+        formData.last_name === ""
+      ) {
         console.error("Please fill in all fields");
         alert("Please fill in all fields");
         return;
@@ -122,7 +127,9 @@ const ProfileUpdate = () => {
     <div className="form-container">
       <h2 className="form-title">{t("profile.title")}</h2>
       <form onSubmit={handleSubmit} className="profile_update_form">
+        <label htmlFor="email">Email</label>
         <input
+          id="email"
           type="email"
           name="email"
           autoComplete="email"
@@ -130,7 +137,9 @@ const ProfileUpdate = () => {
           onChange={handleChange}
           placeholder={t("profile.email")}
         />
+        <label htmlFor="password">Password</label>
         <input
+          id="password"
           type="password"
           name="password"
           autoComplete="new-password"
@@ -138,7 +147,9 @@ const ProfileUpdate = () => {
           onChange={handleChange}
           placeholder={t("profile.password")}
         />
+        <label htmlFor="first_name">First name</label>
         <input
+          id="first_name"
           type="text"
           name="first_name"
           autoComplete="given-name"
@@ -146,7 +157,9 @@ const ProfileUpdate = () => {
           onChange={handleChange}
           placeholder={t("profile.firstName")}
         />
+        <label htmlFor="last_name">Last name</label>
         <input
+          id="last_name"
           type="text"
           name="last_name"
           autoComplete="family-name"
