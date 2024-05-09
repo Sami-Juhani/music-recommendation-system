@@ -17,6 +17,9 @@ class UserLogin(APIView):
     def post(self, request):
         email: str = request.data.get('email')
         password: str = request.data.get('password')
+        preferred_language: str = get_language_from_request(request)
+
+        activate(preferred_language)
 
         if not email or not password:
             return Response({"message": gettext("email_password_required")}, status=status.HTTP_400_BAD_REQUEST)
