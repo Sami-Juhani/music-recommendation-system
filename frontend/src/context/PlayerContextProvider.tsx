@@ -144,7 +144,7 @@ export function PlayerContextProvider({ children }: { children: ReactNode }) {
   }, [currentSong, playNextSong]);
 
   async function getPlaybackState(controller: AbortController, update?: boolean) {
-    let progressBar: HTMLDivElement | null = document.querySelector(".player-progress-bar");
+    const progressBar: HTMLDivElement | null = document.querySelector(".player-progress-bar");
 
     try {
       const response = await fetch(`${BASE_URL}/api/spotify/player/playbackstate/`, {

@@ -57,7 +57,7 @@ export default function Login() {
           </CustomButton>
         </form>
 
-        {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
+        {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
 
         <div className="flex flex-col gap-2 items-center text-center">
             <Link to="#">{t('login.forgot')}</Link>

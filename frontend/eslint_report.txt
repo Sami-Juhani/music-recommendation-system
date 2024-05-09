@@ -1,0 +1,201 @@
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\.eslintrc.js
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/.eslintrc.js` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\babel.config.js
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/babel.config.js` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\jest.config.js
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/jest.config.js` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\playwright.config.ts
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/playwright.config.ts` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\postcss.config.js
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/postcss.config.js` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\__tests__\playwright\choose_of_almbum.spec.js
+  1:26  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+  1:26  error  'require' is not defined                        no-undef
+  3:15  error  'process' is not defined                        no-undef
+  4:18  error  'process' is not defined                        no-undef
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\__tests__\playwright\mytest.spec.js
+   1:26  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+   1:26  error  'require' is not defined                        no-undef
+  65:7   error  'console' is not defined                        no-undef
+  77:3   error  'console' is not defined                        no-undef
+  84:3   error  'console' is not defined                        no-undef
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\__tests__\unit\jest\testRegistrationAndLogin.test.js
+    2:34  warning  'waitFor' is defined but never used               @typescript-eslint/no-unused-vars
+    2:43  warning  'getByTestId' is defined but never used           @typescript-eslint/no-unused-vars
+    3:24  warning  'useLoaderData' is defined but never used         @typescript-eslint/no-unused-vars
+    6:24  warning  'RegistrationRoute' is defined but never used     @typescript-eslint/no-unused-vars
+    9:8   warning  'PathConstants' is defined but never used         @typescript-eslint/no-unused-vars
+   12:1   error    'jest' is not defined                             no-undef
+   13:27  error    'jest' is not defined                             no-undef
+   16:12  error    'jest' is not defined                             no-undef
+   18:24  error    'jest' is not defined                             no-undef
+   19:19  error    'jest' is not defined                             no-undef
+   29:1   error    'describe' is not defined                         no-undef
+   30:5   error    'beforeEach' is not defined                       no-undef
+   31:9   error    'jest' is not defined                             no-undef
+   34:5   error    'test' is not defined                             no-undef
+   36:39  error    'jest' is not defined                             no-undef
+   60:9   error    'expect' is not defined                           no-undef
+   61:9   error    'expect' is not defined                           no-undef
+   62:9   error    'expect' is not defined                           no-undef
+   63:9   error    'expect' is not defined                           no-undef
+   68:5   error    'test' is not defined                             no-undef
+   71:39  error    'jest' is not defined                             no-undef
+   95:9   error    'expect' is not defined                           no-undef
+   96:9   error    'expect' is not defined                           no-undef
+   97:9   error    'expect' is not defined                           no-undef
+   98:9   error    'expect' is not defined                           no-undef
+  103:5   error    'test' is not defined                             no-undef
+  105:39  error    'jest' is not defined                             no-undef
+  120:9   error    'expect' is not defined                           no-undef
+  121:9   error    'expect' is not defined                           no-undef
+  126:5   error    'test' is not defined                             no-undef
+  128:39  error    'jest' is not defined                             no-undef
+  130:44  warning  'getByTestId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  141:9   error    'expect' is not defined                           no-undef
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\__tests__\unit\vitest\HomePage.test.tsx
+   5:10  warning  'getByText' is defined but never used           @typescript-eslint/no-unused-vars
+   5:21  warning  'findByText' is defined but never used          @typescript-eslint/no-unused-vars
+  20:1   error    Require statement not part of import statement  @typescript-eslint/no-var-requires
+  25:5   error    Require statement not part of import statement  @typescript-eslint/no-var-requires
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\__tests__\unit\vitest\LoginPage.test.tsx
+  20:1  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+  25:5  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\Link.tsx
+  3:32  warning  'className' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\Loader.tsx
+  3:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\PlayListPreview.tsx
+  15:79  warning  'selectedPlaylistIndex' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\PlayListTracks.tsx
+  20:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\PlayPause.tsx
+   7:9   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\components\Sidebar.tsx
+  41:38  error    Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  42:44  warning  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+  42:49  warning  'index' is defined but never used                                          @typescript-eslint/no-unused-vars
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\GeneratedContext.tsx
+  4:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\MusicGetAllContext.tsx
+  4:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\PlayerContextProvider.tsx
+   89:65  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  147:9   error    'progressBar' is never reassigned. Use 'const' instead  prefer-const
+  171:31  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  172:21  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  184:65  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  225:55  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  226:21  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  242:55  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  243:21  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  260:21  warning  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\PlaylistGetContext.tsx
+  4:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\PlaylistsGetAllContext.tsx
+  4:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\context\UserContextProvider.tsx
+  10:18  error    Unexpected empty method 'setUser'         @typescript-eslint/no-empty-function
+  39:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\hooks\useLogin.ts
+  87:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\i18n.ts
+  14:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\pages\Home.tsx
+   54:9   warning  'showModal' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   85:23  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  119:23  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  146:21  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\utils\loader.tsx
+  17:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\src\utils\timeConvret.ts
+  2:9  error  'minutes' is never reassigned. Use 'const' instead  prefer-const
+  3:9  error  'seconds' is never reassigned. Use 'const' instead  prefer-const
+  4:9  error  'result' is never reassigned. Use 'const' instead   prefer-const
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\tailwind.config.js
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/tailwind.config.js` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\test-setup\setupTests.ts
+  13:3  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+
+D:\Metropolia\MusicRecommendation\music-recommendation-system\frontend\vite.config.ts
+  0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/vite.config.ts` using `parserOptions.project`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+
+✖ 102 problems (54 errors, 48 warnings)
+  4 errors and 0 warnings potentially fixable with the `--fix` option.
+

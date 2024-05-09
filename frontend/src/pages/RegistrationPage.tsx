@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+// Registration.tsx
+import React, { useEffect, useState } from "react";
 import { Navigate, useNavigation, useLoaderData } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { CustomButton } from "../components/Buttons/CustomButton";
@@ -11,7 +12,14 @@ import { useTranslation } from "react-i18next";
 import Languages from "../components/LanguageMenu";
 
 export function Registration() {
-  const { formData, handleChange, handleSubmit, error } = useRegistration();
+  const { handleSubmit, error } = useRegistration();
+  const [formData, setFormData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    password: "",
+  });
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const { state } = useNavigation();
   const loaderData = useLoaderData() as { user: object | null } | null;
   const user = loaderData ? loaderData.user : null;
@@ -25,6 +33,16 @@ export function Registration() {
   if (isLoading) return <Loader title={t("registration.loading")} />;
 
   if (user && !isLoading) return <Navigate to={PathConstants.HOME} />;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (name === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setIsEmailValid(emailRegex.test(value));
+    }
+  };
 
   return (
     <div data-testid="perse" className="flex flex-col items-stretch font-body bg-black md:bg-gradient-to-b md:from-zinc-900 md:to-black">
@@ -54,6 +72,7 @@ export function Registration() {
             handleChange={handleChange}
             formData={formData.email}
             dataTestId="email-input"
+            isEmailValid={isEmailValid} 
           />
 
           <FormInput
@@ -86,7 +105,7 @@ export function Registration() {
             dataTestId="password-input"
           />
           {error && <div data-testid="error" className="text-red-500 text-sm mt-2 text-center">{error}</div>}
-          <CustomButton type="submit" className="mt-5" customStyle="primary" dataTestId="reg-button">
+          <CustomButton type="submit" className="mt-5" customStyle="primary" dataTestId="reg-button" disabled={!isEmailValid}>
             {t("registration.submit")}
           </CustomButton>
         </form>
