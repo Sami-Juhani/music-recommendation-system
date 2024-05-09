@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ playlists, selectedPlaylistIndex, han
       <div className="nav">
         <div className="nav-option" id="nav-option-home">
           <FontAwesomeIcon icon={faHouse} />
-          <a href="/">{t("sidebar.home")}</a>
+          <a data-testid="hometitle" href="/">{t("sidebar.home")}</a>
         </div>
       </div>
       <div className="library">
@@ -38,8 +38,8 @@ const Sidebar: React.FC<SidebarProps> = ({ playlists, selectedPlaylistIndex, han
         <div className="box overflow-y-auto max-height-85">
           {allPLisLoading ? (
             <SideBarSceleton />
-          ) : playlists && playlists.hasOwnProperty("items") ? (
-            playlists.items.map((playlist: any, index: number) => (
+          ) : playlists && Object.prototype.hasOwnProperty.call(playlists, "items") ? (
+            playlists.items.map((playlist: any) => (
               <div
                 key={playlist.id}
                 className={`preview-playlist ${selectedPlaylistIndex === playlist.id ? "preview-playlist-pushed" : ""}`}
